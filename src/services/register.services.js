@@ -18,6 +18,7 @@ exports.usuarioExiste = async function (usuario) {
 
 }
 
+//Registrar usuario en la base de datos
 exports.registrar = async function (usuario,contraseña) {
 
 
@@ -31,3 +32,8 @@ exports.registrar = async function (usuario,contraseña) {
     if (rows.affectedRows === 1) {
         return true; //Se ha insertado correctamente
     } else{
+        return false; //No se ha insertado
+    }
+
+
+}
