@@ -2,6 +2,7 @@ var RegisterService = require('../services/register.services')
 const router = require('express').Router();
 const { validationResult } = require('express-validator');
 
+//Registrar usuario si no existe en la base de datos
 exports.registrarUsuario = async function (req, res, next) {
 
     //Mirar si hay errores

@@ -1,5 +1,5 @@
 const { check } = require('express-validator');
-
+//validaciones para login y registro
 exports.signupValidation = [
     check('usuario', 'Nombre de usuario requerido').not().isEmpty(),
     check('contraseña', 'Contraseña debe tener un mínimo de 6 caracteres').isLength({ min: 6 })
