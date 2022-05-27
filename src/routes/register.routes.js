@@ -4,7 +4,7 @@ const validator = require('../helpers/validator')
 
 var RegisterController = require('../controllers/register.controllers')
 
-//Ruta para registro de usuario
+//Ruta para el registro de usuario
 router.post('/', validator.signupValidation, RegisterController.registrarUsuario)
 
 module.exports = router;

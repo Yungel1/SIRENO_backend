@@ -1,5 +1,5 @@
 var RegisterService = require('../services/register.services') 
-const router = require('express').Router();
+var UsuarioService = require('../services/usuario.services') 
 const { validationResult } = require('express-validator');
 
 //Registrar usuario si no existe en la base de datos
@@ -13,7 +13,7 @@ exports.registrarUsuario = async function (req, res, next) {
 
     try{
 
-        var usuarioExiste = await RegisterService.usuarioExiste(req.body.usuario);
+        var usuarioExiste = await UsuarioService.usuarioExiste(req.body.usuario);
         //Comprobar si el usuario existe
         if(usuarioExiste){
             return res.status(201).json({
