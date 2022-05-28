@@ -35,6 +35,6 @@ exports.registrarUsuario = async function (req, res, next) {
         }
     } catch(err){
         console.log(err);
-        res.sendStatus(500) && next(err);
+        return res.sendStatus(500) && next(err);
     }
 }

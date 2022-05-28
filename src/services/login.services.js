@@ -17,8 +17,6 @@ exports.usuarioCorrecto = function (row) {
 //Comprobar si la contraseña es correcta, si es correcta -> true, sino false
 exports.contraseñaCorrecta = async function (contraseña,row) {
 
-    console.log(contraseña)
-    console.log(row[0].contraseña)
     const passMatch = await bcrypt.compare(contraseña, row[0].contraseña);
 
     return passMatch;
