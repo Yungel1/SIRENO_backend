@@ -7,8 +7,6 @@ const port = process.env.PORT
 //Routers
 const registerRouter = require('./src/routes/register.routes');
 const loginRouter = require('./src/routes/login.routes');
-const authRouter = require('./src/routes/authentication.routes');
-//const authorizationRouter = require('./src/routes/authorization.routes');
 
 // parsear peticiones content-type - application/json
 app.use(express.json());
@@ -20,9 +18,6 @@ app.use('/register',registerRouter);
 
 //Ruta para gestionar el inicio de sesión
 app.use('/login',loginRouter);
-
-//Ruta para autenticar y obtener usuario
-app.use('/auth',authRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello World!')

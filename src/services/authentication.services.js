@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const db = require("../helpers/db.js");
 
 //Comprobar si existe autorización en la cabecera
 exports.tokenExists = function (headerAuth){

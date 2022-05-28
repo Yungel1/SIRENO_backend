@@ -59,9 +59,7 @@ const authorize = async(req, res, next, rolesConAcceso) => {
             });
         }
 
-        return res.json({
-            message:"Usuario autorizado"
-        });
+        return next();
 
 
     } catch(err){
