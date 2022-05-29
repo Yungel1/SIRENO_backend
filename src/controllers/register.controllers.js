@@ -20,8 +20,16 @@ exports.registrarUsuario = async function (req, res, next) {
                 message: "El usuario ya está en uso",
             });
         }
+
+        var emailExiste = await UsuarioService.emailExiste(req.body.email);
+        //Comprobar si el usuario existe
+        if(emailExiste){
+            return res.status(201).json({
+                message: "El email ya está en uso",
+            });
+        }
         
-        var registrado = await RegisterService.registrar(req.body.usuario,req.body.contraseña); //Registrar usuario
+        var registrado = await RegisterService.registrar(req.body.usuario,req.body.contraseña,req.body.email); //Registrar usuario
 
         //Comprobar si se ha registrado
         if(registrado){

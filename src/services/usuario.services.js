@@ -27,6 +27,23 @@ exports.usuarioExiste = async function (usuario) {
 
 }
 
+
+//EmailExiste
+exports.emailExiste = async function (email) {
+
+    const row = await db.query(
+        "SELECT email FROM Usuario WHERE email=?",
+        email
+        );
+        
+    if (row.length > 0) {
+        return true; //El email existe
+    } else{
+        return false;
+    }
+
+}
+
 //Obtener usuario
 exports.getUsuario = async function (usuario) {
 

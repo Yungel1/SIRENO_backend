@@ -1,8 +1,8 @@
-var AuthenticationService = require('../services/authentication.services') 
-var AuthorizationService = require('../services/authorization.services') 
+var AuthenticationService = require('../services/authentication.services')  
 var UsuarioService = require('../services/usuario.services') 
 const jwt = require('jsonwebtoken');
 
+//Autenticar mediante token
 const verificarToken = async(req, res, next) => {
 
     try{
@@ -31,7 +31,7 @@ const verificarToken = async(req, res, next) => {
 
     } catch(err){
         if(err instanceof jwt.TokenExpiredError){
-            res.status(401).json({
+            return res.status(401).json({
                 message:"El token ha expirado"
             });
         }
@@ -40,32 +40,6 @@ const verificarToken = async(req, res, next) => {
     }
 };
 
-const authorize = async(req, res, next, rolesConAcceso) => {
-
-    try{
-        if(req.usuario == null){
-            return res.status(401).json({
-                message:"Usuario no encontrado"
-            });
-        }
-
-        let rolesActuales = await UsuarioService.getRoles(req.usuario);
-
-        let autorizado = AuthorizationService.tienePermisos(rolesConAcceso,rolesActuales);
-
-        if(!autorizado){
-            return res.status(403).json({
-                message:"Usuario no autorizado"
-            });
-        }
-
-        return next();
 
 
-    } catch(err){
-        console.log(err);
-        return res.sendStatus(500) && next(err);
-    }
-};
-
-module.exports = {verificarToken,authorize};
+module.exports = verificarToken;

@@ -19,10 +19,6 @@ app.use('/register',registerRouter);
 //Ruta para gestionar el inicio de sesión
 app.use('/login',loginRouter);
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Sireno listening on port ${port}`)
 })

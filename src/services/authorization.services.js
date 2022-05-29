@@ -7,10 +7,11 @@ exports.tienePermisos = function (rolesConAcceso,rolesActuales){
     if (rolesConAcceso.length==0){
         return false;
     }
-    //Si todos los roles tienen acceso true
-    if (rolesConAcceso.includes(roles.Todos)){
+    //Si todos los roles tienen acceso o es administrador true
+    if (rolesConAcceso.includes(roles.Todos) || rolesActuales[0].administrador){
         return true;
     }
+    
     //Si tiene uno de los roles con acceso true, sino false
     for (let role of rolesConAcceso) {
 

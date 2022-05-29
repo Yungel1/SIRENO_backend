@@ -19,14 +19,15 @@ exports.usuarioExiste = async function (usuario) {
 }
 
 //Registrar usuario en la base de datos
-exports.registrar = async function (usuario,contraseña) {
+exports.registrar = async function (usuario,contraseña,email) {
 
 
     const hashPass = await bcrypt.hash(contraseña, 12);
 
-    const rows = await db.query('INSERT INTO Usuario(usuario,contraseña) VALUES(?,?)',[
+    const rows = await db.query('INSERT INTO Usuario(usuario,contraseña,email) VALUES(?,?,?)',[
         usuario,
-        hashPass
+        hashPass,
+        email
     ]);
 
     if (rows.affectedRows === 1) {
