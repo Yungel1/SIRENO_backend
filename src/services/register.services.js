@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 exports.usuarioExiste = async function (usuario) {
 
     const row = await db.query(
-        "SELECT usuario FROM Usuario WHERE usuario=?",
+        "SELECT usuario FROM usuario WHERE usuario=?",
         usuario
         );
         
@@ -24,7 +24,7 @@ exports.registrar = async function (usuario,contraseña,email) {
 
     const hashPass = await bcrypt.hash(contraseña, 12);
 
-    const rows = await db.query('INSERT INTO Usuario(usuario,contraseña,email) VALUES(?,?,?)',[
+    const rows = await db.query('INSERT INTO usuario(usuario,contraseña,email) VALUES(?,?,?)',[
         usuario,
         hashPass,
         email

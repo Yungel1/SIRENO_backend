@@ -3,7 +3,7 @@ const db = require("../helpers/db.js");
 //Insertar campaña en la base de datos
 exports.insertarCampaña = async function (fechaIni, fechaFin, descripcion, anonima, con_registro) {
 
-    const rows = await db.query('INSERT INTO Campaña(fechaIni, fechaFin, descripcion, anonima, con_registro) VALUES(?,?,?,?,?)',[
+    const rows = await db.query('INSERT INTO campaña(fechaIni, fechaFin, descripcion, anonima, con_registro) VALUES(?,?,?,?,?)',[
         fechaIni,
         fechaFin,
         descripcion,

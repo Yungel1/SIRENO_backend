@@ -4,7 +4,7 @@ const db = require("../helpers/db.js");
 exports.getUsuarioContraseña = async function (usuario) {
 
     const row = await db.query(
-        "SELECT usuario,contraseña FROM Usuario WHERE usuario=?",
+        "SELECT usuario,contraseña FROM usuario WHERE usuario=?",
         usuario
         );
 
@@ -15,7 +15,7 @@ exports.getUsuarioContraseña = async function (usuario) {
 exports.usuarioExiste = async function (usuario) {
 
     const row = await db.query(
-        "SELECT usuario FROM Usuario WHERE usuario=?",
+        "SELECT usuario FROM usuario WHERE usuario=?",
         usuario
         );
         
@@ -32,7 +32,7 @@ exports.usuarioExiste = async function (usuario) {
 exports.emailExiste = async function (email) {
 
     const row = await db.query(
-        "SELECT email FROM Usuario WHERE email=?",
+        "SELECT email FROM usuario WHERE email=?",
         email
         );
         
@@ -48,7 +48,7 @@ exports.emailExiste = async function (email) {
 exports.getUsuario = async function (usuario) {
 
     const row = await db.query(
-        "SELECT usuario FROM Usuario WHERE usuario=?",
+        "SELECT usuario FROM usuario WHERE usuario=?",
         usuario
         );
         
@@ -64,7 +64,7 @@ exports.getUsuario = async function (usuario) {
 exports.getRoles = async function (usuario) {
 
     const row = await db.query(
-        "SELECT estudiante,docente,administrador FROM Usuario WHERE usuario=?",
+        "SELECT estudiante,docente,administrador FROM usuario WHERE usuario=?",
         usuario
         );
         

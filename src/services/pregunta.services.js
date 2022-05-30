@@ -3,7 +3,7 @@ const db = require("../helpers/db.js");
 //Insertar pregunta en la base de datos
 exports.insertarPregunta = async function (tipoPreg) {
 
-    const rows = await db.query('INSERT INTO Pregunta(tipoPreg) VALUES(?)',[
+    const rows = await db.query('INSERT INTO pregunta(tipoPreg) VALUES(?)',[
         tipoPreg
     ]);
 
