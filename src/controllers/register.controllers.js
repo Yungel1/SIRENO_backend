@@ -1,5 +1,5 @@
-var RegisterService = require('../services/register.services') 
-var UsuarioService = require('../services/usuario.services') 
+var RegisterService = require('../services/register.services');
+var UsuarioService = require('../services/usuario.services');
 const { validationResult } = require('express-validator');
 
 //Registrar usuario si no existe en la base de datos
@@ -37,7 +37,7 @@ exports.registrarUsuario = async function (req, res, next) {
                 message: "El usuario ha sido insertado correctamente",
             });
         } else{
-            return res.status(500).json({
+            return res.status(422).json({
                 message: "El usuario no ha sido insertado",
             });
         }
