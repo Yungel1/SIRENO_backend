@@ -8,6 +8,7 @@ const port = process.env.PORT
 const registerRouter = require('./src/routes/register.routes');
 const loginRouter = require('./src/routes/login.routes');
 const campañaRouter = require('./src/routes/campaña.routes');
+const preguntaRouter = require('./src/routes/pregunta.routes');
 
 // parsear peticiones content-type - application/json
 app.use(express.json());
@@ -22,6 +23,9 @@ app.use('/login',loginRouter);
 
 //Ruta para gestionar campañas
 app.use('/campana',campañaRouter);
+
+//Ruta para gestionar preguntas
+app.use('/pregunta',preguntaRouter);
 
 app.listen(port, () => {
   console.log(`Sireno listening on port ${port}`)

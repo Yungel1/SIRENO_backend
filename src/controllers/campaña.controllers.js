@@ -3,6 +3,7 @@ moment().format();
 
 var CampañaService = require('../services/campaña.services');
 
+//Insertar campaña
 exports.insertarCampaña = async function (req,res,next){
     try{
         //Comprobar si el formato de fechas es correcto
@@ -28,7 +29,7 @@ exports.insertarCampaña = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
-                message: "La campaña no ha sido insertada, compruebe que el tipo de dato sea correcto",
+                message: "La campaña no ha sido insertada",
             });
         }
     } catch(err){

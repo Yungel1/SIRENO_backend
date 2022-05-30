@@ -26,7 +26,7 @@ exports.contraseñaCorrecta = async function (contraseña,row) {
 //obtener el token
 exports.obtenerToken = function (row) {
 
-    const elToken = jwt.sign({usuario:row[0].usuario},process.env.PASSPHRASE,{ expiresIn: '1h' });
+    const elToken = jwt.sign({usuario:row[0].usuario},process.env.PASSPHRASE,{ expiresIn: '2h' });
 
     return elToken;
 

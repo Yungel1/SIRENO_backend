@@ -1,6 +1,6 @@
 const db = require("../helpers/db.js");
 
-//Registrar usuario en la base de datos
+//Insertar campaña en la base de datos
 exports.insertarCampaña = async function (fechaIni, fechaFin, descripcion, anonima, con_registro) {
 
     const rows = await db.query('INSERT INTO Campaña(fechaIni, fechaFin, descripcion, anonima, con_registro) VALUES(?,?,?,?,?)',[
