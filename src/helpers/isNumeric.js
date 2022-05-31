@@ -1,6 +1,6 @@
 exports.isNumeric = function(string){
     try {  
-        Integer.parseInt(string);  
+        parseInt(string);  
         return true;
       } catch(e){ 
           return false;

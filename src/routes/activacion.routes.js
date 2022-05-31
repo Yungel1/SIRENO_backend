@@ -9,7 +9,7 @@ var ActivacionController = require('../controllers/activacion.controllers')
 //Insertar activacion
 router.post('/', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), ActivacionController.insertarActivacion);
 
-// //Actualizar activacion
-// router.post('/update', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), ActivacionController.actualizarActivacion);
+//Actualizar activacion
+router.put('/update', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), ActivacionController.actualizarActivacion);
 
 module.exports = router;

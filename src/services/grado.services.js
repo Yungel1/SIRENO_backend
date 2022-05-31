@@ -1,5 +1,6 @@
 const db = require("../helpers/db.js");
 
+//Si el grado existe en la base de datos: true, sino false
 exports.gradoExiste  = async function (grado) {
 
     const row = await db.query(

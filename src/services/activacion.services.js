@@ -21,6 +21,28 @@ exports.insertarActivacion = async function (docente, grupo, grado, asignatura, 
 
 }
 
+//Actualizar activacion en la base de datos
+exports.actualizarActivacion = async function (docente, grupo, grado, asignatura, campaña, fechaActIni, fechaActFin) {
+
+    const rows = await db.query('UPDATE activacion SET fechaActIni=?, fechaActFin=? WHERE idDocente=? and idGrupo=? and idGrado=? and idAsignatura=? and idCampaña=?',[
+        fechaActIni,
+        fechaActFin,
+        docente,
+        grupo,
+        grado,
+        asignatura,
+        campaña        
+    ]);
+
+    if (rows.affectedRows === 1) {
+        return true; //Se ha insertado correctamente
+    } else{
+        return false; //No se ha insertado
+    }
+
+}
+
+//Si la activación existe en la base de datos: true, sino false
 exports.activacionExiste  = async function (docente, grupo, grado, asignatura, campaña) {
 
     const row = await db.query(
