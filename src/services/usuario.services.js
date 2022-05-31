@@ -71,3 +71,17 @@ exports.getRoles = async function (usuario) {
         return row;
 
 }
+
+exports.docenteExiste  = async function (docente) {
+
+    const row = await db.query(
+        "SELECT usuario FROM usuario WHERE usuario=? and docente=1",
+        docente
+        );
+        
+    if (row.length > 0) {
+        return true; //El docente existe
+    } else{
+        return false;
+    }
+}

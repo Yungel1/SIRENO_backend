@@ -34,3 +34,18 @@ exports.campañaExiste = async function (id) {
     }
 
 }
+
+//Si la campaña existe en la base de datos: true, sino false
+exports.campañaExiste  = async function (campaña) {
+
+    const row = await db.query(
+        "SELECT id FROM campaña WHERE id=?",
+        campaña
+        );
+        
+    if (row.length > 0) {
+        return true; //La campaña existe
+    } else{
+        return false;
+    }
+}

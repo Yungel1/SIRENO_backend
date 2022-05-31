@@ -15,6 +15,7 @@ const idiomaRouter = require('./src/routes/idioma.routes');
 const opcionesPreguntaRouter = require('./src/routes/opcionesPregunta.routes');
 const campañaEncuestaRouter = require('./src/routes/campañaEncuesta.routes');
 const encuestaPreguntaRouter = require('./src/routes/encuestaPregunta.routes');
+const activacionRouter = require('./src/routes/activacion.routes');
 
 // parsear peticiones content-type - application/json
 app.use(express.json());
@@ -50,6 +51,8 @@ app.use('/campanaencuesta',campañaEncuestaRouter);
 
 //Ruta para gestionar relación de encuestas y preguntas
 app.use('/encuestapregunta',encuestaPreguntaRouter);
+//Ruta para gestionar activaciones
+app.use('/activacion',activacionRouter);
 
 app.listen(port, () => {
   console.log(`Sireno listening on port ${port}`)
