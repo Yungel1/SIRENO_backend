@@ -13,6 +13,13 @@ exports.insertarCampaña = async function (req,res,next){
             });
         }
 
+        //Comprobar que la fecha fin es posterior a la fecha inicial
+        if (req.body.fechaFin <=  req.body.fechaIni){
+            return res.status(422).json({
+                message: "La fecha final debe ser mínimo un día mas tarde que la incial",
+            });
+        }
+
         //Comprobar si son integer (0 o 1) anonima y con_registro
         if(![0,1].includes(Number(req.body.anonima))||![0,1].includes(Number(req.body.con_registro))){
             return res.status(422).json({
