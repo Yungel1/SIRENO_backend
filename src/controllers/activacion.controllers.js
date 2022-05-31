@@ -7,7 +7,7 @@ var GradoService = require('../services/grado.services');
 var AsignaturaService = require('../services/asignatura.services');
 var CampañaService = require('../services/campaña.services');
 var ActivacionService = require('../services/activacion.services');
-var HelperNumeric = require('../helpers/isNumeric.js');
+var HelperNumeric = require('../helpers/helperNumeric.js');
 
 //Insertar activacion
 exports.insertarActivacion = async function (req,res,next){
