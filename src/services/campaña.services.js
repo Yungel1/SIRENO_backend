@@ -19,3 +19,17 @@ exports.insertarCampaña = async function (fechaIni, fechaFin, descripcion, anon
 
 
 }
+
+exports.campañaExiste  = async function (campaña) {
+
+    const row = await db.query(
+        "SELECT id FROM campaña WHERE id=?",
+        campaña
+        );
+        
+    if (row.length > 0) {
+        return true; //El campaña existe
+    } else{
+        return false;
+    }
+}
