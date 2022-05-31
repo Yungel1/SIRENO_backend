@@ -35,6 +35,11 @@ const verificarToken = async(req, res, next) => {
                 message:"El token ha expirado"
             });
         }
+        if(err instanceof jwt.JsonWebTokenError){
+            return res.status(401).json({
+                message:"Error en el token proporcionado"
+            });
+        }
         console.log(err);
         return res.sendStatus(500) && next(err);
     }
