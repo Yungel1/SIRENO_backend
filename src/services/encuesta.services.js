@@ -1,11 +1,9 @@
 const db = require("../helpers/db.js");
 
-//Insertar pregunta en la base de datos
-exports.insertarPregunta = async function (tipoPreg) {
+//Insertar encuesta en la base de datos
+exports.insertarEncuesta = async function () {
 
-    const rows = await db.query('INSERT INTO pregunta(tipoPreg) VALUES(?)',[
-        tipoPreg
-    ]);
+    const rows = await db.query('INSERT INTO encuesta() VALUES()');
 
     if (rows.affectedRows === 1) {
         return true; //Se ha insertado correctamente
@@ -13,13 +11,14 @@ exports.insertarPregunta = async function (tipoPreg) {
         return false; //No se ha insertado
     }
 
+
 }
 
-//Si existe la pregunta true sino false
-exports.preguntaExiste = async function (id) {
+//Si existe la encuesta true sino false
+exports.encuestaExiste = async function (id) {
 
     const row = await db.query(
-        "SELECT id FROM pregunta WHERE id=?",
+        "SELECT id FROM encuesta WHERE id=?",
         id
         );
         

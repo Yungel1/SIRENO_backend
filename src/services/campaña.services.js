@@ -17,5 +17,20 @@ exports.insertarCampaña = async function (fechaIni, fechaFin, descripcion, anon
         return false; //No se ha insertado
     }
 
+}
+
+//Si existe la campaña true sino false
+exports.campañaExiste = async function (id) {
+
+    const row = await db.query(
+        "SELECT id FROM campaña WHERE id=?",
+        id
+        );
+        
+    if (row.length > 0) {
+        return true;
+    } else{
+        return false;
+    }
 
 }

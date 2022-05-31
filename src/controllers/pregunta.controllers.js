@@ -13,7 +13,7 @@ exports.insertarPregunta = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
-                message: "La campaña no ha sido insertada",
+                message: "La pregunta no ha sido insertada",
             });
         }
     } catch(err){
