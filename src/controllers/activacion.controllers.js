@@ -7,6 +7,7 @@ var GradoService = require('../services/grado.services');
 var AsignaturaService = require('../services/asignatura.services');
 var CampañaService = require('../services/campaña.services');
 var ActivacionService = require('../services/activacion.services');
+var HelperNumeric = require('../helpers/isNumeric.js');
 
 //Insertar activacion
 exports.insertarActivacion = async function (req,res,next){
@@ -53,15 +54,23 @@ exports.insertarActivacion = async function (req,res,next){
         }
 
         var asignaturaExiste = await AsignaturaService.asignaturaExiste(req.body.asignatura);
-         //Comprobar si el id del asignatura existe
+         //Comprobar si el id de la asignatura existe
          if(! asignaturaExiste){
             return res.status(422).json({
                 message: "La asignatura seleccionada no corresponde a ninguna asignatura existente",
             });
         }
 
+        var idCamapñaEsInt = HelperNumeric.isNumeric(req.body.campaña);
+        //Comprobar si el id de la campaña es un numero
+        if (!idCamapñaEsInt){
+            return res.status(422).json({
+                message: "La campaña seleccionada no es un número",
+            });
+        }
+
         var campañaExiste = await CampañaService.campañaExiste(req.body.campaña);
-         //Comprobar si el id del campaña existe
+         //Comprobar si el id de la campaña existe
          if(! campañaExiste){
             return res.status(422).json({
                 message: "La campaña seleccionada no corresponde a ninguna campaña existente",
