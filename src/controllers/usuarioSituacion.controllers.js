@@ -93,7 +93,7 @@ exports.actualizarUsuarioSituacionAdmin = async function (req,res,next){
     }
 }
 
-//Actualizar UsuarioSituación para el usuario que ha iniciado sesión
+//Actualizar el atributo 'respondida' a 1 (true) en UsuarioSituación para el usuario que ha iniciado sesión
 exports.actualizarUsuarioSituacion = async function (req,res,next){
     try{
 
@@ -105,11 +105,11 @@ exports.actualizarUsuarioSituacion = async function (req,res,next){
         }
 
         //Comprobar si es integer (0 o 1) respondida
-        if(![0,1].includes(Number(req.body.respondida))){
+        /*if(![0,1].includes(Number(req.body.respondida))){
             return res.status(422).json({
                 message: "No ha insertado un valor entre 0 y 1 en el campo 'respondida'",
             });
-        }
+        }*/
 
 
         var usuarioSituacionExiste = await UsuarioSituacionService.usuarioSituacionExiste(req.usuario,req.body.idSituacion);
@@ -120,7 +120,7 @@ exports.actualizarUsuarioSituacion = async function (req,res,next){
             });
         }
 
-        var actualizado = await UsuarioSituacionService.actualizarUsuarioSituacion(req.usuario,req.body.idSituacion,req.body.respondida); //Actualizar UsuarioSituación
+        var actualizado = await UsuarioSituacionService.actualizarUsuarioSituacion(req.usuario,req.body.idSituacion,1); //Actualizar UsuarioSituación
 
         //Comprobar si se ha actualizado la UsuarioSituación
         if(actualizado){
