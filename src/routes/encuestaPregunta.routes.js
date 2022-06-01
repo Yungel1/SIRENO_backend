@@ -6,7 +6,7 @@ var roles = require('../helpers/roles');
 
 var EncuestaPreguntaController = require('../controllers/encuestaPregunta.controllers')
 
-//Insertar encuesta
+//Relacionar encuesta y pregunta
 router.post('/', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), EncuestaPreguntaController.relacionarEncuestaPregunta);
 
 module.exports = router;
