@@ -34,3 +34,23 @@ exports.situacionExiste = async function (id) {
     }
 
 }
+
+//Si la situación  está repetida true sino false
+exports.situacionRepetida = async function (idGrado, idDocente, idGrupo, idAsignatura, idCampaña) {
+
+    const row = await db.query(
+        "SELECT id FROM situacion WHERE idGrado=? and idDocente=? and idGrupo=? and idAsignatura=? and idCampaña=?",[
+        idGrado,
+        idDocente,
+        idGrupo,
+        idAsignatura,
+        idCampaña
+        ]);
+        
+    if (row.length > 0) {
+        return true;
+    } else{
+        return false;
+    }
+
+}
