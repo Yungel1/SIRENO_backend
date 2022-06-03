@@ -72,6 +72,7 @@ exports.getRoles = async function (usuario) {
 
 }
 
+//Docente existe
 exports.docenteExiste  = async function (docente) {
 
     const row = await db.query(
@@ -84,4 +85,53 @@ exports.docenteExiste  = async function (docente) {
     } else{
         return false;
     }
+}
+
+//Dar rol de administrador a un usuario
+exports.darRolAdmin = async function (usuario) {
+
+    const rows = await db.query('UPDATE usuario SET administrador=? WHERE usuario=?',[
+        true,
+        usuario,    
+    ]);
+
+    if (rows.affectedRows === 1) {
+        return true; //Se ha actualizado correctamente
+    } else{
+        return false; //No se ha actualizado
+    }
+
+}
+
+//Editar rol de estudiante a un usuario
+exports.editarRolEstudiante = async function (usuario,estudiante) {
+
+    const rows = await db.query('UPDATE usuario SET estudiante=? WHERE usuario=?',[
+        estudiante,
+        usuario,    
+    ]);
+
+    if (rows.affectedRows === 1) {
+        return true; //Se ha actualizado correctamente
+    } else{
+        return false; //No se ha actualizado
+    }
+
+}
+
+//Editar rol de docente a un usuario
+exports.editarRolDocente = async function (usuario,docente,idDepartamento) {
+
+    const rows = await db.query('UPDATE usuario SET docente=?,idDepartamento=? WHERE usuario=?',[
+        docente,
+        idDepartamento,
+        usuario,    
+    ]);
+
+    if (rows.affectedRows === 1) {
+        return true; //Se ha actualizado correctamente
+    } else{
+        return false; //No se ha actualizado
+    }
+
 }

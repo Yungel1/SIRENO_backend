@@ -12,10 +12,19 @@ var HelperNumeric = require('../helpers/helperNumeric.js');
 exports.insertarSituacion = async function (req,res,next){
     try{
 
+        //Comprobar si ya existe una situación igual (a excepción del id)
+        var situacionRepetida = await SituacionService.situacionRepetida(req.body.idGrado, req.body.idDocente, req.body.idGrupo, req.body.idAsignatura,req.body.idCampaña);
+        //Comprobar si la situación está repetida
+        if(situacionRepetida){
+            return res.status(422).json({
+                message: "Ya hay una situación con estos parámetros",
+            });
+        }
+
         var usuarioExiste = await UsuarioService.usuarioExiste(req.body.idDocente);
         //Comprobar si el usuario existe
         if(!usuarioExiste){
-            return res.status(201).json({
+            return res.status(422).json({
                 message: "El docente seleccionado no existe",
             });
         }
@@ -68,7 +77,7 @@ exports.insertarSituacion = async function (req,res,next){
             });
         }
 
-        var insertado = await SituacionService.insertarSituacion(req.body.idGrado, req.body.idDocente, req.body.idGrupo, req.body.idAsignatura); //Insertar situación
+        var insertado = await SituacionService.insertarSituacion(req.body.idGrado, req.body.idDocente, req.body.idGrupo, req.body.idAsignatura,req.body.idCampaña); //Insertar situación
 
         //Comprobar si se ha insertado la situación
         if(insertado){
