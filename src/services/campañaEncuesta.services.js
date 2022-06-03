@@ -16,3 +16,14 @@ exports.relacionarCampañaEncuesta = async function (idCampaña, idEncuesta) {
 
 
 }
+
+//Devuelve las encuestas de la campaña
+exports.getEncuestasCampaña = async function (idCampaña) {
+
+    const row = await db.query(
+        "SELECT idEncuesta FROM campañaencuesta WHERE idCampaña=?",
+        idCampaña
+        );
+        
+    return row;
+}

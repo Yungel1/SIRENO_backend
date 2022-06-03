@@ -34,3 +34,15 @@ exports.situacionExiste = async function (id) {
     }
 
 }
+
+//Devuelve la campaña de la situación
+exports.getCampañaSituacion = async function (id) {
+
+    const row = await db.query(
+        "SELECT idCampaña FROM situacion WHERE id=?",
+        id
+        );
+        
+    return row;
+
+}

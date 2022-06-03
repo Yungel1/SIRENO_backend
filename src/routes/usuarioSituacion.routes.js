@@ -15,4 +15,10 @@ router.put('/updateadmin', authentication, (req, res, next) => authorization(req
 //Actualizar UsuarioSituación (atributo 'respondida') para el usuario que ha iniciado sesión
 router.put('/update', authentication, (req, res, next) => authorization(req,res,next,[roles.Todos]), UsuarioSituacionController.actualizarUsuarioSituacion);
 
+//Coger todas las situaciones que tiene un usuario
+router.get('/getSituationsUser', authentication, (req, res, next) => authorization(req,res,next,[roles.Todos]), UsuarioSituacionController.getSituacionesUsuario);
+
+//Revisar si la situación seleccionada esta ya respondida o no
+router.get('/checkSituationAnswered', authentication, (req, res, next) => authorization(req,res,next,[roles.Todos]), UsuarioSituacionController.verSiLaSituacionesRespondidasUsuario);
+
 module.exports = router;

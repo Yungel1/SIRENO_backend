@@ -53,7 +53,7 @@ exports.activacionExiste  = async function (docente, grupo, grado, asignatura, c
         asignatura,
         campaña
         ]);
-        
+    
     if (row.length > 0) {
         return true; //La activacion existe
     } else{

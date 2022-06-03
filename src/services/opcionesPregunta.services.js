@@ -29,3 +29,15 @@ exports.opcionesPreguntaExiste = async function (id) {
     }
 
 }
+
+
+//Devuelve las opcionesPregunta de la pregunta
+exports.getOpcionesPregunta = async function (idPregunta) {
+
+    const row = await db.query(
+        "SELECT id FROM opcionespregunta WHERE idPregunta=?",
+        idPregunta
+        );
+        
+    return row;
+}

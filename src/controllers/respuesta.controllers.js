@@ -1,3 +1,5 @@
+var OpcionesPreguntaService = require('../services/opcionesPregunta.services');
+var PreguntaService = require('../services/pregunta.services');
 var EncuestaPreguntaService = require('../services/encuestaPregunta.services');
 var EncuestaService = require('../services/encuesta.services');
 var PreguntaService = require('../services/pregunta.services');
@@ -6,63 +8,22 @@ var UsuarioSituacionService = require('../services/usuarioSituacion.services');
 var SituacionService = require('../services/situacion.services');
 var EncuestaService = require('../services/encuesta.services');
 var CampañaService = require('../services/campaña.services');
+var RespuestaService = require('../services/respuesta.services');
+var OpcPregRespuestaService = require('../services/opcPregRespuesta.services');
 var helperNumeric = require('../helpers/helperNumeric');
 const { body } = require('express-validator');
 
 
-//Relacionar encuesta y pregunta
-exports.relacionarEncuestaPregunta = async function (req,res,next){
-    try{
-        
-        //Comprobar si el id de la pregunta y la encuesta son números
-        if(!helperNumeric.isNumeric(req.body.idPregunta)||!helperNumeric.isNumeric(req.body.idEncuesta)||!helperNumeric.isNumeric(req.body.num_preg)){
-            return res.status(422).json({
-                message: "Uno de los parámetros ha de ser un número y no lo es",
-            });
-        }
-
-        //Comprobar si la pregunta existe
-        var preguntaExiste = await PreguntaService.preguntaExiste(req.body.idPregunta);
-        if(!preguntaExiste){
-            return res.status(422).json({
-                message: "La pregunta no existe",
-            });
-        }
-
-        //Comprobar si la encuesta existe
-        var encuestaExiste = await EncuestaService.encuestaExiste(req.body.idEncuesta);
-        if(!encuestaExiste){
-            return res.status(422).json({
-                message: "La encuesta no existe",
-            });
-        }
-
-        var relacionado = await EncuestaPreguntaService.relacionarEncuestaPregunta(req.body.idEncuesta,req.body.idPregunta,req.body.num_preg); //Relacionar encuesta y pregunta
-
-        //Comprobar si se han relacionado la encuesta y la pregunta
-        if(relacionado){
-            return res.status(201).json({
-                message: "La encuesta y la pregunta han sido relacionadas correctamente",
-            });
-        } else{
-            return res.status(422).json({
-                message: "La encuesta y la pregunta no han sido relacionadas correctamente",
-            });
-        }
-        
-    } catch(err){
-        console.log(err);
-        return res.sendStatus(500) && next(err);
-    }
-}
-
-//Seleccionar las preguntas del la encuesta seleccionada por usuario logeado
-exports.getPreguntasEncuesta = async function (req,res,next){
+//Insertar respuesta
+exports.insertarRespuesta = async function (req,res,next){
     try{
 
         var idSituacion = req.body.idSituacion;
         var idCampaña = req.body.idCampaña;
         var idEncuesta = req.body.idEncuesta;
+        var idPregunta = req.body.idPregunta;
+        var idOpcionPregunta = req.body.idOpcionPregunta;
+        var texto = req.body.texto;
         var idUsuario = req.usuario;
 
         //Seleccionar las situaciones del usuario
@@ -189,11 +150,97 @@ exports.getPreguntasEncuesta = async function (req,res,next){
                 message: "La encuesta seleccionada no tiene niguna pregunta",
             });
         }
-        else{
-            return res.status(200).json(getPreguntasEncuesta);
+        
+        var idPreguntaEsInt = helperNumeric.isNumeric(idPregunta);
+        //Comprobar si el id de la pregunta es un numero
+        if (!idPreguntaEsInt){
+            return res.status(422).json({
+                message: "La pregunta seleccionada no es un número",
+            });
         }
 
+        //Comprobar que la pregunta existe
+        var preguntaExiste = await PreguntaService.preguntaExiste(idPregunta); 
+        if(! preguntaExiste){
+            return res.status(422).json({
+                message: "La pregunta no existe",
+            });
+        }
 
+        //Comprobar que la pregunta es del usuario logeado
+        var preguntaEcnontrada = false;
+        getPreguntasEncuesta.forEach(pregunta => {
+            var tienePregunta = (pregunta.idPregunta === parseInt(idPregunta));
+            if(tienePregunta){
+                preguntaEcnontrada = true;
+            }
+        });
+        if (! preguntaEcnontrada){
+            return res.status(422).json({
+                message: "El usuario no tiene esa pregunta",
+            });
+        }
+
+        //Seleccionar las opcionesPregunta de la pregunta
+        var getOpcionesPregunta = await OpcionesPreguntaService.getOpcionesPregunta(idPregunta); 
+        if(getOpcionesPregunta.length === 0){
+            return res.status(422).json({
+                message: "La pregunta seleccionada no tiene niguna opcionPregunta",
+            });
+        }
+        
+        var idOpcionesPreguntaEsInt = helperNumeric.isNumeric(idOpcionPregunta);
+        //Comprobar si el id de la opcionPregunta es un numero
+        if (!idOpcionesPreguntaEsInt){
+            return res.status(422).json({
+                message: "La opcionPregunta seleccionada no es un número",
+            });
+        }
+
+        //Comprobar que la opcionPregunta existe
+        var opcionPreguntaExiste = await OpcionesPreguntaService.opcionesPreguntaExiste(idOpcionPregunta); 
+        if(! opcionPreguntaExiste){
+            return res.status(422).json({
+                message: "La opcionPregunta no existe",
+            });
+        }
+
+        //Comprobar que la opcionPregunta es del usuario logeado
+        var opcionPreguntaEncontrada = false;
+        getOpcionesPregunta.forEach(opcionPregunta => {
+            var tieneOpcionPregunta = (opcionPregunta.id === parseInt(idOpcionPregunta));
+            if(tieneOpcionPregunta){
+                opcionPreguntaEncontrada = true;
+            }
+        });
+        if (! opcionPreguntaEncontrada){
+            return res.status(422).json({
+                message: "El usuario no tiene esa opcionPregunta",
+            });
+        }
+
+        var idRespuestaInsertada = await RespuestaService.insertarRespuesta(texto, idEncuesta); //Insertar respuesta
+
+        //Comprobar que la opcPregRespuesta existe
+        var opcPregRespuestaExiste = await OpcPregRespuestaService.opcPregRespuestaExiste(idOpcionPregunta, idRespuestaInsertada, idPregunta); 
+        if(opcPregRespuestaExiste){
+            return res.status(422).json({
+                message: "Esa opcPregRespuesta ya existe",
+            });
+        }
+
+        var opcPregRespuestaInsertada = await OpcPregRespuestaService.insertarOpcPregRespuesta(idOpcionPregunta, idRespuestaInsertada, idPregunta); //Insertar opcPregRespuesta
+
+        //Comprobar si se ha insertado la respuesta
+        if(idRespuestaInsertada && opcPregRespuestaInsertada){
+            return res.status(201).json({
+                message: "La respuesta ha sido insertada correctamente",
+            });
+        } else{
+            return res.status(422).json({
+                message: "La respuesta no ha sido insertada",
+            });
+        }
 
     } catch(err){
         console.log(err);

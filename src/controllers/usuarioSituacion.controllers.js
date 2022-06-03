@@ -137,3 +137,69 @@ exports.actualizarUsuarioSituacion = async function (req,res,next){
         return res.sendStatus(500) && next(err);
     }
 }
+
+
+//Seleccionar las situaciones del usuario
+exports.getSituacionesUsuario = async function (req,res,next){
+    try{
+
+        var idUsuario = req.usuario;
+
+        //Seleccionar las situaciones del usuario
+        var getSituacionesUsuario = await UsuarioSituacionService.getSituacionesUsuario(idUsuario); 
+        if(getSituacionesUsuario.length === 0){
+            return res.status(422).json({
+                message: "No tienes ninguna situación relacionada",
+            });
+        }
+        else{
+            return res.status(200).json(getSituacionesUsuario);
+        }
+
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+
+//Ver si la situación seleccionada ha sido respondida
+exports.verSiLaSituacionesRespondidasUsuario = async function (req,res,next){
+    try{
+
+        var idUsuario = req.usuario;
+        var idSituacion = req.body.idSituacion;
+
+        var idSituacionEsInt = helperNumeric.isNumeric(idSituacion);
+        //Comprobar si el id de la situación es un numero
+        if (!idSituacionEsInt){
+            return res.status(422).json({
+                message: "La situación seleccionada no es un número",
+            });
+        }
+
+        var usuarioSituacionExiste = await UsuarioSituacionService.usuarioSituacionExiste(idUsuario,idSituacion);
+        //Comprobar si la relación entre el usuario que ha iniciado sesión y una situación concretos existe
+        if(!usuarioSituacionExiste){
+            return res.status(422).json({
+                message: "La relacion usuario-situación no existe",
+            });
+        }
+
+        //Ver si la situación está respondida o no
+        var getSituacionesRespondidasUsuario = await UsuarioSituacionService.usuarioSituacionRespondida(idUsuario, idSituacion); 
+        if(getSituacionesRespondidasUsuario){
+            return res.status(422).json({
+                message: "La situación seleccionada ya esta respondida",
+            });
+        }
+        else{
+            return res.status(201).json({
+                message: "La situación seleccionada no esta respondida"
+            });
+        }
+
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}

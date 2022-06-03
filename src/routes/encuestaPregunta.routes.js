@@ -9,4 +9,8 @@ var EncuestaPreguntaController = require('../controllers/encuestaPregunta.contro
 //Relacionar encuesta y pregunta
 router.post('/', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), EncuestaPreguntaController.relacionarEncuestaPregunta);
 
+//Coger las preguntas de la encuesta seleccionada
+router.get('/getPollQuestions', authentication, (req, res, next) => authorization(req,res,next,[roles.Todos]), EncuestaPreguntaController.getPreguntasEncuesta);
+
+
 module.exports = router;

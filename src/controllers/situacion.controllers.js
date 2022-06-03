@@ -4,6 +4,8 @@ var GradoService = require('../services/grado.services');
 var AsignaturaService = require('../services/asignatura.services');
 var CampañaService = require('../services/campaña.services');
 var SituacionService = require('../services/situacion.services');
+var UsuarioSituacionService = require('../services/usuarioSituacion.services');
+var UsuarioSituacionController = require('../controllers/usuarioSituacion.controllers');
 var HelperNumeric = require('../helpers/helperNumeric.js');
 
 //Insertar situación
@@ -78,6 +80,76 @@ exports.insertarSituacion = async function (req,res,next){
                 message: "La situación no ha sido insertada",
             });
         }
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+
+//Seleccionar las campañas del la situación del usuario logeado
+exports.getCampañaSituacion = async function (req,res,next){
+    try{
+
+        var idSituacion = req.body.idSituacion;
+        var idUsuario = req.usuario;
+
+        //Seleccionar las situaciones del usuario
+        var getSituacionesUsuario = await UsuarioSituacionService.getSituacionesUsuario(idUsuario); 
+        if(getSituacionesUsuario.length === 0){
+            return res.status(422).json({
+                message: "No tienes ninguna situación relacionada",
+            });
+        }
+
+        var idSituacionEsInt = HelperNumeric.isNumeric(idSituacion);
+        //Comprobar si el id de la situación es un numero
+        if (!idSituacionEsInt){
+            return res.status(422).json({
+                message: "La situación seleccionada no es un número",
+            });
+        }
+
+        //Comprobar que la situación existe
+        var situacionExiste = await SituacionService.situacionExiste(idSituacion); 
+        if(! situacionExiste){
+            return res.status(422).json({
+                message: "La situación no existe",
+            });
+        }
+
+        //Comprobar que la situación es del usuario logeado
+        var ecnontrado = false;
+        getSituacionesUsuario.forEach(situacion => {
+            var tieneSituacion = (situacion.idSituacion === parseInt(idSituacion));
+            if(tieneSituacion){
+                ecnontrado = true;
+            }
+        });
+        if (! ecnontrado){
+            return res.status(422).json({
+                message: "El usuario no tiene esa situación",
+            });
+        }
+
+        //Ver si la situación está respondida o no
+        var getSituacionesRespondidasUsuario = await UsuarioSituacionService.usuarioSituacionRespondida(idUsuario, idSituacion); 
+        if(getSituacionesRespondidasUsuario){
+            return res.status(422).json({
+                message: "La situación seleccionada ya esta respondida",
+            });
+        }
+       
+        //Seleccionar la campaña de la situacion
+        var getCampañaSituacion = await SituacionService.getCampañaSituacion(idSituacion); 
+        if(getCampañaSituacion[0].idCampaña === null){
+            return res.status(422).json({
+                message: "La situación seleccionada no tiene niguna campaña",
+            });
+        }
+        else{
+            return res.status(200).json(getCampañaSituacion);
+        }
+
     } catch(err){
         console.log(err);
         return res.sendStatus(500) && next(err);

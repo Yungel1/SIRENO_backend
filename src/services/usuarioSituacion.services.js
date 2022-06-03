@@ -50,3 +50,28 @@ exports.actualizarUsuarioSituacion = async function (usuario, idSituacion,respon
     }
 
 }
+
+//Seleccionar todas las situaciones del usuario
+exports.getSituacionesUsuario = async function (usuario) {
+
+    const row = await db.query(
+        "SELECT idSituacion FROM usuariosituacion WHERE usuario=?",[
+        usuario,
+        ]);
+        
+    return (row);
+
+}
+
+//Ver si la situación a sido respondida por el usuario
+exports.usuarioSituacionRespondida = async function (usuario,idSituacion) {
+
+    const row = await db.query(
+        "SELECT respondida FROM usuariosituacion WHERE usuario=? and idSituacion=?",[
+        usuario,
+        idSituacion
+        ]);
+        
+    return (row[0].respondida);
+
+}

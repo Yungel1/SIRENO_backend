@@ -1,7 +1,10 @@
 var CampañaEncuestaService = require('../services/campañaEncuesta.services');
+var UsuarioSituacionService = require('../services/usuarioSituacion.services');
+var SituacionService = require('../services/situacion.services');
 var EncuestaService = require('../services/encuesta.services');
 var CampañaService = require('../services/campaña.services');
 var helperNumeric = require('../helpers/helperNumeric');
+const { body } = require('express-validator');
 
 //Relacionar campaña y encuesta
 exports.relacionarCampañaEncuesta = async function (req,res,next){
@@ -43,6 +46,110 @@ exports.relacionarCampañaEncuesta = async function (req,res,next){
                 message: "La campaña y la encuesta no han sido relacionadas correctamente",
             });
         }
+
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+
+//Seleccionar las encuestas del la campaña seleccionada por usuario logeado
+exports.getEncuestasCampaña = async function (req,res,next){
+    try{
+
+        var idSituacion = req.body.idSituacion;
+        var idCampaña = req.body.idCampaña;
+        var idUsuario = req.usuario;
+
+        //Seleccionar las situaciones del usuario
+        var getSituacionesUsuario = await UsuarioSituacionService.getSituacionesUsuario(idUsuario); 
+        if(getSituacionesUsuario.length === 0){
+            return res.status(422).json({
+                message: "No tienes ninguna situación relacionada",
+            });
+        }
+
+        var idSituacionEsInt = helperNumeric.isNumeric(idSituacion);
+        //Comprobar si el id de la situación es un numero
+        if (!idSituacionEsInt){
+            return res.status(422).json({
+                message: "La situación seleccionada no es un número",
+            });
+        }
+
+        //Comprobar que la situación existe
+        var situacionExiste = await SituacionService.situacionExiste(idSituacion); 
+        if(! situacionExiste){
+            return res.status(422).json({
+                message: "La situación no existe",
+            });
+        }
+
+        //Comprobar que la situación es del usuario logeado
+        var ecnontrado = false;
+        getSituacionesUsuario.forEach(situacion => {
+            var tieneSituacion = (situacion.idSituacion === parseInt(idSituacion));
+            if(tieneSituacion){
+                ecnontrado = true;
+            }
+        });
+        if (! ecnontrado){
+            return res.status(422).json({
+                message: "El usuario no tiene esa situación",
+            });
+        }
+
+        //Ver si la situación está respondida o no
+        var getSituacionesRespondidasUsuario = await UsuarioSituacionService.usuarioSituacionRespondida(idUsuario, idSituacion); 
+        if(getSituacionesRespondidasUsuario){
+            return res.status(422).json({
+                message: "La situación seleccionada ya esta respondida",
+            });
+        }
+       
+        //Seleccionar la campaña de la situacion
+        var getCampañaSituacion = await SituacionService.getCampañaSituacion(idSituacion); 
+        if(getCampañaSituacion[0].idCampaña === null){
+            return res.status(422).json({
+                message: "La situación seleccionada no tiene niguna campaña",
+            });
+        }
+
+        var idCamapñaEsInt = helperNumeric.isNumeric(idCampaña);
+        //Comprobar si el id de la campaña es un numero
+        if (!idCamapñaEsInt){
+            return res.status(422).json({
+                message: "La campaña seleccionada no es un número",
+            });
+        }
+
+        var campañaExiste = await CampañaService.campañaExiste(idCampaña);
+        //Comprobar si el id de la campaña existe
+        if(! campañaExiste){
+           return res.status(422).json({
+               message: "La campaña seleccionada no corresponde a ninguna campaña existente",
+           });
+       }
+
+        //Ver si la campaña seleccionada concuerda con la campaña de la situación
+        var campañaSeleccionadaExiste = (getCampañaSituacion[0].idCampaña === parseInt(idCampaña));
+        if (!campañaSeleccionadaExiste){
+            return res.status(422).json({
+                message: "La campaña seleccionada no concuerda con la campaña de la situación",
+            });
+        }
+
+        //Seleccionar las encuestas de la campaña
+        var getEncuestasCampaña = await CampañaEncuestaService.getEncuestasCampaña(idCampaña); 
+        if(getEncuestasCampaña.length === 0){
+            return res.status(422).json({
+                message: "La campaña seleccionada no tiene niguna encuesta",
+            });
+        }
+        else{
+            return res.status(200).json(getEncuestasCampaña);
+        }
+
 
     } catch(err){
         console.log(err);

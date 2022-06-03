@@ -25,7 +25,7 @@ exports.insertarActivacion = async function (req,res,next){
         var activacionExiste = await ActivacionService.activacionExiste(idDocente, idGrupo, idGrado, idAsignatura, idCampaña);
         //Comprobar si la activacion existe
         if(activacionExiste){
-            return res.status(201).json({
+            return res.status(422).json({
                 message: "La activación que se intenta crear ya existe",
             });
         }
@@ -33,7 +33,7 @@ exports.insertarActivacion = async function (req,res,next){
         var usuarioExiste = await UsuarioService.usuarioExiste(idDocente);
         //Comprobar si el usuario existe
         if(! usuarioExiste){
-            return res.status(201).json({
+            return res.status(422).json({
                 message: "El docente seleccionado no existe",
             });
         }
@@ -134,7 +134,7 @@ exports.actualizarActivacion = async function (req,res,next){
         var activacionExiste = await ActivacionService.activacionExiste(idDocente, idGrupo, idGrado, idAsignatura, idCampaña);
         //Comprobar si la activacion existe
         if(!activacionExiste){
-            return res.status(201).json({
+            return res.status(422).json({
                 message: "La activación que se intenta actualizar no existe",
             });
         }
@@ -185,7 +185,7 @@ exports.activarActivacionAdmin = async function (req,res,next){
         var activacionExiste = await ActivacionService.activacionExiste(idDocente, idGrupo, idGrado, idAsignatura, idCampaña);
         //Comprobar si la activacion existe
         if(!activacionExiste){
-            return res.status(201).json({
+            return res.status(422).json({
                 message: "La activación que se intenta activar no existe",
             });
         }
@@ -238,7 +238,7 @@ exports.activarActivacionDocente = async function (req,res,next){
         var activacionExiste = await ActivacionService.activacionExiste(idDocente, idGrupo, idGrado, idAsignatura, idCampaña);
         //Comprobar si la activacion existe
         if(!activacionExiste){
-            return res.status(201).json({
+            return res.status(422).json({
                 message: "La activación que se intenta activar no existe",
             });
         }
