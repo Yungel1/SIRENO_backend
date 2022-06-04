@@ -21,4 +21,8 @@ router.get('/getSituationsUser', authentication, (req, res, next) => authorizati
 //Revisar si la situación seleccionada esta ya respondida o no
 router.get('/checkSituationAnswered', authentication, (req, res, next) => authorization(req,res,next,[roles.Todos]), UsuarioSituacionController.verSiLaSituacionesRespondidasUsuario);
 
+//Borrar  relación entre usuario y situación
+router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), UsuarioSituacionController.deleteUsuarioSituacion);
+
+
 module.exports = router;

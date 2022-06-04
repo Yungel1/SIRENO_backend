@@ -135,3 +135,19 @@ exports.editarRolDocente = async function (usuario,docente,idDepartamento) {
     }
 
 }
+
+//Borrar usuario
+exports.deleteUsuario = async function (usuario) {
+
+    const rows = await db.query(
+        "DELETE FROM usuario WHERE usuario=?",
+        usuario
+        );
+        
+    if (rows.affectedRows === 1) {
+        return true;
+    } else{
+        return false;
+    }
+
+}

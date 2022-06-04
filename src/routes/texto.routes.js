@@ -9,4 +9,7 @@ var TextoController = require('../controllers/texto.controllers')
 //Insertar texto
 router.post('/', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), TextoController.insertarTexto);
 
+//Borrar texto
+router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), TextoController.deleteTexto);
+
 module.exports = router;

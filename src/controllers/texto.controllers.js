@@ -56,3 +56,42 @@ exports.insertarTexto = async function (req,res,next){
         return res.sendStatus(500) && next(err);
     }
 }
+
+//Borrar texto
+exports.deleteTexto = async function (req,res,next){
+    try{
+
+        let id = req.query.id;
+
+        //Comprobar si el id es un número
+        if(!helperNumeric.isNumeric(id)){
+            return res.status(422).json({
+                message: "El id introducido no es un número",
+            });
+        }
+
+        //Comprobar si el texto existe
+        var textoExiste = await TextoService.textoExiste(id);
+        if(!textoExiste){
+            return res.status(422).json({
+                message: "El texto no existe",
+            });
+        }
+
+        var borrado = await TextoService.deleteTexto(id); //Borrar texto
+
+        //Comprobar si se ha borrado el texto
+        if(borrado){
+            return res.status(201).json({
+                message: "Se ha borrado el texto",
+            });
+        } else{
+            return res.status(422).json({
+                message: "No se ha borrado el texto",
+            });
+        }
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
