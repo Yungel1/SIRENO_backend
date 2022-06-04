@@ -31,3 +31,19 @@ exports.insertarGrado = async function (id, idCentro) {
 
 
 }
+
+//Eliminar grado en la base de datos
+exports.eliminarGrado = async function (id) {
+
+    const rows = await db.query('DELETE FROM grado WHERE id=?',[
+        id
+    ]);
+
+    if (rows.affectedRows === 1) {
+        return true; //Se ha eliminado correctamente
+    } else{
+        return false; //No se ha eliminado
+    }
+
+
+}

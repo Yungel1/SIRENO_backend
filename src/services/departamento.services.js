@@ -31,3 +31,19 @@ exports.insertarDepartamento = async function (id) {
 
 
 }
+
+//Eliminar departamento en la base de datos
+exports.eliminarDepartamento = async function (id) {
+
+    const rows = await db.query('DELETE FROM departamento WHERE id=?',[
+        id
+    ]);
+
+    if (rows.affectedRows === 1) {
+        return true; //Se ha eliminado correctamente
+    } else{
+        return false; //No se ha eliminado
+    }
+
+
+}

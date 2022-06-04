@@ -9,4 +9,7 @@ var GradoController = require('../controllers/grado.controllers')
 //Insertar grado
 router.post('/', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), GradoController.insertarGrado);
 
+//Eliminar grado
+router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), GradoController.eliminarGrado);
+
 module.exports = router;

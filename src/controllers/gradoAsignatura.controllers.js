@@ -52,3 +52,37 @@ exports.relacionarGradoAsignatura = async function (req,res,next){
     }
 }
 
+
+//Eliminar relacioón grado y asignatura
+exports.elimiarRelacionGradoAsignatura = async function (req,res,next){
+    try{
+
+        var idGrado = req.query.idGrado;
+        var idAsignatura = req.query.idAsignatura;
+
+        //Comprobar si la asignatura y el grado estan relacionados
+        var gradoAsignaturaExiste = await GradoAsignaturaService.gradoAsignaturaExiste(idGrado, idAsignatura);
+        if(! gradoAsignaturaExiste){
+            return res.status(422).json({
+                message: "El grado y la asignatura no estan relacionados",
+            });
+        }
+
+        var eliminado = await GradoAsignaturaService.elimiarRelacionGradoAsignatura(idGrado, idAsignatura); //Eliminar relación grado y asignatura
+       
+        //Comprobar si se ha eliminado la relación grado y asignatura
+        if(eliminado){
+            return res.status(201).json({
+                message: "La relación grado y asignatura ha sido eliminada correctamente",
+            });
+        } else{
+            return res.status(422).json({
+                message: "La relación grado y asignatura no ha sido eliminada",
+            });
+        }
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+

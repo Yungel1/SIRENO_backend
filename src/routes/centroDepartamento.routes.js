@@ -9,5 +9,8 @@ var CentroDepartamentoController = require('../controllers/centroDepartamento.co
 //Relacionar centro y departamento
 router.post('/', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), CentroDepartamentoController.relacionarCentroDepartamento);
 
+//Eliminar relacion centro y departamento
+router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), CentroDepartamentoController.elimiarRelacionCentroDepartamento);
+
 
 module.exports = router;

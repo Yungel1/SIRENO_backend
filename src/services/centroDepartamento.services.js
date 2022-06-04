@@ -31,3 +31,20 @@ exports.centroDepartamentoExiste = async function (idCentro,idDepartamento) {
         return false;
     }
 }
+
+//Eliminar relacioón centro y departamento en la base de datos
+exports.elimiarRelacionCentroDepartamento = async function (idCentro,idDepartamento) {
+
+    const rows = await db.query('DELETE FROM centrodepartamento WHERE idCentro=? and idDepartamento=?',[
+        idCentro,
+        idDepartamento
+    ]);
+
+    if (rows.affectedRows === 1) {
+        return true; //Se ha eliminado correctamente
+    } else{
+        return false; //No se ha eliminado
+    }
+
+
+}

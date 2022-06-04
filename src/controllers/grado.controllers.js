@@ -41,3 +41,35 @@ exports.insertarGrado = async function (req,res,next){
         return res.sendStatus(500) && next(err);
     }
 }
+
+//Eliminar grado
+exports.eliminarGrado = async function (req,res,next){
+    try{
+
+        var idGrado = req.query.idGrado;
+
+        var gradoExiste = await GradoService.gradoExiste(idGrado);
+        //Comprobar si el id del grado existe
+        if(!gradoExiste){
+           return res.status(422).json({
+               message: "El grado seleccionado no existe",
+           });
+       }
+
+        var eliminado = await GradoService.eliminarGrado(idGrado); //Eliminar grado
+       
+        //Comprobar si se ha eliminado el grado
+        if(eliminado){
+            return res.status(201).json({
+                message: "El grado ha sido eliminado correctamente",
+            });
+        } else{
+            return res.status(422).json({
+                message: "El grado no ha sido eliminado",
+            });
+        }
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}

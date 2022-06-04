@@ -41,3 +41,35 @@ exports.insertarAsignatura = async function (req,res,next){
         return res.sendStatus(500) && next(err);
     }
 }
+
+//Eliminar asignatura
+exports.eliminarAsignatura = async function (req,res,next){
+    try{
+
+        var idAsignatura = req.query.idAsignatura;
+
+        var asignaturaExiste = await AsignaturaService.asignaturaExiste(idAsignatura);
+        //Comprobar si el id de la asignatura existe
+        if(!asignaturaExiste){
+           return res.status(422).json({
+               message: "El asignatura seleccionado no existe",
+           });
+       }
+
+        var eliminado = await AsignaturaService.eliminarAsignatura(idAsignatura); //Eliminar asignatura
+       
+        //Comprobar si se ha eliminado la asignatura
+        if(eliminado){
+            return res.status(201).json({
+                message: "La asignatura ha sido eliminada correctamente",
+            });
+        } else{
+            return res.status(422).json({
+                message: "La asignatura no ha sido eliminada",
+            });
+        }
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}

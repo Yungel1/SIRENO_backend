@@ -9,5 +9,8 @@ var GradoAsignaturaController = require('../controllers/gradoAsignatura.controll
 //Relacionar grado y asignatura
 router.post('/', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), GradoAsignaturaController.relacionarGradoAsignatura);
 
+//Eliminar relacion grado y asignatura
+router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), GradoAsignaturaController.elimiarRelacionGradoAsignatura);
+
 
 module.exports = router;

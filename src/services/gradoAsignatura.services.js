@@ -31,3 +31,20 @@ exports.gradoAsignaturaExiste = async function (idGrado,idAsignatura) {
         return false;
     }
 }
+
+//Eliminar relacioón grado y asignatura en la base de datos
+exports.elimiarRelacionGradoAsignatura = async function (idGrado,idAsignatura) {
+
+    const rows = await db.query('DELETE FROM gradoasignatura WHERE idGrado=? and idAsignatura=?',[
+        idGrado,
+        idAsignatura
+    ]);
+
+    if (rows.affectedRows === 1) {
+        return true; //Se ha eliminado correctamente
+    } else{
+        return false; //No se ha eliminado
+    }
+
+
+}

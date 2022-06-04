@@ -30,3 +30,19 @@ exports.insertarGrupo = async function (id) {
 
 
 }
+
+//Eliminar grupo en la base de datos
+exports.eliminarGrupo = async function (id) {
+
+    const rows = await db.query('DELETE FROM grupo WHERE id=?',[
+        id
+    ]);
+
+    if (rows.affectedRows === 1) {
+        return true; //Se ha eliminado correctamente
+    } else{
+        return false; //No se ha eliminado
+    }
+
+
+}

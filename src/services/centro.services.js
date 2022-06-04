@@ -30,3 +30,19 @@ exports.insertarCentro = async function (id) {
 
 
 }
+
+//Eliminar centro en la base de datos
+exports.eliminarCentro = async function (id) {
+
+    const rows = await db.query('DELETE FROM centro WHERE id=?',[
+        id
+    ]);
+
+    if (rows.affectedRows === 1) {
+        return true; //Se ha eliminado correctamente
+    } else{
+        return false; //No se ha eliminado
+    }
+
+
+}

@@ -25,7 +25,7 @@ exports.relacionarCentroDepartamento = async function (req,res,next){
             });
         }
 
-        //Comprobar si eldepartamento y el centro estan relacionados
+        //Comprobar si el departamento y el centro estan relacionados
         var centroDepartamentoExiste = await CentroDepartamentoService.centroDepartamentoExiste(idCentro, idDepartamento);
         if(centroDepartamentoExiste){
             return res.status(422).json({
@@ -52,3 +52,36 @@ exports.relacionarCentroDepartamento = async function (req,res,next){
     }
 }
 
+
+//Eliminar relacioón centro y departamento
+exports.elimiarRelacionCentroDepartamento = async function (req,res,next){
+    try{
+
+        var idCentro = req.query.idCentro;
+        var idDepartamento = req.query.idDepartamento;
+
+        //Comprobar si el departamento y el centro estan relacionados
+        var centroDepartamentoExiste = await CentroDepartamentoService.centroDepartamentoExiste(idCentro, idDepartamento);
+        if(! centroDepartamentoExiste){
+            return res.status(422).json({
+                message: "El centro y el departamento no estan relacionados",
+            });
+        }
+
+        var eliminado = await CentroDepartamentoService.elimiarRelacionCentroDepartamento(idCentro, idDepartamento); //Eliminar relación centro y departamento
+       
+        //Comprobar si se ha eliminado la relación centro y departamento
+        if(eliminado){
+            return res.status(201).json({
+                message: "La relación centro y departamento ha sido eliminada correctamente",
+            });
+        } else{
+            return res.status(422).json({
+                message: "La relación centro y departamento no ha sido eliminada",
+            });
+        }
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
