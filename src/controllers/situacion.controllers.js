@@ -164,3 +164,42 @@ exports.getCampañaSituacion = async function (req,res,next){
         return res.sendStatus(500) && next(err);
     }
 }
+
+//Borrar situación
+exports.deleteSituacion = async function (req,res,next){
+    try{
+
+        let id = req.query.id;
+
+        //Comprobar si el id es un número
+        if(!HelperNumeric.isNumeric(id)){
+            return res.status(422).json({
+                message: "El id introducido no es un número",
+            });
+        }
+
+        //Comprobar si la situación existe
+        var situacionExiste = await SituacionService.situacionExiste(id);
+        if(!situacionExiste){
+            return res.status(422).json({
+                message: "La situación no existe",
+            });
+        }
+
+        var borrado = await SituacionService.deleteSituacion(id); //Borrar situación
+
+        //Comprobar si se ha borrado la situación
+        if(borrado){
+            return res.status(201).json({
+                message: "Se ha borrado la situación",
+            });
+        } else{
+            return res.status(422).json({
+                message: "No se ha borrado la situación",
+            });
+        }
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}

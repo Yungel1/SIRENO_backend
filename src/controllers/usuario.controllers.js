@@ -120,3 +120,66 @@ exports.editarRolDocente = async function (req,res,next){
         return res.sendStatus(500) && next(err);
     }
 }
+
+//Dar el rol de administrador al usuario
+exports.darRolAdmin = async function (req,res,next){
+    try{
+
+        //Comprobar si el usuario existe
+        var usuarioExiste = await UsuarioService.usuarioExiste(req.body.usuario);
+        if(!usuarioExiste){
+            return res.status(422).json({
+                message: "El usuario no existe",
+            });
+        }
+
+        var actualizado = await UsuarioService.darRolAdmin(req.body.usuario); //Dar rol de administrador
+
+        //Comprobar si se ha dado el rol de administrador
+        if(actualizado){
+            return res.status(201).json({
+                message: "Se ha proporcionado el rol de administrador",
+            });
+        } else{
+            return res.status(422).json({
+                message: "No se ha proporcionado el rol de administrador",
+            });
+        }
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+
+//Borrar usuario
+exports.deleteUsuario = async function (req,res,next){
+    try{
+
+        let usuario = req.query.usuario;
+
+        //Comprobar si el usuario existe
+        var usuarioExiste = await UsuarioService.usuarioExiste(usuario);
+        if(!usuarioExiste){
+            return res.status(422).json({
+                message: "El usuario no existe",
+            });
+        }
+
+        var borrado = await UsuarioService.deleteUsuario(usuario); //Borrar usuario
+
+        //Comprobar si se ha borrado el usuario
+        if(borrado){
+            return res.status(201).json({
+                message: "Se ha borrado el usuario",
+            });
+        } else{
+            return res.status(422).json({
+                message: "No se ha borrado el usuario",
+            });
+        }
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+

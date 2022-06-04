@@ -33,3 +33,19 @@ exports.textoExiste = async function (id) {
     }
 
 }
+
+//Borrar texto
+exports.deleteTexto = async function (id) {
+
+    const rows = await db.query(
+        "DELETE FROM texto WHERE id=?",
+        id
+        );
+        
+    if (rows.affectedRows === 1) {
+        return true;
+    } else{
+        return false;
+    }
+
+}

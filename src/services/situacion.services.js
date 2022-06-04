@@ -65,3 +65,19 @@ exports.situacionRepetida = async function (idGrado, idDocente, idGrupo, idAsign
     }
 
 }
+
+//Borrar situación
+exports.deleteSituacion = async function (id) {
+
+    const rows = await db.query(
+        "DELETE FROM situacion WHERE id=?",
+        id
+        );
+        
+    if (rows.affectedRows === 1) {
+        return true;
+    } else{
+        return false;
+    }
+
+}

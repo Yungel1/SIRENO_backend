@@ -203,3 +203,43 @@ exports.verSiLaSituacionesRespondidasUsuario = async function (req,res,next){
         return res.sendStatus(500) && next(err);
     }
 }
+
+//Borrar la relación entre un usuario y una situación
+exports.deleteUsuarioSituacion = async function (req,res,next){
+    try{
+
+        let idSituacion = req.query.idSituacion;
+        let usuario = req.query.usuario;
+
+        //Comprobar si el id es un número
+        if(!helperNumeric.isNumeric(idSituacion)){
+            return res.status(422).json({
+                message: "El id introducido no es un número",
+            });
+        }
+
+        var usuarioSituacionExiste = await UsuarioSituacionService.usuarioSituacionExiste(usuario,idSituacion);
+        //Comprobar si la relación entre el usuario que ha iniciado sesión y una situación concretos existe
+        if(!usuarioSituacionExiste){
+            return res.status(422).json({
+                message: "La relacion usuario-situación no existe",
+            });
+        }
+
+        var borrado = await UsuarioSituacionService.deleteUsuarioSituacion(usuario,idSituacion); //Borrar UsuarioSituación
+
+        //Comprobar si se ha borrado la relación UsuarioSituación
+        if(borrado){
+            return res.status(201).json({
+                message: "Se ha borrado la relación UsuarioSituación",
+            });
+        } else{
+            return res.status(422).json({
+                message: "No se ha borrado la relación UsuarioSituación",
+            });
+        }
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}

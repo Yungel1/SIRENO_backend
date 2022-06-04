@@ -31,3 +31,19 @@ exports.idiomaExiste = async function (id) {
     }
 
 }
+
+//Borrar idioma
+exports.deleteIdioma = async function (id) {
+
+    const rows = await db.query(
+        "DELETE FROM idioma WHERE id=?",
+        id
+        );
+        
+    if (rows.affectedRows === 1) {
+        return true;
+    } else{
+        return false;
+    }
+
+}

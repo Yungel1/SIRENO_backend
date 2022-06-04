@@ -75,3 +75,20 @@ exports.usuarioSituacionRespondida = async function (usuario,idSituacion) {
     return (row[0].respondida);
 
 }
+
+//Borrar relación  entre un usuario-situación
+exports.deleteUsuarioSituacion = async function (usuario,idSituacion) {
+
+    const rows = await db.query(
+        "DELETE FROM usuariosituacion WHERE usuario=? and idSituacion=?",[
+        usuario,
+        idSituacion
+        ]);
+        
+    if (rows.affectedRows === 1) {
+        return true;
+    } else{
+        return false;
+    }
+
+}

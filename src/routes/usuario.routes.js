@@ -15,4 +15,7 @@ router.put('/estudiante', authentication, (req, res, next) => authorization(req,
 //Editar rol de docente
 router.put('/docente', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), UsuarioController.editarRolDocente);
 
+//Borrar usuario
+router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), UsuarioController.deleteUsuario);
+
 module.exports = router;
