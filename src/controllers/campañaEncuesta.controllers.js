@@ -57,8 +57,8 @@ exports.relacionarCampañaEncuesta = async function (req,res,next){
 exports.getEncuestasCampaña = async function (req,res,next){
     try{
 
-        var idSituacion = req.body.idSituacion;
-        var idCampaña = req.body.idCampaña;
+        var idSituacion = req.query.idSituacion;
+        var idCampaña = req.query.idCampaña;
         var idUsuario = req.usuario;
 
         //Seleccionar las situaciones del usuario

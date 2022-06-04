@@ -99,7 +99,7 @@ exports.insertarSituacion = async function (req,res,next){
 exports.getCampañaSituacion = async function (req,res,next){
     try{
 
-        var idSituacion = req.body.idSituacion;
+        var idSituacion = req.query.idSituacion;
         var idUsuario = req.usuario;
 
         //Seleccionar las situaciones del usuario

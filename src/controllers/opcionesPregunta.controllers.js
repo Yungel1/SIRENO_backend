@@ -53,10 +53,10 @@ exports.insertarOpcionPregunta = async function (req,res,next){
 exports.getOpcionesPregunta = async function (req,res,next){
     try{
 
-        var idSituacion = req.body.idSituacion;
-        var idCampaña = req.body.idCampaña;
-        var idEncuesta = req.body.idEncuesta;
-        var idPregunta = req.body.idPregunta;
+        var idSituacion = req.query.idSituacion;
+        var idCampaña = req.query.idCampaña;
+        var idEncuesta = req.query.idEncuesta;
+        var idPregunta = req.query.idPregunta;
         var idUsuario = req.usuario;
 
         //Seleccionar las situaciones del usuario

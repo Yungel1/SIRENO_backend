@@ -167,7 +167,7 @@ exports.verSiLaSituacionesRespondidasUsuario = async function (req,res,next){
     try{
 
         var idUsuario = req.usuario;
-        var idSituacion = req.body.idSituacion;
+        var idSituacion = req.query.idSituacion;
 
         var idSituacionEsInt = helperNumeric.isNumeric(idSituacion);
         //Comprobar si el id de la situación es un numero
