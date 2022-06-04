@@ -14,3 +14,20 @@ exports.asignaturaExiste  = async function (asignatura) {
         return false;
     }
 }
+
+//Insertar asignatura en la base de datos
+exports.insertarAsignatura = async function (id, idDepartamento) {
+
+    const rows = await db.query('INSERT INTO asignatura(id, idDepartamento) VALUES(?,?)',[
+        id,
+        idDepartamento
+    ]);
+
+    if (rows.affectedRows === 1) {
+        return true; //Se ha insertado correctamente
+    } else{
+        return false; //No se ha insertado
+    }
+
+
+}
