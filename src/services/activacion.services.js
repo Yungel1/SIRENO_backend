@@ -100,3 +100,29 @@ exports.eliminarActivacion = async function (idDocente, idGrupo, idGrado, idAsig
 
 
 }
+//Coger las fechas y si fue activado en la base de datos
+exports.cogerActivacion = async function () {
+
+    const rows = await db.query('SELECT * FROM activacion');
+
+    return rows;
+}
+
+//Activar activacion en la base de datos
+exports.cambiarFueActivado = async function (idDocente, idGrupo, idGrado, idAsignatura, idCampaña) {
+
+    const rows = await db.query('UPDATE activacion SET fueActivado=true WHERE idDocente=? and idGrupo=? and idGrado=? and idAsignatura=? and idCampaña=?',[
+        idDocente,
+        idGrupo,
+        idGrado,
+        idAsignatura,
+        idCampaña        
+    ]);
+
+    if (rows.affectedRows === 1) {
+        return true; //Se ha activado correctamente
+    } else{
+        return false; //No se ha activado
+    }
+
+}

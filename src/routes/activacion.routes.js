@@ -21,4 +21,7 @@ router.put('/activateTeacher', authentication, (req, res, next) => authorization
 //Eliminar activacion
 router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), ActivacionController.eliminarActivacion);
 
+//Comprobar si el docente a activado la campaña y enviar recordatorio al admin
+router.get('/wasActivated', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), ActivacionController.enviarRecordatorio);
+
 module.exports = router;

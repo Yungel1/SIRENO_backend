@@ -305,3 +305,50 @@ exports.eliminarActivacion = async function (req,res,next){
     }
 }
 
+
+//Se enviará al admin un mensaje de que el docente no a activado la campaña y por lo tanto, se podrá enviar un email a todos los alumnos de esa campaña
+exports.enviarRecordatorio = async function (req,res,next){
+    try{
+
+        var idToday = req.query.idToday;
+
+        var noFechaValida = (!moment(idToday, 'YYYY-MM-DD',true).isValid());
+         //Comprobar si el formato de fechas es correcto
+         if(noFechaValida){
+            return res.status(422).json({
+                message: "Formato de fechas incorrecto, formato de fechas: YYYY-MM-DD",
+            });
+        }
+
+        var activaciones = await ActivacionService.cogerActivacion();
+        var mensajes = [];
+        //Comprobar si la activación ya fue activada, y si no es asi, comprobar que "today" está entre las fechas iniciales y finales.
+        if (activaciones.length != 0){
+            activaciones.forEach(activacion => {
+                if (!activacion.fueActivado){
+                    if (moment(activacion.fechaActIni).format('YYYY-MM-DD') <= idToday && moment(activacion.fechaActFin).format('YYYY-MM-DD') >= idToday){
+                        ActivacionService.cambiarFueActivado(activacion.idDocente, activacion.idGrupo, activacion.idGrado, activacion.idAsignatura, activacion.idCampaña);
+                        var idDocente = activacion.idDocente;
+                        var idGrupo = activacion.idGrupo;
+                        var idGrado = activacion.idGrado;
+                        var idAsignatura = activacion.idAsignatura;
+                        var idCampaña = activacion.idCampaña;
+                        mensajes.push({idDocente, idGrupo, idGrado, idAsignatura, idCampaña});
+                    }
+                }
+            });
+
+            return res.status(201).json(mensajes);  //Enviar las activaciones que no se han activado antes del timepo establecido
+        }
+        else{
+            return res.status(422).json({
+                message: "No hay ninguna activación en la base de datos",
+            });   
+        }
+                    
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+

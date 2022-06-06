@@ -5,7 +5,6 @@ var AsignaturaService = require('../services/asignatura.services');
 var CampañaService = require('../services/campaña.services');
 var SituacionService = require('../services/situacion.services');
 var UsuarioSituacionService = require('../services/usuarioSituacion.services');
-var UsuarioSituacionController = require('../controllers/usuarioSituacion.controllers');
 var HelperNumeric = require('../helpers/helperNumeric.js');
 
 //Insertar situación
@@ -198,6 +197,50 @@ exports.deleteSituacion = async function (req,res,next){
                 message: "No se ha borrado la situación",
             });
         }
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+
+//Saber a que usuarios hay que enviar email dada la situación
+exports.enviarEmailUsuarios = async function (req,res,next){
+    try{
+
+        var idDocente = req.query.idDocente;
+        var idGrupo = req.query.idGrupo;
+        var idGrado = req.query.idGrado;
+        var idAsignatura = req.query.idAsignatura;
+        var idCampaña = req.query.idCampaña;
+
+        //Comprobar si ya existe una situación igual (a excepción del id)
+        var idSituacion = await SituacionService.situacionRepetida(idGrado, idDocente, idGrupo, idAsignatura, idCampaña);
+        if(! idSituacion){
+            return res.status(422).json({
+                message: "No existe ninguna situación con estos parametros",
+            });
+        }
+
+        var idUsuarios = await UsuarioSituacionService.getUsuariosSituacion(idSituacion);
+        var promises = [];
+
+        async function pushUser(id){
+            var usuario = await UsuarioService.getUsernameAndEmail(id);
+            return usuario[0];
+        }
+        
+        idUsuarios.forEach(idUsuario => {
+            promises.push(pushUser(idUsuario.usuario).then( usuario => {
+                var username = usuario.usuario;
+                var email = usuario.email;
+                return {username, email};
+            }));
+        });
+
+        Promise.all(promises).then(values => {
+            return res.status(201).json(values);
+          });
+        
     } catch(err){
         console.log(err);
         return res.sendStatus(500) && next(err);

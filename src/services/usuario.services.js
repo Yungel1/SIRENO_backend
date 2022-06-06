@@ -11,6 +11,17 @@ exports.getUsuarioContraseña = async function (usuario) {
     return row
 }
 
+//Obtener usuario y email
+exports.getUsernameAndEmail = async function (usuario) {
+
+    const row = await db.query(
+        "SELECT usuario,email FROM usuario WHERE usuario=?",
+        usuario
+        );
+
+    return row
+}
+
 //UsuarioExiste
 exports.usuarioExiste = async function (usuario) {
 
