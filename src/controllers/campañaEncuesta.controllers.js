@@ -156,3 +156,43 @@ exports.getEncuestasCampaña = async function (req,res,next){
         return res.sendStatus(500) && next(err);
     }
 }
+
+//Borrar la relación entre una campaña y una encuesta
+exports.deleteCampañaEncuesta = async function (req,res,next){
+    try{
+
+        let idCampaña = req.query.idCampaña;
+        let idEncuesta = req.query.idEncuesta;
+
+        //Comprobar si el id es un número
+        if(!helperNumeric.isNumeric(idCampaña)||!helperNumeric.isNumeric(idEncuesta)){
+            return res.status(422).json({
+                message: "El id introducido no es un número",
+            });
+        }
+
+        var campañaEncuestaExiste = await CampañaEncuestaService.campañaEncuestaExiste(idCampaña,idEncuesta);
+        //Comprobar si la relación entre la campaña y la encuesta existe
+        if(!campañaEncuestaExiste){
+            return res.status(422).json({
+                message: "La relacion campaña-encuesta no existe",
+            });
+        }
+
+        var borrado = await CampañaEncuestaService.deleteCampañaEncuesta(idCampaña,idEncuesta); //Borrar CampañaEncuesta
+
+        //Comprobar si se ha borrado la relación CampañaEncuesta
+        if(borrado){
+            return res.status(201).json({
+                message: "Se ha borrado la relación CampañaEncuesta",
+            });
+        } else{
+            return res.status(422).json({
+                message: "No se ha borrado la relación CampañaEncuesta",
+            });
+        }
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}

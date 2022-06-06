@@ -2,6 +2,7 @@ var moment = require('moment');
 moment().format(); 
 
 var CampañaService = require('../services/campaña.services');
+var helperNumeric = require('../helpers/helperNumeric');
 
 //Insertar campaña
 exports.insertarCampaña = async function (req,res,next){
@@ -37,6 +38,45 @@ exports.insertarCampaña = async function (req,res,next){
         } else{
             return res.status(422).json({
                 message: "La campaña no ha sido insertada",
+            });
+        }
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+
+//Borrar campaña
+exports.deleteCampaña = async function (req,res,next){
+    try{
+
+        let id = req.query.id;
+
+        //Comprobar si el id es un número
+        if(!helperNumeric.isNumeric(id)){
+            return res.status(422).json({
+                message: "El id introducido no es un número",
+            });
+        }
+
+        //Comprobar si la campaña existe
+        var campañaExiste = await CampañaService.campañaExiste(id);
+        if(!campañaExiste){
+            return res.status(422).json({
+                message: "La campaña no existe",
+            });
+        }
+
+        var borrado = await CampañaService.deleteCampaña(id); //Borrar campaña
+
+        //Comprobar si se ha borrado la campaña
+        if(borrado){
+            return res.status(201).json({
+                message: "Se ha borrado la campaña",
+            });
+        } else{
+            return res.status(422).json({
+                message: "No se ha borrado la campaña",
             });
         }
     } catch(err){

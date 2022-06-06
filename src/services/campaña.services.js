@@ -49,3 +49,19 @@ exports.campañaExiste  = async function (campaña) {
         return false;
     }
 }
+
+//Borrar campaña
+exports.deleteCampaña = async function (id) {
+
+    const rows = await db.query(
+        "DELETE FROM campaña WHERE id=?",
+        id
+        );
+        
+    if (rows.affectedRows === 1) {
+        return true;
+    } else{
+        return false;
+    }
+
+}

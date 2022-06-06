@@ -12,4 +12,7 @@ router.post('/', authentication, (req, res, next) => authorization(req,res,next,
 //Coger las encuestas de la campaña seleccionada
 router.get('/getCampaignPolls', authentication, (req, res, next) => authorization(req,res,next,[roles.Todos]), CampañaEncuestaController.getEncuestasCampaña);
 
+//Borrar relación entre una campaña y una encuesta
+router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), CampañaEncuestaController.deleteCampañaEncuesta);
+
 module.exports = router;

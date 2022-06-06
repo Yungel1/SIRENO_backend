@@ -29,3 +29,19 @@ exports.encuestaExiste = async function (id) {
     }
 
 }
+
+//Borrar encuesta
+exports.deleteEncuesta = async function (id) {
+
+    const rows = await db.query(
+        "DELETE FROM encuesta WHERE id=?",
+        id
+        );
+        
+    if (rows.affectedRows === 1) {
+        return true;
+    } else{
+        return false;
+    }
+
+}

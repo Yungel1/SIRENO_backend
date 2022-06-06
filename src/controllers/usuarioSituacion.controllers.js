@@ -219,7 +219,7 @@ exports.deleteUsuarioSituacion = async function (req,res,next){
         }
 
         var usuarioSituacionExiste = await UsuarioSituacionService.usuarioSituacionExiste(usuario,idSituacion);
-        //Comprobar si la relación entre el usuario que ha iniciado sesión y una situación concretos existe
+        //Comprobar si la relación entre un usuario y una situación concretos existe
         if(!usuarioSituacionExiste){
             return res.status(422).json({
                 message: "La relacion usuario-situación no existe",

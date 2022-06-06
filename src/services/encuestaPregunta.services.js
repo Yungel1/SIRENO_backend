@@ -28,3 +28,37 @@ exports.getPreguntasEncuesta = async function (idEncuesta) {
         
     return row;
 }
+
+//Si existe la relación entre una campaña y una encuesta concretos true sino false
+exports.encuestaPreguntaExiste = async function (idEncuesta,idPregunta) {
+
+    const row = await db.query(
+        "SELECT idEncuesta,idPregunta FROM encuestapregunta WHERE idEncuesta=? and idPregunta=?",[
+        idEncuesta,
+        idPregunta
+        ]);
+        
+    if (row.length > 0) {
+        return true;
+    } else{
+        return false;
+    }
+
+}
+
+//Borrar relación entre una encuesta y una pregunta
+exports.deleteEncuestaPregunta = async function (idEncuesta,idPregunta) {
+
+    const rows = await db.query(
+        "DELETE FROM encuestapregunta WHERE idEncuesta=? and idPregunta=?",[
+        idEncuesta,
+        idPregunta
+        ]);
+        
+    if (rows.affectedRows === 1) {
+        return true;
+    } else{
+        return false;
+    }
+
+}

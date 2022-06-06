@@ -9,4 +9,7 @@ var EncuestaController = require('../controllers/encuesta.controllers')
 //Insertar encuesta
 router.post('/', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), EncuestaController.insertarEncuesta);
 
+//Borrar encuesta
+router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), EncuestaController.deleteEncuesta);
+
 module.exports = router;

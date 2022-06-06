@@ -200,3 +200,43 @@ exports.getPreguntasEncuesta = async function (req,res,next){
         return res.sendStatus(500) && next(err);
     }
 }
+
+//Borrar la relación entre una pregunta y una encuesta
+exports.deleteEncuestaPregunta = async function (req,res,next){
+    try{
+
+        let idPregunta = req.query.idPregunta;
+        let idEncuesta = req.query.idEncuesta;
+
+        //Comprobar si el id es un número
+        if(!helperNumeric.isNumeric(idEncuesta)||!helperNumeric.isNumeric(idPregunta)){
+            return res.status(422).json({
+                message: "El id introducido no es un número",
+            });
+        }
+
+        var encuestaPreguntaExiste = await EncuestaPreguntaService.encuestaPreguntaExiste(idEncuesta,idPregunta);
+        //Comprobar si la relación entre la encuesta y la pregunta existe
+        if(!encuestaPreguntaExiste){
+            return res.status(422).json({
+                message: "La relacion encuesta-pregunta no existe",
+            });
+        }
+
+        var borrado = await EncuestaPreguntaService.deleteEncuestaPregunta(idEncuesta,idPregunta); //Borrar EncuestaPregunta
+
+        //Comprobar si se ha borrado la relación EncuestaPregunta
+        if(borrado){
+            return res.status(201).json({
+                message: "Se ha borrado la relación EncuestaPregunta",
+            });
+        } else{
+            return res.status(422).json({
+                message: "No se ha borrado la relación EncuestaPregunta",
+            });
+        }
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
