@@ -12,8 +12,13 @@ router.post('/', authentication, (req, res, next) => authorization(req,res,next,
 //Actualizar activacion
 router.put('/update', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), ActivacionController.actualizarActivacion);
 
+//Activas activacion admin
 router.put('/activateAdmin', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), ActivacionController.activarActivacionAdmin);
 
+//Activar activacion docente
 router.put('/activateTeacher', authentication, (req, res, next) => authorization(req,res,next,[roles.Docente]), ActivacionController.activarActivacionDocente);
+
+//Eliminar activacion
+router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), ActivacionController.eliminarActivacion);
 
 module.exports = router;

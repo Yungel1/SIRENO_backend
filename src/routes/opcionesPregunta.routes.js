@@ -12,4 +12,8 @@ router.post('/', authentication, (req, res, next) => authorization(req,res,next,
 //Coger las opcionesPregunta de la pregunta seleccionada
 router.get('/getQuestionOptions', authentication, (req, res, next) => authorization(req,res,next,[roles.Todos]), OpcionesPreguntaController.getOpcionesPregunta);
 
+//Eliminar opcionesPregunta
+router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), OpcionesPreguntaController.eliminarOpcionesPregunta);
+
+
 module.exports = router;

@@ -30,3 +30,20 @@ exports.preguntaExiste = async function (id) {
     }
 
 }
+
+//Eliminar pregunta en la base de datos
+exports.eliminarPregunta = async function (id) {
+
+    const rows = await db.query('DELETE FROM pregunta WHERE id=?',[
+        id 
+    ]);
+
+    console.log(rows);
+    if (rows.affectedRows >= 1) {
+        return true; //Se ha eliminado correctamente
+    } else{
+        return false; //No se ha eliminado
+    }
+
+
+}

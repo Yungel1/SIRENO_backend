@@ -231,3 +231,35 @@ exports.getOpcionesPregunta = async function (req,res,next){
         return res.sendStatus(500) && next(err);
     }
 }
+
+//Eliminar activación
+exports.eliminarOpcionesPregunta = async function (req,res,next){
+    try{
+
+        var idOpcionesPregunta = req.query.idOpcionesPregunta;
+
+        var opcionesPreguntaExiste = await OpcionesPreguntaService.opcionesPreguntaExiste(idOpcionesPregunta);
+        //Comprobar si la opcionespregunta existe
+        if(!opcionesPreguntaExiste){
+            return res.status(422).json({
+                message: "La opciónPregunta que se intenta eliminiar no existe",
+            });
+        }
+
+        var eliminado = await OpcionesPreguntaService.eliminarOpcionesPregunta(idOpcionesPregunta); //Eliminar opcionespregunta
+       
+        //Comprobar si se ha eliminado la opcionesPregunta
+        if(eliminado){
+            return res.status(201).json({
+                message: "La opcionesPregunta ha sido eliminada correctamente",
+            });
+        } else{
+            return res.status(422).json({
+                message: "La opcionesPregunta no ha sido eliminada",
+            });
+        }
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}

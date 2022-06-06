@@ -41,3 +41,20 @@ exports.getOpcionesPregunta = async function (idPregunta) {
         
     return row;
 }
+
+//Eliminar opcionesPregunta en la base de datos
+exports.eliminarOpcionesPregunta = async function (id) {
+
+    const rows = await db.query('DELETE FROM opcionespregunta WHERE id=?',[
+        id 
+    ]);
+
+    console.log(rows);
+    if (rows.affectedRows >= 1) {
+        return true; //Se ha eliminado correctamente
+    } else{
+        return false; //No se ha eliminado
+    }
+
+
+}

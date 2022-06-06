@@ -269,3 +269,39 @@ exports.activarActivacionDocente = async function (req,res,next){
     }
 }
 
+//Eliminar activación
+exports.eliminarActivacion = async function (req,res,next){
+    try{
+
+        var idDocente = req.query.idDocente;
+        var idGrupo = req.query.idGrupo;
+        var idGrado = req.query.idGrado;
+        var idAsignatura = req.query.idAsignatura;
+        var idCampaña = req.query.idCampaña;
+
+        var activacionExiste = await ActivacionService.activacionExiste(idDocente, idGrupo, idGrado, idAsignatura, idCampaña);
+        //Comprobar si la activacion existe
+        if(!activacionExiste){
+            return res.status(422).json({
+                message: "La activación que se intenta eliminiar no existe",
+            });
+        }
+
+        var eliminado = await ActivacionService.eliminarActivacion(idDocente, idGrupo, idGrado, idAsignatura, idCampaña); //Eliminar activacion
+       
+        //Comprobar si se ha eliminado la activacion
+        if(eliminado){
+            return res.status(201).json({
+                message: "La activacion ha sido eliminada correctamente",
+            });
+        } else{
+            return res.status(422).json({
+                message: "La activacion no ha sido eliminada",
+            });
+        }
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+
