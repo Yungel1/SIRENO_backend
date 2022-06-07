@@ -18,4 +18,7 @@ router.delete('/delete', authentication, (req, res, next) => authorization(req,r
 //Saber a que usuarios enviará el email recordatorio
 router.get('/usernameToSend', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), SituacionController.enviarEmailUsuarios);
 
+//Obtener todas las situaciones
+router.get('/getAll', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), SituacionController.getAllSituacion);
+
 module.exports = router;

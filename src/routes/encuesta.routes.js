@@ -12,4 +12,7 @@ router.post('/', authentication, (req, res, next) => authorization(req,res,next,
 //Borrar encuesta
 router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), EncuestaController.deleteEncuesta);
 
+//Obtener todas las encuestas
+router.get('/getAll', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), EncuestaController.getAllEncuesta);
+
 module.exports = router;

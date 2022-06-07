@@ -12,4 +12,10 @@ router.post('/', authentication, (req, res, next) => authorization(req,res,next,
 //Borrar campaña
 router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), CampañaController.deleteCampaña);
 
+//Obtener todas las campañas
+router.get('/getAllInfo', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), CampañaController.getAllCampaña);
+
+//Obtener campaña concreta (al que el usuario que ha iniciado sesión tenga acceso)
+router.get('/getInfo', authentication, (req, res, next) => authorization(req,res,next,[roles.Todos]), CampañaController.getCampañaInfo);
+
 module.exports = router;

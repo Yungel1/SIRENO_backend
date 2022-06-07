@@ -12,4 +12,10 @@ router.post('/', authentication, (req, res, next) => authorization(req,res,next,
 //Borrar idioma
 router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), IdiomaController.deleteIdioma);
 
+//Obtener todos los idiomas
+router.get('/getAll', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), IdiomaController.getAllIdioma);
+
+//Obtener idioma concreto
+router.get('/get', authentication, (req, res, next) => authorization(req,res,next,[roles.Todos]), IdiomaController.getIdioma);
+
 module.exports = router;

@@ -47,3 +47,20 @@ exports.eliminarPregunta = async function (id) {
 
 
 }
+
+//Si la pregunta existe y el usuario tiene acceso a esa pregunta true sino false
+exports.pertenecePreguntaUsuario = async function (usuario,idPregunta) {
+
+    const row = await db.query(
+        "SELECT pregunta.id FROM usuariosituacion,situacion,campañaencuesta,encuestapregunta,pregunta where usuariosituacion.usuario=? and pregunta.id=? and usuariosituacion.idSituacion=situacion.id and situacion.idCampaña=campañaencuesta.idCampaña and campañaencuesta.idEncuesta=encuestapregunta.idEncuesta and encuestapregunta.idPregunta=pregunta.id",[
+        usuario,
+        idPregunta
+        ]);
+        
+    if (row.length > 0) {
+        return true;
+    } else{
+        return false;
+    }
+
+}

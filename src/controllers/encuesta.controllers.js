@@ -61,3 +61,17 @@ exports.deleteEncuesta = async function (req,res,next){
         return res.sendStatus(500) && next(err);
     }
 }
+
+//Conseguir todas las encuestas (solo admin)
+exports.getAllEncuesta = async function (req,res,next){
+    try{
+
+        var row = await EncuestaService.getAllEncuesta(); //Obtener todas las encuestas
+
+        return res.status(200).json(row);
+
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}

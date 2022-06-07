@@ -15,6 +15,14 @@ exports.insertarTexto = async function (req,res,next){
             });
         }
 
+        //Comprobar si el texto existe
+        var textoExiste = await TextoService.textoExiste(req.body.idIdioma,req.body.idPregunta,req.body.idOpcionesPregunta);
+        if(textoExiste){
+            return res.status(422).json({
+                message: "El texto ya existe",
+            });
+        }
+
         //Comprobar si la pregunta existe
         var preguntaExiste = await PreguntaService.preguntaExiste(req.body.idPregunta);
         if(!preguntaExiste){
@@ -90,6 +98,78 @@ exports.deleteTexto = async function (req,res,next){
                 message: "No se ha borrado el texto",
             });
         }
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+
+//Conseguir todos los textos (solo admin)
+exports.getAllTexto = async function (req,res,next){
+    try{
+
+        var row = await TextoService.getAllTexto(); //Obtener todos los textos
+
+        return res.status(200).json(row);
+
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+
+//Conseguir texto concreto
+exports.getTexto = async function (req,res,next){
+    try{
+
+        let idIdioma = req.query.idIdioma;
+        let idPregunta = req.query.idPregunta;
+        let idOpcionesPregunta = req.query.idOpcionesPregunta;
+
+        //Comprobar si el id de la pregunta, el idioma y la opción de pregunta son números
+        if(!helperNumeric.isNumeric(idIdioma)||!helperNumeric.isNumeric(idPregunta)||(!helperNumeric.isNumeric(idOpcionesPregunta)&&idOpcionesPregunta!=null)){
+            return res.status(422).json({
+                message: "Uno de los parámetros ha de ser un número y no lo es",
+            });
+        }
+
+        //Comprobar si el idioma existe
+        var idiomaExiste = await IdiomaService.idiomaExiste(idIdioma);
+        if(!idiomaExiste){
+            return res.status(422).json({
+                message: "El idioma no existe",
+            });
+        }
+
+        let pertenece = false;
+        //Comprobar si el usuario tiene acceso a esta pregunta y si existe
+        if(idOpcionesPregunta==null){
+            pertenece = await PreguntaService.pertenecePreguntaUsuario(req.usuario,idPregunta);
+            if(!pertenece){
+                return res.status(422).json({
+                    message: "El usuario no tiene acceso a este texto porque no tiene acceso a la pregunta o no existe",
+                });
+            }
+        } else{
+            //Comprobar si el usuario tiene acceso a esta opción pregunta y si existe
+            pertenece = await OpcionesPreguntaService.perteneceOpcionesPreguntaUsuario(req.usuario,idPregunta,idOpcionesPregunta)
+            if(!pertenece){
+                return res.status(422).json({
+                    message: "El usuario no tiene acceso a este texto porque no tiene acceso a la opción de pregunta o no existe",
+                });
+            }
+        }
+
+        var row = await TextoService.getTexto(idIdioma,idPregunta,idOpcionesPregunta); //Obtener texto
+
+        if(row == null){
+            return res.status(422).json({
+                message: "El texto no existe",
+            });
+        }
+
+        return res.status(200).json(row);
+
     } catch(err){
         console.log(err);
         return res.sendStatus(500) && next(err);

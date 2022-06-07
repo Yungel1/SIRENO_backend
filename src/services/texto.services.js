@@ -34,6 +34,24 @@ exports.textoExiste = async function (id) {
 
 }
 
+//Si existe el texto true sino false
+exports.textoExiste = async function (idIdioma,idPregunta,idOpcionesPregunta) {
+
+    const row = await db.query(
+        "SELECT id FROM texto WHERE idIdioma=? and idPregunta=? and idOpcionesPregunta=?",[
+        idIdioma,
+        idPregunta,
+        idOpcionesPregunta
+        ]);
+        
+    if (row.length > 0) {
+        return true;
+    } else{
+        return false;
+    }
+
+}
+
 //Borrar texto
 exports.deleteTexto = async function (id) {
 
@@ -47,5 +65,45 @@ exports.deleteTexto = async function (id) {
     } else{
         return false;
     }
+
+}
+
+//Coger el texto
+exports.getTexto = async function (idIdioma,idPregunta,idOpcionesPregunta) {
+
+    let query = "SELECT texto FROM texto WHERE idIdioma=? and idPregunta=? and idOpcionesPregunta=?";
+    let row;
+    if (idOpcionesPregunta!=null){
+        row = await db.query(
+            query,[
+            idIdioma,
+            idPregunta,
+            idOpcionesPregunta
+            ]);
+    } else{
+        query = "SELECT texto FROM texto WHERE idIdioma=? and idPregunta=? and idOpcionesPregunta IS NULL"
+        row = await db.query(
+            query,[
+            idIdioma,
+            idPregunta
+            ]);
+    }
+
+    if(row.length > 0){
+        return row[0];
+    } else{
+        return null;
+    }
+
+}
+
+//Coger todos los textos
+exports.getAllTexto = async function () {
+
+    const row = await db.query(
+        "SELECT id,texto,idIdioma,idPregunta,idOpcionesPregunta FROM texto"
+        );
+        
+    return row;
 
 }

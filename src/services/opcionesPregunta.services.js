@@ -58,3 +58,21 @@ exports.eliminarOpcionesPregunta = async function (id) {
 
 
 }
+
+//Si la opción de pregunta existe y el usuario tiene acceso a esa opción de pregunta true sino false
+exports.perteneceOpcionesPreguntaUsuario = async function (usuario,idPregunta,idOpcionesPregunta) {
+
+    const row = await db.query(
+        "SELECT opcionespregunta.idPregunta,opcionespregunta.id FROM usuariosituacion,situacion,campañaencuesta,encuestapregunta,opcionespregunta where usuariosituacion.usuario=? and opcionespregunta.id=? and opcionespregunta.idPregunta=? and usuariosituacion.idSituacion=situacion.id and situacion.idCampaña=campañaencuesta.idCampaña and campañaencuesta.idEncuesta=encuestapregunta.idEncuesta and encuestapregunta.idPregunta=opcionespregunta.idPregunta",[
+        usuario,
+        idOpcionesPregunta,
+        idPregunta
+        ]);
+        
+    if (row.length > 0) {
+        return true;
+    } else{
+        return false;
+    }
+
+}
