@@ -47,3 +47,13 @@ exports.eliminarDepartamento = async function (id) {
 
 
 }
+
+//Coger todos los departamentos
+exports.getDepartamentos  = async function () {
+
+    const row = await db.query(
+        "SELECT * FROM departamento",
+        );
+        
+    return row;
+}

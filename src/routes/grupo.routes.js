@@ -12,4 +12,7 @@ router.post('/', authentication, (req, res, next) => authorization(req,res,next,
 //Eliminar grupo
 router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), GrupoController.eliminarGrupo);
 
+//Coger grupos
+router.get('/get', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), GrupoController.getGrupos);
+
 module.exports = router;

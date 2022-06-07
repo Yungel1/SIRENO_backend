@@ -12,5 +12,7 @@ router.post('/', authentication, (req, res, next) => authorization(req,res,next,
 //Eliminar centro
 router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), CentroController.eliminarCentro);
 
+//Coger centros
+router.get('/get', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), CentroController.getCentros);
 
 module.exports = router;

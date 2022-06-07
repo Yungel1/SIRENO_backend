@@ -47,3 +47,13 @@ exports.eliminarAsignatura = async function (id) {
 
 
 }
+
+//Coger todos los asignaturas
+exports.getAsignaturas  = async function () {
+
+    const row = await db.query(
+        "SELECT * FROM asignatura",
+        );
+        
+    return row;
+}

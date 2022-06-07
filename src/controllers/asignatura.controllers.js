@@ -73,3 +73,23 @@ exports.eliminarAsignatura = async function (req,res,next){
         return res.sendStatus(500) && next(err);
     }
 }
+
+//Coger asignaturas
+exports.getAsignaturas = async function (req,res,next){
+    try{
+
+        var asignaturas = await AsignaturaService.getAsignaturas(); //Coger todos las asignaturas
+       
+        //Comprobar si se han cogido los asignaturas
+        if(asignaturas){
+            return res.status(201).json({asignaturas});
+        } else{
+            return res.status(422).json({
+                message: "No se han podido coger las asignaturas",
+            });
+        }
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}

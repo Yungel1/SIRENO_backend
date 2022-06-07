@@ -58,3 +58,13 @@ exports.eliminarOpcionesPregunta = async function (id) {
 
 
 }
+
+//Coger todos los opcionespreguntas
+exports.getOpcionesPreguntas  = async function () {
+
+    const row = await db.query(
+        "SELECT * FROM opcionespregunta",
+        );
+        
+    return row;
+}

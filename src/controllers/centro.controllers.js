@@ -63,3 +63,23 @@ exports.eliminarCentro = async function (req,res,next){
         return res.sendStatus(500) && next(err);
     }
 }
+
+//Coger centros
+exports.getCentros = async function (req,res,next){
+    try{
+
+        var centros = await CentroService.getCentros(); //Coger todos los centros
+       
+        //Comprobar si se han cogido los centros
+        if(centros){
+            return res.status(201).json({centros});
+        } else{
+            return res.status(422).json({
+                message: "No se han podido coger los centros",
+            });
+        }
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}

@@ -12,5 +12,8 @@ router.post('/', authentication, (req, res, next) => authorization(req,res,next,
 //Eliminar asignatura
 router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), AsignaturaController.eliminarAsignatura);
 
+//Coger asignaturas
+router.get('/get', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), AsignaturaController.getAsignaturas);
+
 
 module.exports = router;

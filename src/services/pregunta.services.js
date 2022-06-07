@@ -47,3 +47,13 @@ exports.eliminarPregunta = async function (id) {
 
 
 }
+
+//Coger todos los preguntas
+exports.getPreguntas  = async function () {
+
+    const row = await db.query(
+        "SELECT * FROM pregunta",
+        );
+        
+    return row;
+}

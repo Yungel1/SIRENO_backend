@@ -63,3 +63,23 @@ exports.eliminarDepartamento = async function (req,res,next){
         return res.sendStatus(500) && next(err);
     }
 }
+
+//Coger departamentos
+exports.getDepartamentos = async function (req,res,next){
+    try{
+
+        var departamentos = await DepartamentoService.getDepartamentos(); //Coger todos las departamentos
+       
+        //Comprobar si se han cogido los departamentos
+        if(departamentos){
+            return res.status(201).json({departamentos});
+        } else{
+            return res.status(422).json({
+                message: "No se han podido coger las departamentos",
+            });
+        }
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}

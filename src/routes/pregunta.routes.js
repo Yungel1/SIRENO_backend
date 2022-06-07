@@ -12,4 +12,7 @@ router.post('/', authentication, (req, res, next) => authorization(req,res,next,
 //Eliminar pregunta
 router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), PreguntaController.eliminarPregunta);
 
+//Coger preguntas
+router.get('/get', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), PreguntaController.getPreguntas);
+
 module.exports = router;

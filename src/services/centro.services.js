@@ -44,5 +44,14 @@ exports.eliminarCentro = async function (id) {
         return false; //No se ha eliminado
     }
 
+}
 
+//Coger todos los centros
+exports.getCentros  = async function () {
+
+    const row = await db.query(
+        "SELECT * FROM centro",
+        );
+        
+    return row;
 }

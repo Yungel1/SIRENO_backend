@@ -53,3 +53,23 @@ exports.eliminarPregunta = async function (req,res,next){
         return res.sendStatus(500) && next(err);
     }
 }
+
+//Coger preguntas
+exports.getPreguntas = async function (req,res,next){
+    try{
+
+        var preguntas = await PreguntaService.getPreguntas(); //Coger todos las preguntas
+       
+        //Comprobar si se han cogido los preguntas
+        if(preguntas){
+            return res.status(201).json({preguntas});
+        } else{
+            return res.status(422).json({
+                message: "No se han podido coger las preguntas",
+            });
+        }
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}

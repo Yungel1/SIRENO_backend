@@ -46,3 +46,14 @@ exports.eliminarGrupo = async function (id) {
 
 
 }
+
+
+//Coger todos los grupos
+exports.getGrupos  = async function () {
+
+    const row = await db.query(
+        "SELECT * FROM grupo",
+        );
+        
+    return row;
+}

@@ -15,5 +15,7 @@ router.get('/getQuestionOptions', authentication, (req, res, next) => authorizat
 //Eliminar opcionesPregunta
 router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), OpcionesPreguntaController.eliminarOpcionesPregunta);
 
+//Coger opcionespreguntas
+router.get('/get', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), OpcionesPreguntaController.getOpcionesPreguntas);
 
 module.exports = router;

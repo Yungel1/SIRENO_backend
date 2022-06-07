@@ -12,5 +12,7 @@ router.post('/', authentication, (req, res, next) => authorization(req,res,next,
 //Eliminar departamento
 router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), DepartamentoController.eliminarDepartamento);
 
+//Coger departamentos
+router.get('/get', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), DepartamentoController.getDepartamentos);
 
 module.exports = router;

@@ -63,3 +63,23 @@ exports.eliminarGrupo = async function (req,res,next){
         return res.sendStatus(500) && next(err);
     }
 }
+
+//Coger grupos
+exports.getGrupos = async function (req,res,next){
+    try{
+
+        var grupos = await GrupoService.getGrupos(); //Coger todos las grupos
+       
+        //Comprobar si se han cogido los grupos
+        if(grupos){
+            return res.status(201).json({grupos});
+        } else{
+            return res.status(422).json({
+                message: "No se han podido coger las grupos",
+            });
+        }
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}

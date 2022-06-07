@@ -12,4 +12,8 @@ router.post('/', authentication, (req, res, next) => authorization(req,res,next,
 //Eliminar grado
 router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), GradoController.eliminarGrado);
 
+//Coger grados
+router.get('/get', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), GradoController.getGrados);
+
+
 module.exports = router;

@@ -73,3 +73,23 @@ exports.eliminarGrado = async function (req,res,next){
         return res.sendStatus(500) && next(err);
     }
 }
+
+//Coger grados
+exports.getGrados = async function (req,res,next){
+    try{
+
+        var grados = await GradoService.getGrados(); //Coger todos las grados
+       
+        //Comprobar si se han cogido los grados
+        if(grados){
+            return res.status(201).json({grados});
+        } else{
+            return res.status(422).json({
+                message: "No se han podido coger las grados",
+            });
+        }
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}

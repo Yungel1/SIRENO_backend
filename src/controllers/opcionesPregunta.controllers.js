@@ -263,3 +263,24 @@ exports.eliminarOpcionesPregunta = async function (req,res,next){
         return res.sendStatus(500) && next(err);
     }
 }
+
+
+//Coger opcionespreguntas
+exports.getOpcionesPreguntas = async function (req,res,next){
+    try{
+
+        var opcionespreguntas = await OpcionesPreguntaService.getOpcionesPreguntas(); //Coger todos las opcionespreguntas
+       
+        //Comprobar si se han cogido los opcionespreguntas
+        if(opcionespreguntas){
+            return res.status(201).json({opcionespreguntas});
+        } else{
+            return res.status(422).json({
+                message: "No se han podido coger las opcionespreguntas",
+            });
+        }
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}

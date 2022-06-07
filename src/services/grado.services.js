@@ -47,3 +47,13 @@ exports.eliminarGrado = async function (id) {
 
 
 }
+
+//Coger todos los grados
+exports.getGrados  = async function () {
+
+    const row = await db.query(
+        "SELECT * FROM grado",
+        );
+        
+    return row;
+}
