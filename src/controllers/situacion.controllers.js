@@ -246,3 +246,17 @@ exports.enviarEmailUsuarios = async function (req,res,next){
         return res.sendStatus(500) && next(err);
     }
 }
+
+//Conseguir todas las situaciones (solo admin)
+exports.getAllSituacion = async function (req,res,next){
+    try{
+
+        var row = await SituacionService.getAllSituacion(); //Obtener todas las situaciones
+
+        return res.status(200).json(row);
+
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}

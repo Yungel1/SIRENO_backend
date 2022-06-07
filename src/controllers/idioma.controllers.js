@@ -61,3 +61,39 @@ exports.deleteIdioma = async function (req,res,next){
         return res.sendStatus(500) && next(err);
     }
 }
+
+//Conseguir idioma
+exports.getIdioma = async function (req,res,next){
+    try{
+
+        let id = req.query.id;
+
+        var row = await IdiomaService.getIdioma(id); //Obtener idioma
+
+        if(row == null){
+            return res.status(422).json({
+                message: "El idioma no existe",
+            });
+        }
+
+        return res.status(200).json(row);
+
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+
+//Conseguir todos los idiomas (solo admin)
+exports.getAllIdioma = async function (req,res,next){
+    try{
+
+        var row = await IdiomaService.getAllIdioma(); //Obtener todos los idiomas
+
+        return res.status(200).json(row);
+
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}

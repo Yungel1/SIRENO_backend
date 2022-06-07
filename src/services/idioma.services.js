@@ -47,3 +47,30 @@ exports.deleteIdioma = async function (id) {
     }
 
 }
+
+//Coger el idioma
+exports.getIdioma = async function (id) {
+
+    const row = await db.query(
+        "SELECT nombre FROM idioma WHERE id=?",
+        id,
+        );
+        
+    if(row.length > 0){
+        return row[0];
+    } else{
+        return null;
+    }
+
+}
+
+//Coger todos los idiomas
+exports.getAllIdioma = async function () {
+
+    const row = await db.query(
+        "SELECT id,nombre FROM idioma"
+        );
+        
+    return row;
+
+}

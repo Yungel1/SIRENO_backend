@@ -35,21 +35,6 @@ exports.campañaExiste = async function (id) {
 
 }
 
-//Si la campaña existe en la base de datos: true, sino false
-exports.campañaExiste  = async function (campaña) {
-
-    const row = await db.query(
-        "SELECT id FROM campaña WHERE id=?",
-        campaña
-        );
-        
-    if (row.length > 0) {
-        return true; //La campaña existe
-    } else{
-        return false;
-    }
-}
-
 //Borrar campaña
 exports.deleteCampaña = async function (id) {
 
@@ -59,6 +44,51 @@ exports.deleteCampaña = async function (id) {
         );
         
     if (rows.affectedRows === 1) {
+        return true;
+    } else{
+        return false;
+    }
+
+}
+
+//Coger todas las campañas
+exports.getAllCampaña = async function () {
+
+    const row = await db.query(
+        "SELECT id,fechaIni,fechaFin,descripcion,anonima,con_registro FROM campaña"
+        );
+        
+    return row;
+
+
+}
+
+//Coger la campaña
+exports.getCampañaInfo = async function (id) {
+
+    const row = await db.query(
+        "SELECT fechaIni,fechaFin,descripcion,anonima,con_registro FROM campaña WHERE id=?",
+        id
+        );
+        
+    if(row.length > 0){
+        return row;
+    } else{
+        return null;
+    }
+
+}
+
+//Si la campaña existe y el usuario tiene acceso a esa campaña true sino false
+exports.perteneceCampañaUsuario = async function (usuario,id) {
+
+    const row = await db.query(
+        "SELECT campaña.id FROM usuariosituacion,situacion,campaña where usuariosituacion.usuario=? and campaña.id=? and usuariosituacion.idSituacion=situacion.id and situacion.idCampaña=campaña.id",[
+        usuario,
+        id
+        ]);
+
+    if (row.length > 0) {
         return true;
     } else{
         return false;

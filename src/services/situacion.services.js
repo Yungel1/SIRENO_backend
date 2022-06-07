@@ -81,3 +81,14 @@ exports.deleteSituacion = async function (id) {
     }
 
 }
+
+//Coger todas las situaciones
+exports.getAllSituacion = async function () {
+
+    const row = await db.query(
+        "SELECT id,idGrado,idDocente,idGrupo,idAsignatura,idCampaña FROM situacion"
+        );
+        
+    return row;
+
+}

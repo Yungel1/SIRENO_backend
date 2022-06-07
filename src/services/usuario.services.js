@@ -162,3 +162,30 @@ exports.deleteUsuario = async function (usuario) {
     }
 
 }
+
+//Coger toda la información del usuario, excepto la contraseña
+exports.getUsuarioInfo = async function (usuario) {
+
+    const row = await db.query(
+        "SELECT usuario,email,estudiante,docente,administrador,idDepartamento FROM usuario WHERE usuario=?",
+        usuario
+        );
+        
+    if(row.length > 0){
+        return row[0];
+    } else{
+        return null;
+    }
+
+}
+
+//Coger toda la información de todos los usuarios, excepto las contraseñas
+exports.getAllUsuarioInfo = async function () {
+
+    const row = await db.query(
+        "SELECT usuario,email,estudiante,docente,administrador,idDepartamento FROM usuario"
+        );
+        
+    return row;
+
+}

@@ -183,3 +183,39 @@ exports.deleteUsuario = async function (req,res,next){
     }
 }
 
+//Conseguir información del usuario que ha iniciado sesión
+exports.getUsuarioInfo = async function (req,res,next){
+    try{
+
+        let usuario = req.usuario;
+
+        var row = await UsuarioService.getUsuarioInfo(usuario); //Obtener info de usuario
+
+        if(row == null){
+            return res.status(422).json({
+                message: "El usuario no existe",
+            });
+        }
+
+        return res.status(200).json(row);
+
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+
+//Conseguir información de todos los usuarios (solo admin)
+exports.getAllUsuarioInfo = async function (req,res,next){
+    try{
+
+        var row = await UsuarioService.getAllUsuarioInfo(); //Obtener info de todos los usuarios
+
+        return res.status(200).json(row);
+
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+

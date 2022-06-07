@@ -12,4 +12,10 @@ router.post('/', authentication, (req, res, next) => authorization(req,res,next,
 //Borrar texto
 router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), TextoController.deleteTexto);
 
+//Obtener todos los textos
+router.get('/getAll', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), TextoController.getAllTexto);
+
+//Obtener texto concreto (al que el usuario que ha iniciado sesión tenga acceso)
+router.get('/get', authentication, (req, res, next) => authorization(req,res,next,[roles.Todos]), TextoController.getTexto);
+
 module.exports = router;

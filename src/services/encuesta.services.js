@@ -45,3 +45,15 @@ exports.deleteEncuesta = async function (id) {
     }
 
 }
+
+//Coger todas las encuestas
+exports.getAllEncuesta = async function () {
+
+    const row = await db.query(
+        "SELECT id FROM encuesta"
+        );
+        
+
+    return row;
+
+}
