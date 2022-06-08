@@ -48,3 +48,15 @@ exports.elimiarRelacionGradoAsignatura = async function (idGrado,idAsignatura) {
 
 
 }
+
+//Coger todas las relaciones entre grados y asignaturas
+exports.getAllGradoAsignatura = async function () {
+
+    const row = await db.query(
+        "SELECT idGrado,idAsignatura FROM gradoasignatura"
+        );
+        
+
+    return row;
+
+}

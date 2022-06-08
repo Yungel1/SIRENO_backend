@@ -15,4 +15,7 @@ router.get('/getPollQuestions', authentication, (req, res, next) => authorizatio
 //Borrar relación entre una encuesta y una pregunta
 router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), EncuestaPreguntaController.deleteEncuestaPregunta);
 
+//Obtener todas las relaciones entre encuestas y preguntas
+router.get('/getAll', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), EncuestaPreguntaController.getAllEncuestaPregunta);
+
 module.exports = router;

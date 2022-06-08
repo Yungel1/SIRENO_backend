@@ -15,4 +15,7 @@ router.get('/getCampaignPolls', authentication, (req, res, next) => authorizatio
 //Borrar relación entre una campaña y una encuesta
 router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), CampañaEncuestaController.deleteCampañaEncuesta);
 
+//Obtener todas las relaciones entre campañas y encuestas
+router.get('/getAll', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), CampañaEncuestaController.getAllCampañaEncuesta);
+
 module.exports = router;

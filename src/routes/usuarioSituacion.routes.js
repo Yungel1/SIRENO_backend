@@ -24,5 +24,7 @@ router.get('/checkSituationAnswered', authentication, (req, res, next) => author
 //Borrar  relación entre usuario y situación
 router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), UsuarioSituacionController.deleteUsuarioSituacion);
 
+//Obtener todas las relaciones entre usuarios y situaciones
+router.get('/getAll', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), UsuarioSituacionController.getAllUsuarioSituacion);
 
 module.exports = router;

@@ -85,3 +85,17 @@ exports.elimiarRelacionCentroDepartamento = async function (req,res,next){
         return res.sendStatus(500) && next(err);
     }
 }
+
+//Conseguir todas las relaciones entre centros y departamentos (solo admin)
+exports.getAllCentroDepartamento = async function (req,res,next){
+    try{
+
+        var row = await CentroDepartamentoService.getAllCentroDepartamento(); //Obtener todas las relaciones entre centros y departamentos
+
+        return res.status(200).json(row);
+
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}

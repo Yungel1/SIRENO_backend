@@ -104,3 +104,15 @@ exports.deleteUsuarioSituacion = async function (usuario,idSituacion) {
     }
 
 }
+
+//Coger todas las relaciones entre usuarios y situaciones
+exports.getAllUsuarioSituacion = async function () {
+
+    const row = await db.query(
+        "SELECT usuario,idSituacion,respondida FROM usuariosituacion"
+        );
+        
+
+    return row;
+
+}

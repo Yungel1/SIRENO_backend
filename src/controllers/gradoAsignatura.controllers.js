@@ -86,3 +86,17 @@ exports.elimiarRelacionGradoAsignatura = async function (req,res,next){
     }
 }
 
+//Conseguir todas las relaciones entre grados y asignaturas (solo admin)
+exports.getAllGradoAsignatura = async function (req,res,next){
+    try{
+
+        var row = await GradoAsignaturaService.getAllGradoAsignatura(); //Obtener todas las relaciones entre grados y asignaturas
+
+        return res.status(200).json(row);
+
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+

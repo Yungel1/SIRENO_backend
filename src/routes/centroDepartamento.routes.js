@@ -12,5 +12,7 @@ router.post('/', authentication, (req, res, next) => authorization(req,res,next,
 //Eliminar relacion centro y departamento
 router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), CentroDepartamentoController.elimiarRelacionCentroDepartamento);
 
+//Obtener todas las relaciones entre centros y departamentos
+router.get('/getAll', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), CentroDepartamentoController.getAllCentroDepartamento);
 
 module.exports = router;

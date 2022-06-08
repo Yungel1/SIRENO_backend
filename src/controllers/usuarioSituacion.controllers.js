@@ -243,3 +243,17 @@ exports.deleteUsuarioSituacion = async function (req,res,next){
         return res.sendStatus(500) && next(err);
     }
 }
+
+//Conseguir todas las relaciones entre usuarios y situaciones (solo admin)
+exports.getAllUsuarioSituacion = async function (req,res,next){
+    try{
+
+        var row = await UsuarioSituacionService.getAllUsuarioSituacion(); //Obtener todas las relaciones entre usuarios y situaciones
+
+        return res.status(200).json(row);
+
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}

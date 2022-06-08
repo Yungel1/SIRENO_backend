@@ -48,3 +48,15 @@ exports.elimiarRelacionCentroDepartamento = async function (idCentro,idDepartame
 
 
 }
+
+//Coger todas las relaciones entre centros y departamentos
+exports.getAllCentroDepartamento = async function () {
+
+    const row = await db.query(
+        "SELECT idCentro,idDepartamento FROM centrodepartamento"
+        );
+        
+
+    return row;
+
+}

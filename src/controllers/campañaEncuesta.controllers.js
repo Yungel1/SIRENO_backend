@@ -196,3 +196,17 @@ exports.deleteCampañaEncuesta = async function (req,res,next){
         return res.sendStatus(500) && next(err);
     }
 }
+
+//Conseguir todas las relaciones entre campañas y encuestas (solo admin)
+exports.getAllCampañaEncuesta = async function (req,res,next){
+    try{
+
+        var row = await CampañaEncuestaService.getAllCampañaEncuesta(); //Obtener todas las relaciones entre campañas y encuestas
+
+        return res.status(200).json(row);
+
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}

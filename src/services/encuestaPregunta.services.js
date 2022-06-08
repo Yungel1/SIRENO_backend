@@ -62,3 +62,15 @@ exports.deleteEncuestaPregunta = async function (idEncuesta,idPregunta) {
     }
 
 }
+
+//Coger todas las relaciones entre encuestas y preguntas
+exports.getAllEncuestaPregunta = async function () {
+
+    const row = await db.query(
+        "SELECT idEncuesta,idPregunta,num_preg FROM encuestapregunta"
+        );
+        
+
+    return row;
+
+}

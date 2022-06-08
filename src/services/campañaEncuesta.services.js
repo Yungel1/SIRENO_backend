@@ -61,3 +61,15 @@ exports.deleteCampañaEncuesta = async function (idCampaña,idEncuesta) {
     }
 
 }
+
+//Coger todas las relaciones entre campañas y encuestas
+exports.getAllCampañaEncuesta = async function () {
+
+    const row = await db.query(
+        "SELECT idCampaña,idEncuesta FROM campañaencuesta"
+        );
+        
+
+    return row;
+
+}
