@@ -135,3 +135,40 @@ exports.getCampañaInfo = async function (req,res,next){
         return res.sendStatus(500) && next(err);
     }
 }
+
+//Conseguir campaña concreta
+exports.getCampañaInfoDocente = async function (req,res,next){
+    try{
+
+        let id = req.query.id;
+
+        //Comprobar si el id es un número
+        if(!helperNumeric.isNumeric(id)){
+            return res.status(422).json({
+                message: "El id de la campaña no es un número",
+            });
+        }
+
+        //Comprobar si el docente tiene acceso a esta campaña (para ver y no responder) y si existe
+        let pertenece = await CampañaService.perteneceCampañaDocente(req.usuario,id);
+        if(!pertenece){
+            return res.status(422).json({
+                message: "El docente no tiene acceso a esta campaña o no existe",
+            });
+        }
+
+        var row = await CampañaService.getCampañaInfo(id); //Obtener campaña
+
+        if(row == null){
+            return res.status(422).json({
+                message: "La campaña no existe",
+            });
+        }
+
+        return res.status(200).json(row);
+
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}

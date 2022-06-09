@@ -95,3 +95,20 @@ exports.perteneceCampañaUsuario = async function (usuario,id) {
     }
 
 }
+
+//Si la campaña existe y el usuario tiene acceso a esa campaña true sino false
+exports.perteneceCampañaDocente = async function (idDocente,id) {
+
+    const row = await db.query(
+        "SELECT campaña.id FROM situacion,campaña where situacion.idDocente=? and campaña.id=? and situacion.idCampaña=campaña.id",[
+        idDocente,
+        id
+        ]);
+
+    if (row.length > 0) {
+        return true;
+    } else{
+        return false;
+    }
+
+}
