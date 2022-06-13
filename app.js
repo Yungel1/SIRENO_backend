@@ -3,6 +3,7 @@ const dotenv = require('dotenv')
 dotenv.config();
 const app = express()
 const port = process.env.PORT
+var cors = require('cors');
 
 //Routers
 const registerRouter = require('./src/routes/register.routes');
@@ -32,6 +33,8 @@ const centroDepartamentoRouter = require('./src/routes/centroDepartamento.routes
 app.use(express.json());
 // parsear peticiones content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
+// cors
+app.use(cors());
 
 //Ruta para gestionar el registro
 app.use('/register',registerRouter);
