@@ -17,7 +17,8 @@ exports.registrarUsuario = async function (req, res, next) {
         var usuarioExiste = await UsuarioService.usuarioExiste(req.body.usuario);
         //Comprobar si el usuario existe
         if(usuarioExiste){
-            return res.status(201).json({
+            return res.status(422).json({
+                error: "usuario-usado",
                 message: "El usuario ya está en uso",
             });
         }
@@ -25,7 +26,8 @@ exports.registrarUsuario = async function (req, res, next) {
         var emailExiste = await UsuarioService.emailExiste(req.body.email);
         //Comprobar si el usuario existe
         if(emailExiste){
-            return res.status(201).json({
+            return res.status(422).json({
+                error: "email-usado",
                 message: "El email ya está en uso",
             });
         }
@@ -38,6 +40,7 @@ exports.registrarUsuario = async function (req, res, next) {
         //Comprobar si son integer (0 o 1) anonima y con_registro
         if(![0,1].includes(Number(req.body.estudiante))||![0,1].includes(Number(req.body.docente))||![0,1].includes(Number(req.body.administrador))){
             return res.status(422).json({
+                error: "register-0-1",
                 message: "No ha insertado un valor entre 0 y 1 en los campos correspondientes",
             });
         }
@@ -48,6 +51,7 @@ exports.registrarUsuario = async function (req, res, next) {
             //Comprobar si el departamento existe
             if(!departamentoExiste){
                 return res.status(422).json({
+                    error: "departamento-existe",
                     message: "El departamento no existe",
                 });
             }
@@ -67,6 +71,7 @@ exports.registrarUsuario = async function (req, res, next) {
             });
         } else{
             return res.status(422).json({
+                error: "usuario-insertar",
                 message: "El usuario no ha sido insertado",
             });
         }

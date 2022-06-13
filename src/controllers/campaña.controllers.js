@@ -10,6 +10,7 @@ exports.insertarCampaña = async function (req,res,next){
         //Comprobar si el formato de fechas es correcto
         if(!moment(req.body.fechaIni, 'YYYY-MM-DD',true).isValid()||!moment(req.body.fechaFin, 'YYYY-MM-DD',true).isValid()){
             return res.status(422).json({
+                error: "campaña-formato-fecha",
                 message: "Formato de fechas incorrecto, formato de fechas: YYYY-MM-DD",
             });
         }
@@ -17,6 +18,7 @@ exports.insertarCampaña = async function (req,res,next){
         //Comprobar que la fecha fin es posterior a la fecha inicial
         if (req.body.fechaFin <=  req.body.fechaIni){
             return res.status(422).json({
+                error: "campaña-fecha-fin",
                 message: "La fecha final debe ser mínimo un día mas tarde que la incial",
             });
         }
@@ -24,6 +26,7 @@ exports.insertarCampaña = async function (req,res,next){
         //Comprobar si son integer (0 o 1) anonima y con_registro
         if(![0,1].includes(Number(req.body.anonima))||![0,1].includes(Number(req.body.con_registro))){
             return res.status(422).json({
+                error: "campaña-0-1",
                 message: "No ha insertado un valor entre 0 y 1 en los campos correspondientes",
             });
         }
@@ -37,6 +40,7 @@ exports.insertarCampaña = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "campaña-insertar",
                 message: "La campaña no ha sido insertada",
             });
         }
@@ -55,6 +59,7 @@ exports.deleteCampaña = async function (req,res,next){
         //Comprobar si el id es un número
         if(!helperNumeric.isNumeric(id)){
             return res.status(422).json({
+                error: "campaña-id-numero",
                 message: "El id introducido no es un número",
             });
         }
@@ -63,6 +68,7 @@ exports.deleteCampaña = async function (req,res,next){
         var campañaExiste = await CampañaService.campañaExiste(id);
         if(!campañaExiste){
             return res.status(422).json({
+                error: "campaña-existir",
                 message: "La campaña no existe",
             });
         }
@@ -76,6 +82,7 @@ exports.deleteCampaña = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "campaña-borrar",
                 message: "No se ha borrado la campaña",
             });
         }
@@ -108,6 +115,7 @@ exports.getCampañaInfo = async function (req,res,next){
         //Comprobar si el id es un número
         if(!helperNumeric.isNumeric(id)){
             return res.status(422).json({
+                error: "campaña-id-numero",
                 message: "El id de la campaña no es un número",
             });
         }
@@ -116,6 +124,7 @@ exports.getCampañaInfo = async function (req,res,next){
         let pertenece = await CampañaService.perteneceCampañaUsuario(req.usuario,id);
         if(!pertenece){
             return res.status(422).json({
+                error: "usuario-campaña-acceder",
                 message: "El usuario no tiene acceso a esta campaña o no existe",
             });
         }
@@ -124,6 +133,7 @@ exports.getCampañaInfo = async function (req,res,next){
 
         if(row == null){
             return res.status(422).json({
+                error: "campaña-existir",
                 message: "La campaña no existe",
             });
         }
@@ -145,6 +155,7 @@ exports.getCampañaInfoDocente = async function (req,res,next){
         //Comprobar si el id es un número
         if(!helperNumeric.isNumeric(id)){
             return res.status(422).json({
+                error: "campaña-id-numero",
                 message: "El id de la campaña no es un número",
             });
         }
@@ -153,6 +164,7 @@ exports.getCampañaInfoDocente = async function (req,res,next){
         let pertenece = await CampañaService.perteneceCampañaDocente(req.usuario,id);
         if(!pertenece){
             return res.status(422).json({
+                error: "docente-campaña-acceder",
                 message: "El docente no tiene acceso a esta campaña o no existe",
             });
         }
@@ -161,6 +173,7 @@ exports.getCampañaInfoDocente = async function (req,res,next){
 
         if(row == null){
             return res.status(422).json({
+                error: "campaña-existir",
                 message: "La campaña no existe",
             });
         }

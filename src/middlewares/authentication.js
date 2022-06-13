@@ -11,6 +11,7 @@ const verificarToken = async(req, res, next) => {
         //Comprobar si hay token
         if (!AuthenticationService.tokenExists(headerAuth)){
             return res.status(422).json({
+                error: "token-existir",
                 message: "Proporcione el token",
             });
         }
@@ -25,6 +26,7 @@ const verificarToken = async(req, res, next) => {
             return next();
         } 
         return res.status(401).json({
+            error: "usuario-existir",
             message:"Usuario no encontrado"
         });
 
@@ -32,11 +34,13 @@ const verificarToken = async(req, res, next) => {
     } catch(err){
         if(err instanceof jwt.TokenExpiredError){
             return res.status(401).json({
+                error: "token-expirar",
                 message:"El token ha expirado"
             });
         }
         if(err instanceof jwt.JsonWebTokenError){
             return res.status(401).json({
+                error: "token-error",
                 message:"Error en el token proporcionado"
             });
         }

@@ -18,6 +18,7 @@ exports.iniciarSesion = async function (req, res, next) {
         //Comprobar si usuario correcto
         if(!LoginService.usuarioCorrecto(row)){
             return res.status(422).json({
+                error: "usuario-incorrecto",
                 message: "Nombre de usuario incorrecto",
             });
         }
@@ -26,6 +27,7 @@ exports.iniciarSesion = async function (req, res, next) {
         var passMatch = await LoginService.contraseñaCorrecta(req.body.contraseña,row);
         if(!passMatch){
             return res.status(422).json({
+                error: "contraseña-incorrecta",
                 message: "Contraseña incorrecta",
             });
         }

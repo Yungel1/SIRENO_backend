@@ -10,6 +10,7 @@ exports.darRolAdmin = async function (req,res,next){
         var usuarioExiste = await UsuarioService.usuarioExiste(req.body.usuario);
         if(!usuarioExiste){
             return res.status(422).json({
+                error: "usuario-existir",
                 message: "El usuario no existe",
             });
         }
@@ -23,6 +24,7 @@ exports.darRolAdmin = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "usuario-administrador",
                 message: "No se ha proporcionado el rol de administrador",
             });
         }
@@ -39,6 +41,7 @@ exports.editarRolEstudiante = async function (req,res,next){
         //Comprobar si es integer (0 o 1) estudiante
         if(![0,1].includes(Number(req.body.estudiante))){
             return res.status(422).json({
+                error: "usuario-0-1",
                 message: "No ha insertado un valor entre 0 y 1 en el campo 'estudiante'",
             });
         }
@@ -47,6 +50,7 @@ exports.editarRolEstudiante = async function (req,res,next){
         var usuarioExiste = await UsuarioService.usuarioExiste(req.body.usuario);
         if(!usuarioExiste){
             return res.status(422).json({
+                error: "usuario-existir",
                 message: "El usuario no existe",
             });
         }
@@ -60,6 +64,7 @@ exports.editarRolEstudiante = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "usuario-estudiante-editar",
                 message: "No se ha editado el rol de estudiante",
             });
         }
@@ -76,6 +81,7 @@ exports.editarRolDocente = async function (req,res,next){
         //Comprobar si es integer (0 o 1) docente
         if(![0,1].includes(Number(req.body.docente))){
             return res.status(422).json({
+                error: "usuario-0-1",
                 message: "No ha insertado un valor entre 0 y 1 en el campo 'docente'",
             });
         }
@@ -84,6 +90,7 @@ exports.editarRolDocente = async function (req,res,next){
         var usuarioExiste = await UsuarioService.usuarioExiste(req.body.usuario);
         if(!usuarioExiste){
             return res.status(422).json({
+                error: "usuario-existir",
                 message: "El usuario no existe",
             });
         }
@@ -94,6 +101,7 @@ exports.editarRolDocente = async function (req,res,next){
             //Comprobar si el departamento existe
             if(!departamentoExiste){
                 return res.status(422).json({
+                    error: "departamento-existir",
                     message: "El departamento no existe",
                 });
             }
@@ -112,37 +120,8 @@ exports.editarRolDocente = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "usuario-docente-editar",
                 message: "No se ha editado el rol de docente",
-            });
-        }
-    } catch(err){
-        console.log(err);
-        return res.sendStatus(500) && next(err);
-    }
-}
-
-//Dar el rol de administrador al usuario
-exports.darRolAdmin = async function (req,res,next){
-    try{
-
-        //Comprobar si el usuario existe
-        var usuarioExiste = await UsuarioService.usuarioExiste(req.body.usuario);
-        if(!usuarioExiste){
-            return res.status(422).json({
-                message: "El usuario no existe",
-            });
-        }
-
-        var actualizado = await UsuarioService.darRolAdmin(req.body.usuario); //Dar rol de administrador
-
-        //Comprobar si se ha dado el rol de administrador
-        if(actualizado){
-            return res.status(201).json({
-                message: "Se ha proporcionado el rol de administrador",
-            });
-        } else{
-            return res.status(422).json({
-                message: "No se ha proporcionado el rol de administrador",
             });
         }
     } catch(err){
@@ -161,6 +140,7 @@ exports.deleteUsuario = async function (req,res,next){
         var usuarioExiste = await UsuarioService.usuarioExiste(usuario);
         if(!usuarioExiste){
             return res.status(422).json({
+                error: "usuario-existir",
                 message: "El usuario no existe",
             });
         }
@@ -174,6 +154,7 @@ exports.deleteUsuario = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "usuario-borrar",
                 message: "No se ha borrado el usuario",
             });
         }
@@ -193,6 +174,7 @@ exports.getUsuarioInfo = async function (req,res,next){
 
         if(row == null){
             return res.status(422).json({
+                error: "usuario-existir",
                 message: "El usuario no existe",
             });
         }

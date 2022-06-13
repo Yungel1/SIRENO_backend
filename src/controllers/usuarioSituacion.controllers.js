@@ -10,6 +10,7 @@ exports.relacionarUsuarioSituacion = async function (req,res,next){
         //Comprobar si el id de la situación es un número
         if(!helperNumeric.isNumeric(req.body.idSituacion)){
             return res.status(422).json({
+                error: "situacion-id-numero",
                 message: "El id de la situación no es un número",
             });
         }
@@ -18,6 +19,7 @@ exports.relacionarUsuarioSituacion = async function (req,res,next){
         var usuarioExiste = await UsuarioService.usuarioExiste(req.body.usuario);
         if(!usuarioExiste){
             return res.status(422).json({
+                error: "usuario-existir",
                 message: "El usuario no existe",
             });
         }
@@ -26,6 +28,7 @@ exports.relacionarUsuarioSituacion = async function (req,res,next){
         var situacionExiste = await SituacionService.situacionExiste(req.body.idSituacion);
         if(!situacionExiste){
             return res.status(422).json({
+                error: "situacion-existir",
                 message: "La situación no existe",
             });
         }
@@ -39,6 +42,7 @@ exports.relacionarUsuarioSituacion = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "usuario-situacion-relacionar",
                 message: "El usuario y la situación no han sido relacionadas correctamente",
             });
         }
@@ -56,6 +60,7 @@ exports.actualizarUsuarioSituacionAdmin = async function (req,res,next){
         //Comprobar si el id de la situación es un número
         if(!helperNumeric.isNumeric(req.body.idSituacion)){
             return res.status(422).json({
+                error: "situacion-id-numero",
                 message: "El id de la situación no es un número",
             });
         }
@@ -63,6 +68,7 @@ exports.actualizarUsuarioSituacionAdmin = async function (req,res,next){
         //Comprobar si es integer (0 o 1) respondida
         if(![0,1].includes(Number(req.body.respondida))){
             return res.status(422).json({
+                error: "usuario-situacion-0-1",
                 message: "No ha insertado un valor entre 0 y 1 en el campo 'respondida'",
             });
         }
@@ -70,7 +76,8 @@ exports.actualizarUsuarioSituacionAdmin = async function (req,res,next){
         var usuarioSituacionExiste = await UsuarioSituacionService.usuarioSituacionExiste(req.body.usuario,req.body.idSituacion);
         //Comprobar si la relación entre un usuario y una situación concretos existe
         if(!usuarioSituacionExiste){
-            return res.status(201).json({
+            return res.status(422).json({
+                error: "usuario-situacion-existir",
                 message: "La relacion usuario-situación que se intenta actualizar no existe",
             });
         }
@@ -84,6 +91,7 @@ exports.actualizarUsuarioSituacionAdmin = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "usuario-situacion-actualizar",
                 message: "La relacion usuario-situación no ha sido actualizada",
             });
         }
@@ -100,6 +108,7 @@ exports.actualizarUsuarioSituacion = async function (req,res,next){
         //Comprobar si el id de la situación es un número
         if(!helperNumeric.isNumeric(req.body.idSituacion)){
             return res.status(422).json({
+                error: "situacion-id-numero",
                 message: "El id de la situación no es un número",
             });
         }
@@ -115,7 +124,8 @@ exports.actualizarUsuarioSituacion = async function (req,res,next){
         var usuarioSituacionExiste = await UsuarioSituacionService.usuarioSituacionExiste(req.usuario,req.body.idSituacion);
         //Comprobar si la relación entre el usuario que ha iniciado sesión y una situación concretos existe
         if(!usuarioSituacionExiste){
-            return res.status(201).json({
+            return res.status(422).json({
+                error: "usuario-situacion-existir",
                 message: "La relacion usuario-situación que se intenta actualizar no existe",
             });
         }
@@ -129,6 +139,7 @@ exports.actualizarUsuarioSituacion = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "usuario-situacion-actualizar",
                 message: "La relacion usuario-situación no ha sido actualizada",
             });
         }
@@ -149,6 +160,7 @@ exports.getSituacionesUsuario = async function (req,res,next){
         var getSituacionesUsuario = await UsuarioSituacionService.getSituacionesUsuario(idUsuario); 
         if(getSituacionesUsuario.length === 0){
             return res.status(422).json({
+                error: "situacion-usuario",
                 message: "No tienes ninguna situación relacionada",
             });
         }
@@ -173,6 +185,7 @@ exports.verSiLaSituacionesRespondidasUsuario = async function (req,res,next){
         //Comprobar si el id de la situación es un numero
         if (!idSituacionEsInt){
             return res.status(422).json({
+                error: "situacion-id-numero",
                 message: "La situación seleccionada no es un número",
             });
         }
@@ -181,6 +194,7 @@ exports.verSiLaSituacionesRespondidasUsuario = async function (req,res,next){
         //Comprobar si la relación entre el usuario que ha iniciado sesión y una situación concretos existe
         if(!usuarioSituacionExiste){
             return res.status(422).json({
+                error: "usuario-situacion-existir",
                 message: "La relacion usuario-situación no existe",
             });
         }
@@ -189,6 +203,7 @@ exports.verSiLaSituacionesRespondidasUsuario = async function (req,res,next){
         var getSituacionesRespondidasUsuario = await UsuarioSituacionService.usuarioSituacionRespondida(idUsuario, idSituacion); 
         if(getSituacionesRespondidasUsuario){
             return res.status(422).json({
+                error: "situacion-responder",
                 message: "La situación seleccionada ya esta respondida",
             });
         }
@@ -214,6 +229,7 @@ exports.deleteUsuarioSituacion = async function (req,res,next){
         //Comprobar si el id es un número
         if(!helperNumeric.isNumeric(idSituacion)){
             return res.status(422).json({
+                error: "situacion-id-numero",
                 message: "El id introducido no es un número",
             });
         }
@@ -222,6 +238,7 @@ exports.deleteUsuarioSituacion = async function (req,res,next){
         //Comprobar si la relación entre un usuario y una situación concretos existe
         if(!usuarioSituacionExiste){
             return res.status(422).json({
+                error: "usuario-situacion-existir",
                 message: "La relacion usuario-situación no existe",
             });
         }
@@ -235,6 +252,7 @@ exports.deleteUsuarioSituacion = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "usuario-situacion-borrar",
                 message: "No se ha borrado la relación UsuarioSituación",
             });
         }

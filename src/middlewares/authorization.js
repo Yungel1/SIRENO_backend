@@ -7,6 +7,7 @@ const authorize = async(req, res, next, rolesConAcceso) => {
     try{
         if(req.usuario == null){
             return res.status(401).json({
+                error: "usuario-existir",
                 message:"Usuario no encontrado"
             });
         }
@@ -17,6 +18,7 @@ const authorize = async(req, res, next, rolesConAcceso) => {
 
         if(!autorizado){
             return res.status(403).json({
+                error: "usuario-autorizar",
                 message:"Usuario no autorizado"
             });
         }
