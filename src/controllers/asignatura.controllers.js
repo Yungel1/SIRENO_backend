@@ -12,6 +12,7 @@ exports.insertarAsignatura = async function (req,res,next){
             //Comprobar si el id de la asignatura existe
             if(asignaturaExiste){
             return res.status(422).json({
+                error: "asignatura-existir",
                 message: "La asignatura seleccionada ya existe",
             });
         }
@@ -20,6 +21,7 @@ exports.insertarAsignatura = async function (req,res,next){
         //Comprobar si el id del departamento existe
         if(! departamentoExiste){
         return res.status(422).json({
+            error: "departamento-existir",
             message: "El departamento seleccionado no existe",
         });
     }
@@ -33,6 +35,7 @@ exports.insertarAsignatura = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "asignatura-insertar",
                 message: "La asignatura no ha sido insertada",
             });
         }
@@ -52,6 +55,7 @@ exports.eliminarAsignatura = async function (req,res,next){
         //Comprobar si el id de la asignatura existe
         if(!asignaturaExiste){
            return res.status(422).json({
+                error: "asignatura-existir",
                message: "El asignatura seleccionado no existe",
            });
        }
@@ -65,6 +69,7 @@ exports.eliminarAsignatura = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "asignatura-eliminar",
                 message: "La asignatura no ha sido eliminada",
             });
         }

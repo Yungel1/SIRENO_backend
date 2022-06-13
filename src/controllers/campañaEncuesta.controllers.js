@@ -13,6 +13,7 @@ exports.relacionarCampañaEncuesta = async function (req,res,next){
         //Comprobar si el id de la campaña y la encuesta son números
         if(!helperNumeric.isNumeric(req.body.idCampaña)||!helperNumeric.isNumeric(req.body.idEncuesta)){
             return res.status(422).json({
+                error: "campaña-encuesta-id-int",
                 message: "Uno de los parámetros ha de ser un número y no lo es",
             });
         }
@@ -21,6 +22,7 @@ exports.relacionarCampañaEncuesta = async function (req,res,next){
         var campañaExiste = await CampañaService.campañaExiste(req.body.idCampaña);
         if(!campañaExiste){
             return res.status(422).json({
+                error: "campaña-existir",
                 message: "La campaña no existe",
             });
         }
@@ -29,6 +31,7 @@ exports.relacionarCampañaEncuesta = async function (req,res,next){
         var encuestaExiste = await EncuestaService.encuestaExiste(req.body.idEncuesta);
         if(!encuestaExiste){
             return res.status(422).json({
+                error: "encuesta-existir",
                 message: "La encuesta no existe",
             });
         }
@@ -43,6 +46,7 @@ exports.relacionarCampañaEncuesta = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "campaña-encuesta-relacionar",
                 message: "La campaña y la encuesta no han sido relacionadas correctamente",
             });
         }
@@ -65,6 +69,7 @@ exports.getEncuestasCampaña = async function (req,res,next){
         var getSituacionesUsuario = await UsuarioSituacionService.getSituacionesUsuario(idUsuario); 
         if(getSituacionesUsuario.length === 0){
             return res.status(422).json({
+                error: "situacion-relacionar",
                 message: "No tienes ninguna situación relacionada",
             });
         }
@@ -73,6 +78,7 @@ exports.getEncuestasCampaña = async function (req,res,next){
         //Comprobar si el id de la situación es un numero
         if (!idSituacionEsInt){
             return res.status(422).json({
+                error: "situacion-int",
                 message: "La situación seleccionada no es un número",
             });
         }
@@ -81,6 +87,7 @@ exports.getEncuestasCampaña = async function (req,res,next){
         var situacionExiste = await SituacionService.situacionExiste(idSituacion); 
         if(! situacionExiste){
             return res.status(422).json({
+                error: "situacion-existir",
                 message: "La situación no existe",
             });
         }
@@ -95,6 +102,7 @@ exports.getEncuestasCampaña = async function (req,res,next){
         });
         if (! ecnontrado){
             return res.status(422).json({
+                error: "usuario-situacion-relacionar",
                 message: "El usuario no tiene esa situación",
             });
         }
@@ -103,6 +111,7 @@ exports.getEncuestasCampaña = async function (req,res,next){
         var getSituacionesRespondidasUsuario = await UsuarioSituacionService.usuarioSituacionRespondida(idUsuario, idSituacion); 
         if(getSituacionesRespondidasUsuario){
             return res.status(422).json({
+                error: "situacion-responder",
                 message: "La situación seleccionada ya esta respondida",
             });
         }
@@ -111,6 +120,7 @@ exports.getEncuestasCampaña = async function (req,res,next){
         var getCampañaSituacion = await SituacionService.getCampañaSituacion(idSituacion); 
         if(getCampañaSituacion[0].idCampaña === null){
             return res.status(422).json({
+                error: "situacion-campaña-relacionar",
                 message: "La situación seleccionada no tiene niguna campaña",
             });
         }
@@ -119,6 +129,7 @@ exports.getEncuestasCampaña = async function (req,res,next){
         //Comprobar si el id de la campaña es un numero
         if (!idCamapñaEsInt){
             return res.status(422).json({
+                error: "campaña-int",
                 message: "La campaña seleccionada no es un número",
             });
         }
@@ -127,7 +138,8 @@ exports.getEncuestasCampaña = async function (req,res,next){
         //Comprobar si el id de la campaña existe
         if(! campañaExiste){
            return res.status(422).json({
-               message: "La campaña seleccionada no corresponde a ninguna campaña existente",
+                error: "campaña-existir",
+                message: "La campaña seleccionada no corresponde a ninguna campaña existente",
            });
        }
 
@@ -135,6 +147,7 @@ exports.getEncuestasCampaña = async function (req,res,next){
         var campañaSeleccionadaExiste = (getCampañaSituacion[0].idCampaña === parseInt(idCampaña));
         if (!campañaSeleccionadaExiste){
             return res.status(422).json({
+                error: "campaña-situacion-relacionar",
                 message: "La campaña seleccionada no concuerda con la campaña de la situación",
             });
         }
@@ -143,6 +156,7 @@ exports.getEncuestasCampaña = async function (req,res,next){
         var getEncuestasCampaña = await CampañaEncuestaService.getEncuestasCampaña(idCampaña); 
         if(getEncuestasCampaña.length === 0){
             return res.status(422).json({
+                error: "campaña-encuesta-relacionar",
                 message: "La campaña seleccionada no tiene niguna encuesta",
             });
         }

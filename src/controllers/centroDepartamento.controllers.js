@@ -13,6 +13,7 @@ exports.relacionarCentroDepartamento = async function (req,res,next){
         var centroExiste = await CentroService.centroExiste(idCentro);
         if(!centroExiste){
             return res.status(422).json({
+                error: "centro-existir",
                 message: "El centro no existe",
             });
         }
@@ -21,6 +22,7 @@ exports.relacionarCentroDepartamento = async function (req,res,next){
         var departamentoExiste = await DepartamentoService.departamentoExiste(idDepartamento);
         if(!departamentoExiste){
             return res.status(422).json({
+                error: "departamento-existir",
                 message: "El departamento no existe",
             });
         }
@@ -29,6 +31,7 @@ exports.relacionarCentroDepartamento = async function (req,res,next){
         var centroDepartamentoExiste = await CentroDepartamentoService.centroDepartamentoExiste(idCentro, idDepartamento);
         if(centroDepartamentoExiste){
             return res.status(422).json({
+                error: "centro-departamento-ya-relacionar",
                 message: "El centro y el departamento ya estan relacionados",
             });
         }
@@ -42,6 +45,7 @@ exports.relacionarCentroDepartamento = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "centro-departamento-relacionar-correcto",
                 message: "El centro y  el departamento no han sido relacionadas correctamente",
             });
         }
@@ -64,6 +68,7 @@ exports.elimiarRelacionCentroDepartamento = async function (req,res,next){
         var centroDepartamentoExiste = await CentroDepartamentoService.centroDepartamentoExiste(idCentro, idDepartamento);
         if(! centroDepartamentoExiste){
             return res.status(422).json({
+                error: "centro-departamento-relacionar",
                 message: "El centro y el departamento no estan relacionados",
             });
         }
@@ -77,6 +82,7 @@ exports.elimiarRelacionCentroDepartamento = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "centro-departamento-eliminar",
                 message: "La relación centro y departamento no ha sido eliminada",
             });
         }

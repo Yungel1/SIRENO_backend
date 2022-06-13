@@ -26,6 +26,7 @@ exports.insertarActivacion = async function (req,res,next){
         //Comprobar si la activacion existe
         if(activacionExiste){
             return res.status(422).json({
+                error: "activacion-existir",
                 message: "La activación que se intenta crear ya existe",
             });
         }
@@ -34,6 +35,7 @@ exports.insertarActivacion = async function (req,res,next){
         //Comprobar si el usuario existe
         if(! usuarioExiste){
             return res.status(422).json({
+                error: "usuario-existir",
                 message: "El docente seleccionado no existe",
             });
         }
@@ -42,6 +44,7 @@ exports.insertarActivacion = async function (req,res,next){
         //Comprobar si el id es de un docente
         if(! docenteExiste){
             return res.status(422).json({
+                error: "docente-existir",
                 message: "El docente seleccionado no corresponde a ningún docente existente",
             });
         }
@@ -50,6 +53,7 @@ exports.insertarActivacion = async function (req,res,next){
          //Comprobar si el id del grupo existe
          if(! grupoExiste){
             return res.status(422).json({
+                error: "grupo-existir",
                 message: "El grupo seleccionado no corresponde a ningún grupo existente",
             });
         }
@@ -58,6 +62,7 @@ exports.insertarActivacion = async function (req,res,next){
          //Comprobar si el id del grado existe
          if(! gradoExiste){
             return res.status(422).json({
+                error: "grado-existir",
                 message: "El grado seleccionado no corresponde a ningún grado existente",
             });
         }
@@ -66,6 +71,7 @@ exports.insertarActivacion = async function (req,res,next){
          //Comprobar si el id de la asignatura existe
          if(! asignaturaExiste){
             return res.status(422).json({
+                error: "asignatura-existir",
                 message: "La asignatura seleccionada no corresponde a ninguna asignatura existente",
             });
         }
@@ -74,6 +80,7 @@ exports.insertarActivacion = async function (req,res,next){
         //Comprobar si el id de la campaña es un numero
         if (!idCamapñaEsInt){
             return res.status(422).json({
+                error: "campaña-id-int",
                 message: "La campaña seleccionada no es un número",
             });
         }
@@ -82,6 +89,7 @@ exports.insertarActivacion = async function (req,res,next){
          //Comprobar si el id de la campaña existe
          if(! campañaExiste){
             return res.status(422).json({
+                error: "campaña-existir",
                 message: "La campaña seleccionada no corresponde a ninguna campaña existente",
             });
         }
@@ -90,12 +98,14 @@ exports.insertarActivacion = async function (req,res,next){
          //Comprobar si el formato de fechas es correcto
          if(noFechaValida){
             return res.status(422).json({
+                error: "activacion-formato-fechas",
                 message: "Formato de fechas incorrecto, formato de fechas: YYYY-MM-DD",
             });
         }
 
         if (fechaActFin <=  fechaActIni){
             return res.status(422).json({
+                error: "fechas-incoherentes",
                 message: "La fecha final debe ser mínimo un día mas tarde que la incial",
             });
         }
@@ -109,6 +119,7 @@ exports.insertarActivacion = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "activacion-insertar",
                 message: "La activación no ha sido insertada",
             });
         }
@@ -135,6 +146,7 @@ exports.actualizarActivacion = async function (req,res,next){
         //Comprobar si la activacion existe
         if(!activacionExiste){
             return res.status(422).json({
+                error: "activacion-formato-fechas",
                 message: "La activación que se intenta actualizar no existe",
             });
         }
@@ -143,12 +155,14 @@ exports.actualizarActivacion = async function (req,res,next){
          //Comprobar si el formato de fechas es correcto
          if(noFechaValida){
             return res.status(422).json({
+                error: "fechas-validar",
                 message: "Formato de fechas incorrecto, formato de fechas: YYYY-MM-DD",
             });
         }
 
         if (fechaActFin <=  fechaActIni){
             return res.status(422).json({
+                error: "fechas-incoherentes",
                 message: "La fecha final debe ser mínimo un día mas tarde que la incial",
             });
         }
@@ -162,6 +176,7 @@ exports.actualizarActivacion = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "activacion-atualizar",
                 message: "La activación no ha sido actualizada",
             });
         }
@@ -186,6 +201,7 @@ exports.activarActivacionAdmin = async function (req,res,next){
         //Comprobar si la activacion existe
         if(!activacionExiste){
             return res.status(422).json({
+                error: "activacion-existir",
                 message: "La activación que se intenta activar no existe",
             });
         }
@@ -194,6 +210,7 @@ exports.activarActivacionAdmin = async function (req,res,next){
         //Comprobar si son integer (0 o 1) false y true
         if(!activadoEsCeroOUno){
             return res.status(422).json({
+                error: "activacion-cero-uno",
                 message: "No ha insertado un valor entre 0 y 1 en los campos correspondientes",
             });
         }
@@ -207,6 +224,7 @@ exports.activarActivacionAdmin = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "activacion-activar",
                 message: "La activación no ha sido activada",
             });
         }
@@ -231,6 +249,7 @@ exports.activarActivacionDocente = async function (req,res,next){
         //Comprobar si el id es de un docente
         if(! docenteExiste){
             return res.status(422).json({
+                error: "docente-existir",
                 message: "El usuario con el ha iniciado sesión no corresponde a ningún docente.",
             });
         }
@@ -239,6 +258,7 @@ exports.activarActivacionDocente = async function (req,res,next){
         //Comprobar si la activacion existe
         if(!activacionExiste){
             return res.status(422).json({
+                error: "activacion-existir",
                 message: "La activación que se intenta activar no existe",
             });
         }
@@ -247,6 +267,7 @@ exports.activarActivacionDocente = async function (req,res,next){
         //Comprobar si son integer (0 o 1) false y true
         if(!activadoEsCeroOUno){
             return res.status(422).json({
+                error: "activacion-cero-uno",
                 message: "No ha insertado un valor entre 0 y 1 en los campos correspondientes",
             });
         }
@@ -260,6 +281,7 @@ exports.activarActivacionDocente = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "activacion-activada",
                 message: "La activación no ha sido activada",
             });
         }
@@ -283,6 +305,7 @@ exports.eliminarActivacion = async function (req,res,next){
         //Comprobar si la activacion existe
         if(!activacionExiste){
             return res.status(422).json({
+                error: "activacion-existir",
                 message: "La activación que se intenta eliminiar no existe",
             });
         }
@@ -296,6 +319,7 @@ exports.eliminarActivacion = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "activacion-eliminar",
                 message: "La activacion no ha sido eliminada",
             });
         }
@@ -316,6 +340,7 @@ exports.enviarRecordatorio = async function (req,res,next){
          //Comprobar si el formato de fechas es correcto
          if(noFechaValida){
             return res.status(422).json({
+                error: "fechas-validar",
                 message: "Formato de fechas incorrecto, formato de fechas: YYYY-MM-DD",
             });
         }
@@ -342,6 +367,7 @@ exports.enviarRecordatorio = async function (req,res,next){
         }
         else{
             return res.status(422).json({
+                error: "activacion-existir-bd",
                 message: "No hay ninguna activación en la base de datos",
             });   
         }

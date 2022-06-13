@@ -10,6 +10,7 @@ exports.insertarCentro = async function (req,res,next){
             //Comprobar si el id del centro existe
             if(centroExiste){
             return res.status(422).json({
+                error: "centro-existir",
                 message: "El centro seleccionado ya existe",
             });
         }
@@ -23,6 +24,7 @@ exports.insertarCentro = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "centro-insertar",
                 message: "El centro no ha sido insertado",
             });
         }
@@ -42,6 +44,7 @@ exports.eliminarCentro = async function (req,res,next){
         //Comprobar si el id del centro existe
         if(!centroExiste){
            return res.status(422).json({
+            error: "centro-existir",
                message: "El centro seleccionado no existe",
            });
        }
@@ -55,6 +58,7 @@ exports.eliminarCentro = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "centro-eliminar",
                 message: "El centro no ha sido eliminado",
             });
         }
@@ -75,6 +79,7 @@ exports.getCentros = async function (req,res,next){
             return res.status(201).json({centros});
         } else{
             return res.status(422).json({
+                error: "centros-coger",
                 message: "No se han podido coger los centros",
             });
         }
