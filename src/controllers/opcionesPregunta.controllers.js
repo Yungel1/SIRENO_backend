@@ -19,6 +19,7 @@ exports.insertarOpcionPregunta = async function (req,res,next){
         //Comprobar si el id de la pregunta es un número
         if(!helperNumeric.isNumeric(req.body.idPregunta)){
             return res.status(422).json({
+                error: "pregunta-int",
                 message: "Uno de los parámetros ha de ser un número y no lo es",
             });
         }
@@ -27,6 +28,7 @@ exports.insertarOpcionPregunta = async function (req,res,next){
         var preguntaExiste = await PreguntaService.preguntaExiste(req.body.idPregunta);
         if(!preguntaExiste){
             return res.status(422).json({
+                error: "pregunta-existir",
                 message: "La pregunta no existe",
             });
         }
@@ -40,6 +42,7 @@ exports.insertarOpcionPregunta = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "opcpregunta-insertar",
                 message: "La opción de pregunta no ha sido insertada",
             });
         }
@@ -63,6 +66,7 @@ exports.getOpcionesPregunta = async function (req,res,next){
         var getSituacionesUsuario = await UsuarioSituacionService.getSituacionesUsuario(idUsuario); 
         if(getSituacionesUsuario.length === 0){
             return res.status(422).json({
+                error: "usuario-situacion-relacionar",
                 message: "No tienes ninguna situación relacionada",
             });
         }
@@ -71,6 +75,7 @@ exports.getOpcionesPregunta = async function (req,res,next){
         //Comprobar si el id de la situación es un numero
         if (!idSituacionEsInt){
             return res.status(422).json({
+                error: "situacion-int",
                 message: "La situación seleccionada no es un número",
             });
         }
@@ -79,6 +84,7 @@ exports.getOpcionesPregunta = async function (req,res,next){
         var situacionExiste = await SituacionService.situacionExiste(idSituacion); 
         if(! situacionExiste){
             return res.status(422).json({
+                error: "situacion-existir",
                 message: "La situación no existe",
             });
         }
@@ -93,6 +99,7 @@ exports.getOpcionesPregunta = async function (req,res,next){
         });
         if (! situacionEcnontrada){
             return res.status(422).json({
+                error: "usuario-situacion-relacionar",
                 message: "El usuario no tiene esa situación",
             });
         }
@@ -101,6 +108,7 @@ exports.getOpcionesPregunta = async function (req,res,next){
         var getSituacionesRespondidasUsuario = await UsuarioSituacionService.usuarioSituacionRespondida(idUsuario, idSituacion); 
         if(getSituacionesRespondidasUsuario){
             return res.status(422).json({
+                error: "situacion-ya-responder",
                 message: "La situación seleccionada ya esta respondida",
             });
         }
@@ -109,6 +117,7 @@ exports.getOpcionesPregunta = async function (req,res,next){
         var getCampañaSituacion = await SituacionService.getCampañaSituacion(idSituacion); 
         if(getCampañaSituacion[0].idCampaña === null){
             return res.status(422).json({
+                error: "situacion-campaña-relacionar",
                 message: "La situación seleccionada no tiene niguna campaña",
             });
         }
@@ -117,6 +126,7 @@ exports.getOpcionesPregunta = async function (req,res,next){
         //Comprobar si el id de la campaña es un numero
         if (!idCamapñaEsInt){
             return res.status(422).json({
+                error: "campaña-int",
                 message: "La campaña seleccionada no es un número",
             });
         }
@@ -125,6 +135,7 @@ exports.getOpcionesPregunta = async function (req,res,next){
         //Comprobar si el id de la campaña existe
         if(! campañaExiste){
            return res.status(422).json({
+               error: "campaña-existir",
                message: "La campaña seleccionada no corresponde a ninguna campaña existente",
            });
        }
@@ -133,6 +144,7 @@ exports.getOpcionesPregunta = async function (req,res,next){
         var campañaSeleccionadaExiste = (getCampañaSituacion[0].idCampaña === parseInt(idCampaña));
         if (!campañaSeleccionadaExiste){
             return res.status(422).json({
+                error: "campaña-situacion-relacionar",
                 message: "La campaña seleccionada no concuerda con la campaña de la situación",
             });
         }
@@ -141,6 +153,7 @@ exports.getOpcionesPregunta = async function (req,res,next){
         var getEncuestasCampaña = await CampañaEncuestaService.getEncuestasCampaña(idCampaña); 
         if(getEncuestasCampaña.length === 0){
             return res.status(422).json({
+                error: "campaña-encuesta-relacionar",
                 message: "La campaña seleccionada no tiene niguna encuesta",
             });
         }
@@ -149,6 +162,7 @@ exports.getOpcionesPregunta = async function (req,res,next){
         //Comprobar si el id de la encuesta es un numero
         if (!idEncuestaEsInt){
             return res.status(422).json({
+                error: "encuesta-int",
                 message: "La encuesta seleccionada no es un número",
             });
         }
@@ -157,6 +171,7 @@ exports.getOpcionesPregunta = async function (req,res,next){
         var encuestaExiste = await EncuestaService.encuestaExiste(idEncuesta); 
         if(! encuestaExiste){
             return res.status(422).json({
+                error: "encuesta-existir",
                 message: "La encuesta no existe",
             });
         }
@@ -171,6 +186,7 @@ exports.getOpcionesPregunta = async function (req,res,next){
         });
         if (! encuestaEcnontrada){
             return res.status(422).json({
+                error: "usuario-encuesta-relacionar",
                 message: "El usuario no tiene esa encuesta",
             });
         }
@@ -180,6 +196,7 @@ exports.getOpcionesPregunta = async function (req,res,next){
         var getPreguntasEncuesta = await EncuestaPreguntaService.getPreguntasEncuesta(idEncuesta); 
         if(getPreguntasEncuesta.length === 0){
             return res.status(422).json({
+                error: "encuesta-pregunta-relacionar",
                 message: "La encuesta seleccionada no tiene niguna pregunta",
             });
         }
@@ -188,6 +205,7 @@ exports.getOpcionesPregunta = async function (req,res,next){
         //Comprobar si el id de la pregunta es un numero
         if (!idPreguntaEsInt){
             return res.status(422).json({
+                error: "pregunta-int",
                 message: "La pregunta seleccionada no es un número",
             });
         }
@@ -196,6 +214,7 @@ exports.getOpcionesPregunta = async function (req,res,next){
         var preguntaExiste = await PreguntaService.preguntaExiste(idPregunta); 
         if(! preguntaExiste){
             return res.status(422).json({
+                error: "pregunta-existir",
                 message: "La pregunta no existe",
             });
         }
@@ -210,6 +229,7 @@ exports.getOpcionesPregunta = async function (req,res,next){
         });
         if (! preguntaEcnontrada){
             return res.status(422).json({
+                error: "usuario-pregunta-relacionar",
                 message: "El usuario no tiene esa pregunta",
             });
         }
@@ -218,6 +238,7 @@ exports.getOpcionesPregunta = async function (req,res,next){
         var getOpcionesPregunta = await OpcionesPreguntaService.getOpcionesPregunta(idPregunta); 
         if(getOpcionesPregunta.length === 0){
             return res.status(422).json({
+                error: "pregunta-opcpregunta-relacionar",
                 message: "La pregunta seleccionada no tiene niguna opcionPregunta",
             });
         }
@@ -242,6 +263,7 @@ exports.eliminarOpcionesPregunta = async function (req,res,next){
         //Comprobar si la opcionespregunta existe
         if(!opcionesPreguntaExiste){
             return res.status(422).json({
+                error: "opcpregunta-existir",
                 message: "La opciónPregunta que se intenta eliminiar no existe",
             });
         }
@@ -255,6 +277,7 @@ exports.eliminarOpcionesPregunta = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "opcpregunta-eliminar",
                 message: "La opcionesPregunta no ha sido eliminada",
             });
         }

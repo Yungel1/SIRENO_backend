@@ -16,6 +16,7 @@ exports.insertarSituacion = async function (req,res,next){
         //Comprobar si la situación está repetida
         if(situacionRepetida){
             return res.status(422).json({
+                error: "situacion-ya-existir",
                 message: "Ya hay una situación con estos parámetros",
             });
         }
@@ -24,6 +25,7 @@ exports.insertarSituacion = async function (req,res,next){
         //Comprobar si el usuario existe
         if(!usuarioExiste){
             return res.status(422).json({
+                error: "usuario-existir",
                 message: "El docente seleccionado no existe",
             });
         }
@@ -32,6 +34,7 @@ exports.insertarSituacion = async function (req,res,next){
         //Comprobar si el id es de un docente
         if(!docenteExiste){
             return res.status(422).json({
+                error: "docente-existir",
                 message: "El docente seleccionado no corresponde a ningún docente existente",
             });
         }
@@ -40,6 +43,7 @@ exports.insertarSituacion = async function (req,res,next){
          //Comprobar si el id del grupo existe
          if(!grupoExiste){
             return res.status(422).json({
+                error: "grupo-existir",
                 message: "El grupo seleccionado no corresponde a ningún grupo existente",
             });
         }
@@ -48,6 +52,7 @@ exports.insertarSituacion = async function (req,res,next){
          //Comprobar si el id del grado existe
          if(!gradoExiste){
             return res.status(422).json({
+                error: "grado-existir",
                 message: "El grado seleccionado no corresponde a ningún grado existente",
             });
         }
@@ -56,6 +61,7 @@ exports.insertarSituacion = async function (req,res,next){
          //Comprobar si el id de la asignatura existe
          if(!asignaturaExiste){
             return res.status(422).json({
+                error: "asignatura-existir",
                 message: "La asignatura seleccionada no corresponde a ninguna asignatura existente",
             });
         }
@@ -64,6 +70,7 @@ exports.insertarSituacion = async function (req,res,next){
         //Comprobar si el id de la campaña es un numero
         if (!idCamapñaEsInt){
             return res.status(422).json({
+                error: "campaña-int",
                 message: "El id de la campaña seleccionada no es un número",
             });
         }
@@ -72,6 +79,7 @@ exports.insertarSituacion = async function (req,res,next){
          //Comprobar si el id de la campaña existe
          if(! campañaExiste){
             return res.status(422).json({
+                error: "campaña-existir",
                 message: "La campaña seleccionada no corresponde a ninguna campaña existente",
             });
         }
@@ -85,6 +93,7 @@ exports.insertarSituacion = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "situacion-insertar",
                 message: "La situación no ha sido insertada",
             });
         }
@@ -105,6 +114,7 @@ exports.getCampañaSituacion = async function (req,res,next){
         var getSituacionesUsuario = await UsuarioSituacionService.getSituacionesUsuario(idUsuario); 
         if(getSituacionesUsuario.length === 0){
             return res.status(422).json({
+                error: "usuario-situacion-relacionar",
                 message: "No tienes ninguna situación relacionada",
             });
         }
@@ -113,6 +123,7 @@ exports.getCampañaSituacion = async function (req,res,next){
         //Comprobar si el id de la situación es un numero
         if (!idSituacionEsInt){
             return res.status(422).json({
+                error: "situacion-int",
                 message: "La situación seleccionada no es un número",
             });
         }
@@ -121,6 +132,7 @@ exports.getCampañaSituacion = async function (req,res,next){
         var situacionExiste = await SituacionService.situacionExiste(idSituacion); 
         if(! situacionExiste){
             return res.status(422).json({
+                error: "situacion-existir",
                 message: "La situación no existe",
             });
         }
@@ -135,6 +147,7 @@ exports.getCampañaSituacion = async function (req,res,next){
         });
         if (! ecnontrado){
             return res.status(422).json({
+                error: "usuario-situacion-relacionar",
                 message: "El usuario no tiene esa situación",
             });
         }
@@ -143,6 +156,7 @@ exports.getCampañaSituacion = async function (req,res,next){
         var getSituacionesRespondidasUsuario = await UsuarioSituacionService.usuarioSituacionRespondida(idUsuario, idSituacion); 
         if(getSituacionesRespondidasUsuario){
             return res.status(422).json({
+                error: "situacion-responder",
                 message: "La situación seleccionada ya esta respondida",
             });
         }
@@ -151,6 +165,7 @@ exports.getCampañaSituacion = async function (req,res,next){
         var getCampañaSituacion = await SituacionService.getCampañaSituacion(idSituacion); 
         if(getCampañaSituacion[0].idCampaña === null){
             return res.status(422).json({
+                error: "situacion-campaña-relacionar",
                 message: "La situación seleccionada no tiene niguna campaña",
             });
         }
@@ -173,6 +188,7 @@ exports.deleteSituacion = async function (req,res,next){
         //Comprobar si el id es un número
         if(!HelperNumeric.isNumeric(id)){
             return res.status(422).json({
+                error: "situacion-int",
                 message: "El id introducido no es un número",
             });
         }
@@ -181,6 +197,7 @@ exports.deleteSituacion = async function (req,res,next){
         var situacionExiste = await SituacionService.situacionExiste(id);
         if(!situacionExiste){
             return res.status(422).json({
+                error: "situacion-existir",
                 message: "La situación no existe",
             });
         }
@@ -194,6 +211,7 @@ exports.deleteSituacion = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "situacion-eliminar",
                 message: "No se ha borrado la situación",
             });
         }
@@ -217,6 +235,7 @@ exports.enviarEmailUsuarios = async function (req,res,next){
         var idSituacion = await SituacionService.situacionRepetida(idGrado, idDocente, idGrupo, idAsignatura, idCampaña);
         if(! idSituacion){
             return res.status(422).json({
+                error: "situacion-existir",
                 message: "No existe ninguna situación con estos parametros",
             });
         }

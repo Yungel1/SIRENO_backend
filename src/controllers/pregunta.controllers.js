@@ -13,6 +13,7 @@ exports.insertarPregunta = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "pregunta-insertar",
                 message: "La pregunta no ha sido insertada",
             });
         }
@@ -32,6 +33,7 @@ exports.eliminarPregunta = async function (req,res,next){
         //Comprobar si la pregunta existe
         if(!preguntaExiste){
             return res.status(422).json({
+                error: "pregunta-existir",
                 message: "La pregunta que se intenta eliminiar no existe",
             });
         }
@@ -45,6 +47,7 @@ exports.eliminarPregunta = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "pregunta-eliminar",
                 message: "La pregunta no ha sido eliminada",
             });
         }
@@ -65,6 +68,7 @@ exports.getPreguntas = async function (req,res,next){
             return res.status(201).json({preguntas});
         } else{
             return res.status(422).json({
+                error: "pregunta-coger",
                 message: "No se han podido coger las preguntas",
             });
         }
