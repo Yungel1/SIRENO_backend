@@ -10,6 +10,7 @@ exports.insertarGrupo = async function (req,res,next){
         //Comprobar si el id del grupo existe
         if(grupoExiste){
            return res.status(422).json({
+               error: "grupo-existe",
                message: "El grupo seleccionado ya existe",
            });
        }
@@ -23,6 +24,7 @@ exports.insertarGrupo = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "grupo-insertar",
                 message: "El grupo no ha sido insertado",
             });
         }
@@ -42,6 +44,7 @@ exports.eliminarGrupo = async function (req,res,next){
         //Comprobar si el id del grupo existe
         if(!grupoExiste){
            return res.status(422).json({
+               error: "grupo-existir",
                message: "El grupo seleccionado no existe",
            });
        }
@@ -55,6 +58,7 @@ exports.eliminarGrupo = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "grupo-eliminar",
                 message: "El grupo no ha sido eliminado",
             });
         }
@@ -75,6 +79,7 @@ exports.getGrupos = async function (req,res,next){
             return res.status(201).json({grupos});
         } else{
             return res.status(422).json({
+                error: "grupo-coger",
                 message: "No se han podido coger las grupos",
             });
         }

@@ -14,6 +14,7 @@ exports.insertarEncuesta = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "encuesta-insertar",
                 message: "La encuesta no ha sido insertada",
             });
         }
@@ -32,6 +33,7 @@ exports.deleteEncuesta = async function (req,res,next){
         //Comprobar si el id es un número
         if(!helperNumeric.isNumeric(id)){
             return res.status(422).json({
+                error: "encuesta-id-numero",
                 message: "El id introducido no es un número",
             });
         }
@@ -40,6 +42,7 @@ exports.deleteEncuesta = async function (req,res,next){
         var encuestaExiste = await EncuestaService.encuestaExiste(id);
         if(!encuestaExiste){
             return res.status(422).json({
+                error: "encuesta-existir",
                 message: "La encuesta no existe",
             });
         }
@@ -53,6 +56,7 @@ exports.deleteEncuesta = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "encuesta-borrar",
                 message: "No se ha borrado la encuesta",
             });
         }

@@ -11,6 +11,7 @@ exports.insertarTexto = async function (req,res,next){
         //Comprobar si el id de la pregunta, el idioma y la opción de pregunta son números
         if(!helperNumeric.isNumeric(req.body.idIdioma)||!helperNumeric.isNumeric(req.body.idPregunta)||!helperNumeric.isNumeric(req.body.idOpcionesPregunta)){
             return res.status(422).json({
+                error: "texto-numero",
                 message: "Uno de los parámetros ha de ser un número y no lo es",
             });
         }
@@ -19,6 +20,7 @@ exports.insertarTexto = async function (req,res,next){
         var textoExiste = await TextoService.textoExiste(req.body.idIdioma,req.body.idPregunta,req.body.idOpcionesPregunta);
         if(textoExiste){
             return res.status(422).json({
+                error: "texto-existe",
                 message: "El texto ya existe",
             });
         }
@@ -27,6 +29,7 @@ exports.insertarTexto = async function (req,res,next){
         var preguntaExiste = await PreguntaService.preguntaExiste(req.body.idPregunta);
         if(!preguntaExiste){
             return res.status(422).json({
+                error: "pregunta-existir",
                 message: "La pregunta no existe",
             });
         }
@@ -35,6 +38,7 @@ exports.insertarTexto = async function (req,res,next){
         var idiomaExiste = await IdiomaService.idiomaExiste(req.body.idIdioma);
         if(!idiomaExiste){
             return res.status(422).json({
+                error: "idioma-existir",
                 message: "El idioma no existe",
             });
         }
@@ -43,6 +47,7 @@ exports.insertarTexto = async function (req,res,next){
         var opcionPreguntaExiste = await OpcionesPreguntaService.opcionesPreguntaExiste(req.body.idOpcionesPregunta);
         if(!opcionPreguntaExiste){
             return res.status(422).json({
+                error: "opcionpregunta-existir",
                 message: "La opción de pregunta no existe",
             });
         }
@@ -56,6 +61,7 @@ exports.insertarTexto = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "texto-insertar",
                 message: "El texto no ha sido insertado",
             });
         }
@@ -74,6 +80,7 @@ exports.deleteTexto = async function (req,res,next){
         //Comprobar si el id es un número
         if(!helperNumeric.isNumeric(id)){
             return res.status(422).json({
+                error: "texto-id-numero",
                 message: "El id introducido no es un número",
             });
         }
@@ -82,6 +89,7 @@ exports.deleteTexto = async function (req,res,next){
         var textoExiste = await TextoService.textoExiste(id);
         if(!textoExiste){
             return res.status(422).json({
+                error: "texto-existir",
                 message: "El texto no existe",
             });
         }
@@ -95,6 +103,7 @@ exports.deleteTexto = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "texto-borrar",
                 message: "No se ha borrado el texto",
             });
         }
@@ -129,6 +138,7 @@ exports.getTexto = async function (req,res,next){
         //Comprobar si el id de la pregunta, el idioma y la opción de pregunta son números
         if(!helperNumeric.isNumeric(idIdioma)||!helperNumeric.isNumeric(idPregunta)||(!helperNumeric.isNumeric(idOpcionesPregunta)&&idOpcionesPregunta!=null)){
             return res.status(422).json({
+                error: "texto-numero",
                 message: "Uno de los parámetros ha de ser un número y no lo es",
             });
         }
@@ -137,6 +147,7 @@ exports.getTexto = async function (req,res,next){
         var idiomaExiste = await IdiomaService.idiomaExiste(idIdioma);
         if(!idiomaExiste){
             return res.status(422).json({
+                error: "idioma-existir",
                 message: "El idioma no existe",
             });
         }
@@ -147,6 +158,7 @@ exports.getTexto = async function (req,res,next){
             pertenece = await PreguntaService.pertenecePreguntaUsuario(req.usuario,idPregunta);
             if(!pertenece){
                 return res.status(422).json({
+                    error: "usuario-pregunta-texto-acceso",
                     message: "El usuario no tiene acceso a este texto porque no tiene acceso a la pregunta o no existe",
                 });
             }
@@ -155,6 +167,7 @@ exports.getTexto = async function (req,res,next){
             pertenece = await OpcionesPreguntaService.perteneceOpcionesPreguntaUsuario(req.usuario,idPregunta,idOpcionesPregunta)
             if(!pertenece){
                 return res.status(422).json({
+                    error: "usuario-opcionespregunta-texto-acceso",
                     message: "El usuario no tiene acceso a este texto porque no tiene acceso a la opción de pregunta o no existe",
                 });
             }
@@ -164,6 +177,7 @@ exports.getTexto = async function (req,res,next){
 
         if(row == null){
             return res.status(422).json({
+                error: "texto-existir",
                 message: "El texto no existe",
             });
         }

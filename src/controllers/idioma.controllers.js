@@ -14,6 +14,7 @@ exports.insertarIdioma = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "idioma-insertar",
                 message: "El idioma no ha sido insertado",
             });
         }
@@ -32,6 +33,7 @@ exports.deleteIdioma = async function (req,res,next){
         //Comprobar si el id es un número
         if(!helperNumeric.isNumeric(id)){
             return res.status(422).json({
+                error: "idioma-id-numero",
                 message: "El id introducido no es un número",
             });
         }
@@ -40,6 +42,7 @@ exports.deleteIdioma = async function (req,res,next){
         var idiomaExiste = await IdiomaService.idiomaExiste(id);
         if(!idiomaExiste){
             return res.status(422).json({
+                error: "idioma-existir",
                 message: "El idioma no existe",
             });
         }
@@ -53,6 +56,7 @@ exports.deleteIdioma = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "idioma-borrar",
                 message: "No se ha borrado el idioma",
             });
         }
@@ -72,6 +76,7 @@ exports.getIdioma = async function (req,res,next){
 
         if(row == null){
             return res.status(422).json({
+                error: "idioma-existir",
                 message: "El idioma no existe",
             });
         }

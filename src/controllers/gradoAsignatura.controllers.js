@@ -13,6 +13,7 @@ exports.relacionarGradoAsignatura = async function (req,res,next){
         var gradoExiste = await GradoService.gradoExiste(idGrado);
         if(!gradoExiste){
             return res.status(422).json({
+                error: "grado-existir",
                 message: "El grado no existe",
             });
         }
@@ -21,6 +22,7 @@ exports.relacionarGradoAsignatura = async function (req,res,next){
         var asignaturaExiste = await AsignaturaService.asignaturaExiste(idAsignatura);
         if(!asignaturaExiste){
             return res.status(422).json({
+                error: "asignatura-existir",
                 message: "La asignatura no existe",
             });
         }
@@ -29,6 +31,7 @@ exports.relacionarGradoAsignatura = async function (req,res,next){
         var gradoAsignaturaExiste = await GradoAsignaturaService.gradoAsignaturaExiste(idGrado, idAsignatura);
         if(gradoAsignaturaExiste){
             return res.status(422).json({
+                error: "grado-asignatura-relacionados",
                 message: "El grado y la asignatura ya estan relacionados",
             });
         }
@@ -42,6 +45,7 @@ exports.relacionarGradoAsignatura = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "grado-asignatura-relacionar",
                 message: "El grado y la asignatura no han sido relacionadas correctamente",
             });
         }
@@ -64,6 +68,7 @@ exports.elimiarRelacionGradoAsignatura = async function (req,res,next){
         var gradoAsignaturaExiste = await GradoAsignaturaService.gradoAsignaturaExiste(idGrado, idAsignatura);
         if(! gradoAsignaturaExiste){
             return res.status(422).json({
+                error: "grado-asignatura-relacion-existir",
                 message: "El grado y la asignatura no estan relacionados",
             });
         }
@@ -77,6 +82,7 @@ exports.elimiarRelacionGradoAsignatura = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "grado-asignatura-relacion-eliminar",
                 message: "La relación grado y asignatura no ha sido eliminada",
             });
         }

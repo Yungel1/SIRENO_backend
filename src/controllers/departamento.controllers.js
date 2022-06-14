@@ -10,6 +10,7 @@ exports.insertarDepartamento = async function (req,res,next){
             //Comprobar si el id del departamento existe
             if(departamentoExiste){
             return res.status(422).json({
+                error: "departamento-existe",
                 message: "El departamento seleccionado ya existe",
             });
         }
@@ -23,6 +24,7 @@ exports.insertarDepartamento = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "departamento-insertar",
                 message: "El departamento no ha sido insertado",
             });
         }
@@ -42,6 +44,7 @@ exports.eliminarDepartamento = async function (req,res,next){
         //Comprobar si el id del departamento existe
         if(!departamentoExiste){
            return res.status(422).json({
+               error: "departamento-existir",
                message: "El departamento seleccionado no existe",
            });
        }
@@ -55,6 +58,7 @@ exports.eliminarDepartamento = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "departamento-eliminar",
                 message: "El departamento no ha sido eliminado",
             });
         }
@@ -75,6 +79,7 @@ exports.getDepartamentos = async function (req,res,next){
             return res.status(201).json({departamentos});
         } else{
             return res.status(422).json({
+                error: "departamento-coger",
                 message: "No se han podido coger las departamentos",
             });
         }

@@ -12,6 +12,7 @@ exports.insertarGrado = async function (req,res,next){
         //Comprobar si el id del grado existe
         if(gradoExiste){
            return res.status(422).json({
+               error: "grado-existe",
                message: "El grado seleccionado ya existe",
            });
        }
@@ -20,6 +21,7 @@ exports.insertarGrado = async function (req,res,next){
             //Comprobar si el id del centro existe
             if(! centroExiste){
             return res.status(422).json({
+                error: "centro-existir",
                 message: "El centro seleccionado no existe",
             });
         }
@@ -33,6 +35,7 @@ exports.insertarGrado = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "grado-insertar",
                 message: "El grado no ha sido insertado",
             });
         }
@@ -52,6 +55,7 @@ exports.eliminarGrado = async function (req,res,next){
         //Comprobar si el id del grado existe
         if(!gradoExiste){
            return res.status(422).json({
+               error: "grado-existir",
                message: "El grado seleccionado no existe",
            });
        }
@@ -65,6 +69,7 @@ exports.eliminarGrado = async function (req,res,next){
             });
         } else{
             return res.status(422).json({
+                error: "grado-eliminar",
                 message: "El grado no ha sido eliminado",
             });
         }
@@ -85,6 +90,7 @@ exports.getGrados = async function (req,res,next){
             return res.status(201).json({grados});
         } else{
             return res.status(422).json({
+                error: "grado-coger",
                 message: "No se han podido coger las grados",
             });
         }
