@@ -90,7 +90,7 @@ exports.perteneceOpcionesPreguntaUsuario = async function (usuario,idPregunta,id
 exports.getOpcPreguntasUsuario = async function (idUsuario, idPregunta) {
 
     const row = await db.query(
-        "SELECT opcionespregunta.id FROM usuariosituacion,situacion,campañaencuesta,activacion,encuestapregunta,opcionespregunta where usuariosituacion.usuario=? and opcionespregunta.idPregunta=? and usuariosituacion.respondida=0 and usuariosituacion.idSituacion=situacion.id and situacion.idCampaña=campañaencuesta.idCampaña and situacion.idCampaña=activacion.idCampaña and situacion.idDocente=activacion.idDocente and situacion.idAsignatura = activacion.idAsignatura and situacion.idGrado=activacion.idGrado and situacion.idGrupo=activacion.idGrupo and activacion.activado=1 and encuestapregunta.idEncuesta=campañaencuesta.idEncuesta and opcionespregunta.idPregunta=encuestapregunta.idPregunta;",[
+        "SELECT opcionespregunta.id, opcionespregunta.idPregunta FROM usuariosituacion,situacion,campañaencuesta,activacion,encuestapregunta,opcionespregunta where usuariosituacion.usuario=? and opcionespregunta.idPregunta=? and usuariosituacion.respondida=0 and usuariosituacion.idSituacion=situacion.id and situacion.idCampaña=campañaencuesta.idCampaña and situacion.idCampaña=activacion.idCampaña and situacion.idDocente=activacion.idDocente and situacion.idAsignatura = activacion.idAsignatura and situacion.idGrado=activacion.idGrado and situacion.idGrupo=activacion.idGrupo and activacion.activado=1 and encuestapregunta.idEncuesta=campañaencuesta.idEncuesta and opcionespregunta.idPregunta=encuestapregunta.idPregunta;",[
             idUsuario,
             idPregunta
         ]
