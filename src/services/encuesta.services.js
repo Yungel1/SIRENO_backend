@@ -1,9 +1,11 @@
 const db = require("../helpers/db.js");
 
 //Insertar encuesta en la base de datos
-exports.insertarEncuesta = async function () {
+exports.insertarEncuesta = async function (nombre) {
 
-    const rows = await db.query('INSERT INTO encuesta() VALUES()');
+    const rows = await db.query('INSERT INTO encuesta(nombre) VALUES(?)',
+        nombre
+    );
 
     if (rows.affectedRows === 1) {
         return true; //Se ha insertado correctamente
@@ -50,7 +52,7 @@ exports.deleteEncuesta = async function (id) {
 exports.getAllEncuesta = async function () {
 
     const row = await db.query(
-        "SELECT id FROM encuesta"
+        "SELECT id,nombre FROM encuesta"
         );
         
 

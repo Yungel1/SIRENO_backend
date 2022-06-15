@@ -31,7 +31,7 @@ exports.insertarCampaña = async function (req,res,next){
             });
         }
 
-        var insertado = await CampañaService.insertarCampaña(req.body.fechaIni,req.body.fechaFin,req.body.descripcion,req.body.anonima,req.body.con_registro); //Insertar campaña
+        var insertado = await CampañaService.insertarCampaña(req.body.nombre,req.body.fechaIni,req.body.fechaFin,req.body.descripcion,req.body.anonima,req.body.con_registro); //Insertar campaña
 
         //Comprobar si se ha insertado la campaña
         if(insertado){

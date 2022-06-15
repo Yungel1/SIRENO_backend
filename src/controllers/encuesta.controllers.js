@@ -5,7 +5,7 @@ var helperNumeric = require('../helpers/helperNumeric');
 exports.insertarEncuesta = async function (req,res,next){
     try{
 
-        var insertado = await EncuestaService.insertarEncuesta(); //Insertar idioma
+        var insertado = await EncuestaService.insertarEncuesta(req.body.nombre); //Insertar encuesta
        
         //Comprobar si se ha insertado la encuesta
         if(insertado){

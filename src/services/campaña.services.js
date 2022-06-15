@@ -1,9 +1,10 @@
 const db = require("../helpers/db.js");
 
 //Insertar campaña en la base de datos
-exports.insertarCampaña = async function (fechaIni, fechaFin, descripcion, anonima, con_registro) {
+exports.insertarCampaña = async function (nombre,fechaIni, fechaFin, descripcion, anonima, con_registro) {
 
-    const rows = await db.query('INSERT INTO campaña(fechaIni, fechaFin, descripcion, anonima, con_registro) VALUES(?,?,?,?,?)',[
+    const rows = await db.query('INSERT INTO campaña(nombre,fechaIni, fechaFin, descripcion, anonima, con_registro) VALUES(?,?,?,?,?,?)',[
+        nombre,
         fechaIni,
         fechaFin,
         descripcion,
@@ -55,7 +56,7 @@ exports.deleteCampaña = async function (id) {
 exports.getAllCampaña = async function () {
 
     const row = await db.query(
-        "SELECT id,fechaIni,fechaFin,descripcion,anonima,con_registro FROM campaña"
+        "SELECT id,nombre,fechaIni,fechaFin,descripcion,anonima,con_registro FROM campaña"
         );
         
     return row;
@@ -67,7 +68,7 @@ exports.getAllCampaña = async function () {
 exports.getCampañaInfo = async function (id) {
 
     const row = await db.query(
-        "SELECT fechaIni,fechaFin,descripcion,anonima,con_registro FROM campaña WHERE id=?",
+        "SELECT nombre,fechaIni,fechaFin,descripcion,anonima,con_registro FROM campaña WHERE id=?",
         id
         );
         
