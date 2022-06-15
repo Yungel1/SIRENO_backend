@@ -59,3 +59,37 @@ exports.getAllEncuesta = async function () {
     return row;
 
 }
+
+//Coger encuesta
+exports.getEncuestaInfo = async function (id) {
+
+    const row = await db.query(
+        "SELECT id,nombre FROM encuesta WHERE id=?",
+        id
+        );
+        
+
+    if(row.length > 0){
+        return row;
+    } else{
+        return null;
+    }
+
+}
+
+//Si la encuesta existe y el usuario tiene acceso a esa encuesta true sino false
+exports.perteneceEncuestaUsuario = async function (usuario,id) {
+
+    const row = await db.query(
+        "SELECT encuesta.id FROM usuariosituacion,situacion,campañaencuesta,encuesta where usuariosituacion.usuario=? and encuesta.id=? and usuariosituacion.idSituacion=situacion.id and situacion.idCampaña=campañaencuesta.idCampaña and campañaencuesta.idEncuesta=encuesta.id",[
+        usuario,
+        id
+        ]);
+
+    if (row.length > 0) {
+        return true;
+    } else{
+        return false;
+    }
+
+}
