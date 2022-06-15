@@ -72,7 +72,7 @@ exports.getOpcionesPreguntas  = async function () {
 exports.perteneceOpcionesPreguntaUsuario = async function (usuario,idPregunta,idOpcionesPregunta) {
 
     const row = await db.query(
-        "SELECT opcionespregunta.idPregunta,opcionespregunta.id FROM usuariosituacion,situacion,campañaencuesta,encuestapregunta,opcionespregunta where usuariosituacion.usuario=? and opcionespregunta.id=? and opcionespregunta.idPregunta=? and usuariosituacion.idSituacion=situacion.id and situacion.idCampaña=campañaencuesta.idCampaña and campañaencuesta.idEncuesta=encuestapregunta.idEncuesta and encuestapregunta.idPregunta=opcionespregunta.idPregunta",[
+        "SELECT opcionespregunta.idPregunta,opcionespregunta.id FROM usuariosituacion,situacion,campañaencuesta,encuestapregunta,opcionespregunta,activacion where usuariosituacion.usuario=? and opcionespregunta.id=? and opcionespregunta.idPregunta=? and usuariosituacion.idSituacion=situacion.id and situacion.idCampaña=campañaencuesta.idCampaña and campañaencuesta.idEncuesta=encuestapregunta.idEncuesta and encuestapregunta.idPregunta=opcionespregunta.idPregunta and usuariosituacion.respondida=0 and situacion.idCampaña=activacion.idCampaña and situacion.idDocente=activacion.idDocente and situacion.idAsignatura = activacion.idAsignatura and situacion.idGrado=activacion.idGrado and situacion.idGrupo=activacion.idGrupo and activacion.activado=1",[
         usuario,
         idOpcionesPregunta,
         idPregunta

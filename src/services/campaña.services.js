@@ -84,7 +84,7 @@ exports.getCampañaInfo = async function (id) {
 exports.perteneceCampañaUsuario = async function (usuario,id) {
 
     const row = await db.query(
-        "SELECT campaña.id FROM usuariosituacion,situacion,campaña where usuariosituacion.usuario=? and campaña.id=? and usuariosituacion.idSituacion=situacion.id and situacion.idCampaña=campaña.id",[
+        "SELECT campaña.id FROM usuariosituacion,situacion,campaña,activacion where usuariosituacion.usuario=? and campaña.id=? and usuariosituacion.idSituacion=situacion.id and situacion.idCampaña=campaña.id and usuariosituacion.respondida=0 and situacion.idCampaña=activacion.idCampaña and situacion.idDocente=activacion.idDocente and situacion.idAsignatura = activacion.idAsignatura and situacion.idGrado=activacion.idGrado and situacion.idGrupo=activacion.idGrupo and activacion.activado=1",[
         usuario,
         id
         ]);

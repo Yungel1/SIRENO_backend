@@ -81,7 +81,7 @@ exports.getEncuestaInfo = async function (id) {
 exports.perteneceEncuestaUsuario = async function (usuario,id) {
 
     const row = await db.query(
-        "SELECT encuesta.id FROM usuariosituacion,situacion,campañaencuesta,encuesta where usuariosituacion.usuario=? and encuesta.id=? and usuariosituacion.idSituacion=situacion.id and situacion.idCampaña=campañaencuesta.idCampaña and campañaencuesta.idEncuesta=encuesta.id",[
+        "SELECT encuesta.id FROM usuariosituacion,situacion,campañaencuesta,encuesta,activacion where usuariosituacion.usuario=? and encuesta.id=? and usuariosituacion.idSituacion=situacion.id and situacion.idCampaña=campañaencuesta.idCampaña and campañaencuesta.idEncuesta=encuesta.id and usuariosituacion.respondida=0 and situacion.idCampaña=activacion.idCampaña and situacion.idDocente=activacion.idDocente and situacion.idAsignatura = activacion.idAsignatura and situacion.idGrado=activacion.idGrado and situacion.idGrupo=activacion.idGrupo and activacion.activado=1",[
         usuario,
         id
         ]);
