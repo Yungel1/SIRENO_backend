@@ -15,4 +15,8 @@ router.delete('/delete', authentication, (req, res, next) => authorization(req,r
 //Coger preguntas
 router.get('/get', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), PreguntaController.getPreguntas);
 
+//Coger pregunta info
+router.get('/getInfo', authentication, (req, res, next) => authorization(req,res,next,[roles.Todos]), PreguntaController.getPreguntaInfo);
+
+
 module.exports = router;
