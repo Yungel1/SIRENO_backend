@@ -94,7 +94,7 @@ exports.insertarRespuesta = async function (req,res,next){
 
         //Seleccionar las opcionesPregunta de la pregunta
        var perteneceOpcionesPreguntaUsuario = await OpcionesPreguntaService.perteneceOpcionesPreguntaUsuario(idUsuario, idPregunta, idOpcionPregunta); 
-       if(perteneceOpcionesPreguntaUsuario.length === 0){
+       if(!perteneceOpcionesPreguntaUsuario){
            return res.status(422).json({
                error: "pregunta-opcpregunta-relacionar",
                message: "La pregunta seleccionada no tiene niguna opcionPregunta",
