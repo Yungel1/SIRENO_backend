@@ -156,6 +156,23 @@ exports.getPreguntasEncuesta = async function (req,res,next){
             });
         }
 
+        //Coger info de la situacion desde la campaña
+        var infoSituacionCampaña = await SituacionService.getInfoSituacionDesdeCampaña(idCampaña);
+        var idDocente = infoSituacionCampaña[0].idDocente;
+        var idGrupo = infoSituacionCampaña[0].idGrupo;
+        var idAsignatura = infoSituacionCampaña[0].idAsignatura;
+        var idGrado = infoSituacionCampaña[0].idGrado;
+
+        //Ver si la campaña esta activada
+        var campañaActivada = await ActivacionService.campañaActivada(idDocente, idGrupo, idGrado, idAsignatura, idCampaña);
+        if (!campañaActivada){
+            return res.status(422).json({
+                error: "campaña-activar",
+                message: "La campaña seleccionada no esta activada",
+            });
+        }
+
+
         //Seleccionar las encuestas de la campaña
         var getEncuestasCampaña = await CampañaEncuestaService.getEncuestasCampaña(idCampaña); 
         if(getEncuestasCampaña.length === 0){

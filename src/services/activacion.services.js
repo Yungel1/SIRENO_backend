@@ -21,6 +21,26 @@ exports.insertarActivacion = async function (idDocente, idGrupo, idGrado, idAsig
 
 }
 
+
+//Si la activacion es 1 true, sino false
+exports.campañaActivada  = async function (idDocente, idGrupo, idGrado, idAsignatura, idCampaña) {
+
+    const row = await db.query(
+        "SELECT activado FROM activacion WHERE idDocente=? and idGrupo=? and idGrado=? and idAsignatura=? and idCampaña=?",[
+        idDocente,
+        idGrupo,
+        idGrado,
+        idAsignatura,
+        idCampaña   
+        ]);
+    
+    if (row[0].activado) {
+        return true; //La activacion esta activada
+    } else{
+        return false;
+    }
+}
+
 //Actualizar activacion en la base de datos
 exports.actualizarActivacion = async function (idDocente, idGrupo, idGrado, idAsignatura, idCampaña, fechaActIni, fechaActFin) {
 

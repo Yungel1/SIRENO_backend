@@ -19,6 +19,19 @@ exports.insertarSituacion = async function (idGrado, idDocente, idGrupo, idAsign
 
 }
 
+
+//Coger info de las situaciones desde la campaña
+exports.getInfoSituacionDesdeCampaña = async function (idCamapña) {
+
+    const row = await db.query(
+        "SELECT idGrado,idDocente,idGrupo,idAsignatura FROM situacion WHERE idCampaña=?",[
+            idCamapña
+        ]);
+        
+    return row;
+
+}
+
 //Si existe la situación true sino false
 exports.situacionExiste = async function (id) {
 
