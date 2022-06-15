@@ -74,3 +74,17 @@ exports.getAllEncuestaPregunta = async function () {
     return row;
 
 }
+
+exports.getPreguntasUsuario = async function (idUsuario, idEncuesta) {
+
+    const row = await db.query(
+        "SELECT encuestapregunta.idPregunta FROM usuariosituacion,situacion,campañaencuesta,activacion,encuestapregunta where usuariosituacion.usuario=? and encuestapregunta.idEncuesta=? and usuariosituacion.respondida=0 and usuariosituacion.idSituacion=situacion.id and situacion.idCampaña=campañaencuesta.idCampaña and situacion.idCampaña=activacion.idCampaña and situacion.idDocente=activacion.idDocente and situacion.idAsignatura = activacion.idAsignatura and situacion.idGrado=activacion.idGrado and situacion.idGrupo=activacion.idGrupo and activacion.activado=1 and encuestapregunta.idEncuesta=campañaencuesta.idEncuesta;",[
+            idUsuario,
+            idEncuesta
+        ]
+      
+        );
+        
+    return row;
+
+}

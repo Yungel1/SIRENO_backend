@@ -62,69 +62,8 @@ exports.relacionarCampañaEncuesta = async function (req,res,next){
 exports.getEncuestasCampaña = async function (req,res,next){
     try{
 
-        var idSituacion = req.query.idSituacion;
         var idCampaña = req.query.idCampaña;
         var idUsuario = req.usuario;
-
-        //Seleccionar las situaciones del usuario
-        var getSituacionesUsuario = await UsuarioSituacionService.getSituacionesUsuario(idUsuario); 
-        if(getSituacionesUsuario.length === 0){
-            return res.status(422).json({
-                error: "situacion-relacionar",
-                message: "No tienes ninguna situación relacionada",
-            });
-        }
-
-        var idSituacionEsInt = helperNumeric.isNumeric(idSituacion);
-        //Comprobar si el id de la situación es un numero
-        if (!idSituacionEsInt){
-            return res.status(422).json({
-                error: "situacion-int",
-                message: "La situación seleccionada no es un número",
-            });
-        }
-
-        //Comprobar que la situación existe
-        var situacionExiste = await SituacionService.situacionExiste(idSituacion); 
-        if(! situacionExiste){
-            return res.status(422).json({
-                error: "situacion-existir",
-                message: "La situación no existe",
-            });
-        }
-
-        //Comprobar que la situación es del usuario logeado
-        var ecnontrado = false;
-        getSituacionesUsuario.forEach(situacion => {
-            var tieneSituacion = (situacion.idSituacion === parseInt(idSituacion));
-            if(tieneSituacion){
-                ecnontrado = true;
-            }
-        });
-        if (! ecnontrado){
-            return res.status(422).json({
-                error: "usuario-situacion-relacionar",
-                message: "El usuario no tiene esa situación",
-            });
-        }
-
-        //Ver si la situación está respondida o no
-        var getSituacionesRespondidasUsuario = await UsuarioSituacionService.usuarioSituacionRespondida(idUsuario, idSituacion); 
-        if(getSituacionesRespondidasUsuario){
-            return res.status(422).json({
-                error: "situacion-responder",
-                message: "La situación seleccionada ya esta respondida",
-            });
-        }
-       
-        //Seleccionar la campaña de la situacion
-        var getCampañaSituacion = await SituacionService.getCampañaSituacion(idSituacion); 
-        if(getCampañaSituacion[0].idCampaña === null){
-            return res.status(422).json({
-                error: "situacion-campaña-relacionar",
-                message: "La situación seleccionada no tiene niguna campaña",
-            });
-        }
 
         var idCamapñaEsInt = helperNumeric.isNumeric(idCampaña);
         //Comprobar si el id de la campaña es un numero
@@ -144,33 +83,8 @@ exports.getEncuestasCampaña = async function (req,res,next){
            });
        }
 
-        //Ver si la campaña seleccionada concuerda con la campaña de la situación
-        var campañaSeleccionadaExiste = (getCampañaSituacion[0].idCampaña === parseInt(idCampaña));
-        if (!campañaSeleccionadaExiste){
-            return res.status(422).json({
-                error: "campaña-situacion-relacionar",
-                message: "La campaña seleccionada no concuerda con la campaña de la situación",
-            });
-        }
-
-        //Coger info de la situacion desde la campaña
-        var infoSituacionCampaña = await SituacionService.getInfoSituacionDesdeCampaña(idCampaña);
-        var idDocente = infoSituacionCampaña[0].idDocente;
-        var idGrupo = infoSituacionCampaña[0].idGrupo;
-        var idAsignatura = infoSituacionCampaña[0].idAsignatura;
-        var idGrado = infoSituacionCampaña[0].idGrado;
-
-        //Ver si la campaña esta activada
-        var campañaActivada = await ActivacionService.campañaActivada(idDocente, idGrupo, idGrado, idAsignatura, idCampaña);
-        if (!campañaActivada){
-            return res.status(422).json({
-                error: "campaña-activar",
-                message: "La campaña seleccionada no esta activada",
-            });
-        }
-
         //Seleccionar las encuestas de la campaña
-        var getEncuestasCampaña = await CampañaEncuestaService.getEncuestasCampaña(idCampaña); 
+        var getEncuestasCampaña = await CampañaEncuestaService.getEncuestasUsuario(idUsuario, idCampaña); 
         if(getEncuestasCampaña.length === 0){
             return res.status(422).json({
                 error: "campaña-encuesta-relacionar",
