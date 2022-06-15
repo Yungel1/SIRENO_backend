@@ -86,7 +86,7 @@ exports.getPreguntaInfo = async function (req,res,next){
        
         //Comprobar si se han cogido los preguntas
         if(preguntaInfo){
-            return res.status(201).json({preguntaInfo});
+            return res.status(201).json(preguntaInfo);
         } else{
             return res.status(422).json({
                 error: "pregunta-coger",

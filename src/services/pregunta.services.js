@@ -83,6 +83,6 @@ exports.getPreguntaInfo = async function (idPregunta) {
         idPregunta
         ]);
         
-    return row;
+    return row[0];
 
 }
