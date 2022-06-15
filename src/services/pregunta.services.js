@@ -38,7 +38,6 @@ exports.eliminarPregunta = async function (id) {
         id 
     ]);
 
-    console.log(rows);
     if (rows.affectedRows >= 1) {
         return true; //Se ha eliminado correctamente
     } else{
@@ -77,7 +76,6 @@ exports.pertenecePreguntaUsuario = async function (usuario,idPregunta) {
 //Si la pregunta existe y el usuario tiene acceso a esa pregunta true sino false
 exports.getPreguntaInfo = async function (idPregunta) {
 
-    console.log(idPregunta);
     const row = await db.query(
         "SELECT * FROM pregunta WHERE id=?",[
         idPregunta

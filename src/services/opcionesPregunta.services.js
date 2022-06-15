@@ -49,7 +49,6 @@ exports.eliminarOpcionesPregunta = async function (id) {
         id 
     ]);
 
-    console.log(rows);
     if (rows.affectedRows >= 1) {
         return true; //Se ha eliminado correctamente
     } else{
