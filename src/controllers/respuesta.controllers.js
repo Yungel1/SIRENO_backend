@@ -5,8 +5,9 @@ var EncuestaService = require('../services/encuesta.services');
 var PreguntaService = require('../services/pregunta.services');
 var EncuestaService = require('../services/encuesta.services');
 var RespuestaService = require('../services/respuesta.services');
+var CampañaService = require('../services/campaña.services');
 var OpcPregRespuestaService = require('../services/opcPregRespuesta.services');
-var helperNumeric = require('../helpers/helperNumeric');
+var HelperNumeric = require('../helpers/helperNumeric');
 const { body } = require('express-validator');
 
 
@@ -119,11 +120,12 @@ exports.insertarRespuesta = async function (req,res,next){
 exports.getRespuestasMediaInformes = async function (req,res,next){
     try{
 
+        var idCampaña = req.query.idCampaña;
         var idEncuesta = req.query.idEncuesta;
         var idPregunta = req.query.idPregunta;
         var idUsuario = req.usuario;
 
-        var idEncuestaEsInt = helperNumeric.isNumeric(idEncuesta);
+        var idEncuestaEsInt = HelperNumeric.isNumeric(idEncuesta);
         //Comprobar si el id de la encuesta es un numero
         if (!idEncuestaEsInt){
             return res.status(422).json({
@@ -142,7 +144,7 @@ exports.getRespuestasMediaInformes = async function (req,res,next){
         }
 
         
-        var idPreguntaEsInt = helperNumeric.isNumeric(idPregunta);
+        var idPreguntaEsInt = HelperNumeric.isNumeric(idPregunta);
         //Comprobar si el id de la pregunta es un numero
         if (!idPreguntaEsInt){
             return res.status(422).json({
@@ -160,8 +162,26 @@ exports.getRespuestasMediaInformes = async function (req,res,next){
             });
         }
 
+        var idCamapñaEsInt = HelperNumeric.isNumeric(idCampaña);
+        //Comprobar si el id de la campaña es un numero
+        if (!idCamapñaEsInt){
+            return res.status(422).json({
+                error: "campaña-id-int",
+                message: "La campaña seleccionada no es un número",
+            });
+        }
+
+        var campañaExiste = await CampañaService.campañaExiste(idCampaña);
+         //Comprobar si el id de la campaña existe
+         if(! campañaExiste){
+            return res.status(422).json({
+                error: "campaña-existir",
+                message: "La campaña seleccionada no corresponde a ninguna campaña existente",
+            });
+        }
+
          //Seleccionar las opcionesPregunta de la pregunta
-         var getRespuestasMediaInformes = await RespuestaService.getRespuestasMediaInformes(idUsuario, idPregunta, idEncuesta); 
+         var getRespuestasMediaInformes = await RespuestaService.getRespuestasMediaInformes(idUsuario, idPregunta, idEncuesta, idCampaña); 
          if(getRespuestasMediaInformes.length === 0){
              return res.status(422).json({
                  error: "respuesta-informe",
