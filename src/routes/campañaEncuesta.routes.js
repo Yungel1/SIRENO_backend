@@ -18,4 +18,8 @@ router.delete('/delete', authentication, (req, res, next) => authorization(req,r
 //Obtener todas las relaciones entre campañas y encuestas
 router.get('/getAll', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), CampañaEncuestaController.getAllCampañaEncuesta);
 
+//Obtener las encuestas para informes
+router.get('/getPollsgReports', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador, roles.Docente]), CampañaEncuestaController.getEncuestasCampañaInformes);
+
+
 module.exports = router;

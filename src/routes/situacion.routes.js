@@ -21,4 +21,7 @@ router.get('/usernameToSend', authentication, (req, res, next) => authorization(
 //Obtener todas las situaciones
 router.get('/getAll', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), SituacionController.getAllSituacion);
 
+//Obtener las campañas para informes
+router.get('/getCampaingReports', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador, roles.Docente]), SituacionController.getCampañaInformes);
+
 module.exports = router;

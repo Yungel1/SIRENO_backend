@@ -96,6 +96,50 @@ exports.getOpcionesPregunta = async function (req,res,next){
     }
 }
 
+//Seleccionar las opcionesPregunta del la pregunta seleccionada por usuario logeado para los informes
+exports.getOpcionesPreguntaInformes = async function (req,res,next){
+    try{
+
+        var idPregunta = req.query.idPregunta;
+        var idUsuario = req.usuario;
+
+        var idPreguntaEsInt = helperNumeric.isNumeric(idPregunta);
+        //Comprobar si el id de la pregunta es un numero
+        if (!idPreguntaEsInt){
+            return res.status(422).json({
+                error: "pregunta-int",
+                message: "La pregunta seleccionada no es un número",
+            });
+        }
+
+        //Comprobar que la pregunta existe
+        var preguntaExiste = await PreguntaService.preguntaExiste(idPregunta); 
+        if(! preguntaExiste){
+            return res.status(422).json({
+                error: "pregunta-existir",
+                message: "La pregunta no existe",
+            });
+        }
+
+        //Seleccionar las opcionesPregunta de la pregunta
+        var getOpcionesPreguntaInformes = await OpcionesPreguntaService.getOpcionesPreguntaInformes(idUsuario, idPregunta); 
+        if(getOpcionesPreguntaInformes.length === 0){
+            return res.status(422).json({
+                error: "pregunta-opcpregunta-informe",
+                message: "La pregunta seleccionada no tiene niguna opcionPregunta",
+            });
+        }
+        else{
+            return res.status(200).json(getOpcionesPreguntaInformes);
+        }
+
+
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+
 //Eliminar activación
 exports.eliminarOpcionesPregunta = async function (req,res,next){
     try{

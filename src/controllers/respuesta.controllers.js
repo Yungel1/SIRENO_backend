@@ -38,14 +38,6 @@ exports.insertarRespuesta = async function (req,res,next){
             });
         }
 
-        //Seleccionar las preguntas de la encuesta
-        var getPreguntasEncuesta = await EncuestaPreguntaService.getPreguntasUsuario(idUsuario, idEncuesta); 
-        if(getPreguntasEncuesta.length === 0){
-            return res.status(422).json({
-                error: "encuesta-pregunta-tener",
-                message: "La encuesta seleccionada no tiene niguna pregunta",
-            });
-        }
         
         var idPreguntaEsInt = helperNumeric.isNumeric(idPregunta);
         //Comprobar si el id de la pregunta es un numero
@@ -64,15 +56,6 @@ exports.insertarRespuesta = async function (req,res,next){
                 message: "La pregunta no existe",
             });
         }
-
-       //Seleccionar las opcionesPregunta de la pregunta
-       var getOpcionesPregunta = await OpcionesPreguntaService.getOpcPreguntasUsuario(idUsuario, idPregunta); 
-       if(getOpcionesPregunta.length === 0){
-           return res.status(422).json({
-               error: "pregunta-opcpregunta-relacionar",
-               message: "La pregunta seleccionada no tiene niguna opcionPregunta",
-           });
-       }
 
         var idOpcionesPreguntaEsInt = helperNumeric.isNumeric(idOpcionPregunta);
         //Comprobar si el id de la opcionPregunta es un numero
@@ -125,6 +108,69 @@ exports.insertarRespuesta = async function (req,res,next){
                 message: "La respuesta no ha sido insertada",
             });
         }
+
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+
+//Coger medias de las opcPreguntas
+exports.getRespuestasMediaInformes = async function (req,res,next){
+    try{
+
+        var idEncuesta = req.query.idEncuesta;
+        var idPregunta = req.query.idPregunta;
+        var idUsuario = req.usuario;
+
+        var idEncuestaEsInt = helperNumeric.isNumeric(idEncuesta);
+        //Comprobar si el id de la encuesta es un numero
+        if (!idEncuestaEsInt){
+            return res.status(422).json({
+                error: "encuesta-int",
+                message: "La encuesta seleccionada no es un número",
+            });
+        }
+
+        //Comprobar que la encuesta existe
+        var encuestaExiste = await EncuestaService.encuestaExiste(idEncuesta); 
+        if(! encuestaExiste){
+            return res.status(422).json({
+                error: "encuesta-existir",
+                message: "La encuesta no existe",
+            });
+        }
+
+        
+        var idPreguntaEsInt = helperNumeric.isNumeric(idPregunta);
+        //Comprobar si el id de la pregunta es un numero
+        if (!idPreguntaEsInt){
+            return res.status(422).json({
+                error: "pregunta-int",
+                message: "La pregunta seleccionada no es un número",
+            });
+        }
+
+        //Comprobar que la pregunta existe
+        var preguntaExiste = await PreguntaService.preguntaExiste(idPregunta); 
+        if(! preguntaExiste){
+            return res.status(422).json({
+                error: "pregunta-existir",
+                message: "La pregunta no existe",
+            });
+        }
+
+         //Seleccionar las opcionesPregunta de la pregunta
+         var getRespuestasMediaInformes = await RespuestaService.getRespuestasMediaInformes(idUsuario, idPregunta, idEncuesta); 
+         if(getRespuestasMediaInformes.length === 0){
+             return res.status(422).json({
+                 error: "respuesta-informe",
+                 message: "La encuesta seleccionada no tiene niguna respuesta en esa pregunta",
+             });
+         }
+         else{
+             return res.status(200).json(getRespuestasMediaInformes);
+         }
 
     } catch(err){
         console.log(err);

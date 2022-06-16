@@ -18,4 +18,7 @@ router.delete('/delete', authentication, (req, res, next) => authorization(req,r
 //Obtener todas las relaciones entre encuestas y preguntas
 router.get('/getAll', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), EncuestaPreguntaController.getAllEncuestaPregunta);
 
+//Obtener las preguntas para informes
+router.get('/getQuestionsReports', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador, roles.Docente]), EncuestaPreguntaController.getPreguntasEncuestaInformes);
+
 module.exports = router;

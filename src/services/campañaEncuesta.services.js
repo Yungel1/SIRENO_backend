@@ -88,3 +88,17 @@ exports.getEncuestasUsuario = async function (idUsuario, idCampaña) {
 
 }
 
+exports.getEncuestasUsuarioInformes = async function (idUsuario, idCampaña) {
+
+    const row = await db.query(
+        "SELECT campañaencuesta.idEncuesta FROM situacion,activacion,campañaencuesta where situacion.idDocente=? and campañaencuesta.idCampaña=? and situacion.idCampaña=activacion.idCampaña and situacion.idCampaña=campañaencuesta.idCampaña and situacion.idDocente=activacion.idDocente and situacion.idAsignatura = activacion.idAsignatura and situacion.idGrado=activacion.idGrado and situacion.idGrupo=activacion.idGrupo and activacion.fueActivado=1;",[
+            idUsuario,
+            idCampaña
+        ]
+      
+        );
+        
+    return row;
+
+}
+

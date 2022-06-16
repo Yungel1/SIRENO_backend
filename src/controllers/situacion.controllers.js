@@ -279,3 +279,27 @@ exports.getAllSituacion = async function (req,res,next){
         return res.sendStatus(500) && next(err);
     }
 }
+
+//Seleccionar las campañas para los informes
+exports.getCampañaInformes = async function (req,res,next){
+    try{
+
+        var idUsuario = req.usuario;
+
+         //Seleccionar las campañas para los informes
+         var campañasInformes = await SituacionService.getCampañaInformes(idUsuario); 
+         if(campañasInformes.length === 0){
+             return res.status(422).json({
+                 error: "campañas-informes",
+                 message: "El docente no tiene ninguna campaña relacionada",
+             });
+         }
+         else{
+             return res.status(200).json(campañasInformes);
+         }
+
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}

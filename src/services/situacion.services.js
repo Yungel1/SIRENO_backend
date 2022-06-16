@@ -105,3 +105,16 @@ exports.getAllSituacion = async function () {
     return row;
 
 }
+
+exports.getCampañaInformes = async function (idUsuario) {
+
+    const row = await db.query(
+        "SELECT situacion.idCampaña FROM situacion,activacion where situacion.idDocente=? and situacion.idCampaña=activacion.idCampaña and situacion.idDocente=activacion.idDocente and situacion.idAsignatura = activacion.idAsignatura and situacion.idGrado=activacion.idGrado and situacion.idGrupo=activacion.idGrupo and activacion.fueActivado=1;",[
+            idUsuario
+        ]
+      
+        );
+        
+    return row;
+
+}

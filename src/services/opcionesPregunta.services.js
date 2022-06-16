@@ -100,3 +100,17 @@ exports.getOpcPreguntasUsuario = async function (idUsuario, idPregunta) {
 
 }
 
+exports.getOpcionesPreguntaInformes = async function (idUsuario, idPregunta) {
+
+    const row = await db.query(
+        "SELECT DISTINCT opcionespregunta.id, opcionespregunta.idPregunta FROM situacion,activacion,campañaencuesta,encuestapregunta,opcionespregunta where situacion.idDocente=? and opcionespregunta.idPregunta=? and situacion.idCampaña=activacion.idCampaña and encuestapregunta.idEncuesta=campañaencuesta.idEncuesta and opcionespregunta.idPregunta=encuestapregunta.idPregunta and situacion.idCampaña=campañaencuesta.idCampaña and situacion.idDocente=activacion.idDocente and situacion.idAsignatura = activacion.idAsignatura and situacion.idGrado=activacion.idGrado and situacion.idGrupo=activacion.idGrupo and activacion.fueActivado=1;",[
+            idUsuario,
+            idPregunta
+        ]
+      
+        );
+        
+    return row;
+
+}
+

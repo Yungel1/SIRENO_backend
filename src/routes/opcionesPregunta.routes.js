@@ -18,4 +18,7 @@ router.delete('/delete', authentication, (req, res, next) => authorization(req,r
 //Coger opcionespreguntas
 router.get('/get', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), OpcionesPreguntaController.getOpcionesPreguntas);
 
+//Obtener las opcPreguntas para informes
+router.get('/getQuestionOptionsReports', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador, roles.Docente]), OpcionesPreguntaController.getOpcionesPreguntaInformes);
+
 module.exports = router;

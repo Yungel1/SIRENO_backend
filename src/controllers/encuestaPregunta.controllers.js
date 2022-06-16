@@ -105,6 +105,52 @@ exports.getPreguntasEncuesta = async function (req,res,next){
     }
 }
 
+
+//Seleccionar las preguntas del la encuesta seleccionada por usuario logeado para los informes
+exports.getPreguntasEncuestaInformes = async function (req,res,next){
+    try{
+
+        var idEncuesta = req.query.idEncuesta;
+        var idUsuario = req.usuario;
+
+        var idEncuestaEsInt = helperNumeric.isNumeric(idEncuesta);
+        //Comprobar si el id de la encuesta es un numero
+        if (!idEncuestaEsInt){
+            return res.status(422).json({
+                error: "encuesta-id-numero",
+                message: "La encuesta seleccionada no es un número",
+            });
+        }
+
+        //Comprobar que la encuesta existe
+        var encuestaExiste = await EncuestaService.encuestaExiste(idEncuesta); 
+        if(! encuestaExiste){
+            return res.status(422).json({
+                error: "encuesta-existir",
+                message: "La encuesta no existe",
+            });
+        }
+
+        //Seleccionar las preguntas de la encuesta
+        var getPreguntasEncuestaInformes = await EncuestaPreguntaService.getPreguntasEncuestaInformes(idUsuario, idEncuesta); 
+        if(getPreguntasEncuestaInformes.length === 0){
+            return res.status(422).json({
+                error: "encuesta-pregunta-informe",
+                message: "La encuesta seleccionada no tiene niguna pregunta",
+            });
+        }
+        else{
+            return res.status(200).json(getPreguntasEncuestaInformes);
+        }
+
+
+
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+
 //Borrar la relación entre una pregunta y una encuesta
 exports.deleteEncuestaPregunta = async function (req,res,next){
     try{

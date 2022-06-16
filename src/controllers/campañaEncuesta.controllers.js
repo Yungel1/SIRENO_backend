@@ -102,6 +102,50 @@ exports.getEncuestasCampaña = async function (req,res,next){
     }
 }
 
+//Seleccionar las encuestas del la campaña seleccionada por usuario logeado para los informes
+exports.getEncuestasCampañaInformes = async function (req,res,next){
+    try{
+
+        var idCampaña = req.query.idCampaña;
+        var idUsuario = req.usuario;
+
+        var idCamapñaEsInt = helperNumeric.isNumeric(idCampaña);
+        //Comprobar si el id de la campaña es un numero
+        if (!idCamapñaEsInt){
+            return res.status(422).json({
+                error: "campaña-int",
+                message: "La campaña seleccionada no es un número",
+            });
+        }
+
+        var campañaExiste = await CampañaService.campañaExiste(idCampaña);
+        //Comprobar si el id de la campaña existe
+        if(! campañaExiste){
+           return res.status(422).json({
+                error: "campaña-existir",
+                message: "La campaña seleccionada no corresponde a ninguna campaña existente",
+           });
+       }
+
+        //Seleccionar las encuestas de la campaña
+        var getEncuestasCampañaInformes = await CampañaEncuestaService.getEncuestasUsuarioInformes(idUsuario, idCampaña); 
+        if(getEncuestasCampañaInformes.length === 0){
+            return res.status(422).json({
+                error: "campaña-encuesta-informe",
+                message: "La campaña seleccionada no tiene niguna encuesta",
+            });
+        }
+        else{
+            return res.status(200).json(getEncuestasCampañaInformes);
+        }
+
+
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+
 //Borrar la relación entre una campaña y una encuesta
 exports.deleteCampañaEncuesta = async function (req,res,next){
     try{
