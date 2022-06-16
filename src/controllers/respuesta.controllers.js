@@ -20,7 +20,7 @@ exports.insertarRespuesta = async function (req,res,next){
         var idCampaña = req.body.idCampaña;
         var idEncuesta = req.body.idEncuesta;
         var idPregunta = req.body.idPregunta;
-        var idOpcionPregunta = req.body.idOpcionPregunta;
+        var idOpcionPregunta = req.body.idOpcionesPregunta;
         var texto = req.body.texto;
         var idUsuario = req.usuario;
 
