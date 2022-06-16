@@ -102,3 +102,17 @@ exports.getEncuestasUsuarioInformes = async function (idUsuario, idCampaña) {
 
 }
 
+//Si la relación de campaña y encuetsa y el usuario tiene acceso
+exports.perteneceCampañaEncuestaUsuario = async function (usuario,idEncuesta,idCampaña) {
+
+    const row = await db.query(
+        "SELECT campañaencuesta.idEncuesta,campañaencuesta.idCampaña FROM usuariosituacion,situacion,campañaencuesta,activacion where usuariosituacion.usuario=? and campañaencuesta.idEncuesta=? and campañaencuesta.idCampaña=? and usuariosituacion.idSituacion=situacion.id and situacion.idCampaña=campañaencuesta.idCampaña and usuariosituacion.respondida=0 and situacion.idCampaña=activacion.idCampaña and situacion.idDocente=activacion.idDocente and situacion.idAsignatura = activacion.idAsignatura and situacion.idGrado=activacion.idGrado and situacion.idGrupo=activacion.idGrupo and activacion.activado=1;",[
+        usuario,
+        idEncuesta,
+        idCampaña
+        ]);
+        
+    return row;
+
+}
+

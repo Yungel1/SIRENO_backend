@@ -86,6 +86,7 @@ exports.perteneceOpcionesPreguntaUsuario = async function (usuario,idPregunta,id
 
 }
 
+
 exports.getOpcPreguntasUsuario = async function (idUsuario, idPregunta) {
 
     const row = await db.query(

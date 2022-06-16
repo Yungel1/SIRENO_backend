@@ -6,22 +6,25 @@ var PreguntaService = require('../services/pregunta.services');
 var EncuestaService = require('../services/encuesta.services');
 var RespuestaService = require('../services/respuesta.services');
 var CampañaService = require('../services/campaña.services');
+var CampañaEncuestaService = require('../services/campañaEncuesta.services');
 var OpcPregRespuestaService = require('../services/opcPregRespuesta.services');
 var HelperNumeric = require('../helpers/helperNumeric');
 const { body } = require('express-validator');
+const { campañaEncuestaExiste } = require('../services/campañaEncuesta.services');
 
 
 //Insertar respuesta
 exports.insertarRespuesta = async function (req,res,next){
     try{
 
+        var idCampaña = req.body.idCampaña;
         var idEncuesta = req.body.idEncuesta;
         var idPregunta = req.body.idPregunta;
         var idOpcionPregunta = req.body.idOpcionPregunta;
         var texto = req.body.texto;
         var idUsuario = req.usuario;
 
-        var idEncuestaEsInt = helperNumeric.isNumeric(idEncuesta);
+        var idEncuestaEsInt = HelperNumeric.isNumeric(idEncuesta);
         //Comprobar si el id de la encuesta es un numero
         if (!idEncuestaEsInt){
             return res.status(422).json({
@@ -40,7 +43,7 @@ exports.insertarRespuesta = async function (req,res,next){
         }
 
         
-        var idPreguntaEsInt = helperNumeric.isNumeric(idPregunta);
+        var idPreguntaEsInt = HelperNumeric.isNumeric(idPregunta);
         //Comprobar si el id de la pregunta es un numero
         if (!idPreguntaEsInt){
             return res.status(422).json({
@@ -58,7 +61,7 @@ exports.insertarRespuesta = async function (req,res,next){
             });
         }
 
-        var idOpcionesPreguntaEsInt = helperNumeric.isNumeric(idOpcionPregunta);
+        var idOpcionesPreguntaEsInt = HelperNumeric.isNumeric(idOpcionPregunta);
         //Comprobar si el id de la opcionPregunta es un numero
         if (!idOpcionesPreguntaEsInt){
             return res.status(422).json({
@@ -76,6 +79,25 @@ exports.insertarRespuesta = async function (req,res,next){
             });
         }
 
+        var idCamapñaEsInt = HelperNumeric.isNumeric(idCampaña);
+        //Comprobar si el id de la campaña es un numero
+        if (!idCamapñaEsInt){
+            return res.status(422).json({
+                error: "campaña-id-int",
+                message: "La campaña seleccionada no es un número",
+            });
+        }
+
+        var campañaExiste = await CampañaService.campañaExiste(idCampaña);
+         //Comprobar si el id de la campaña existe
+         if(! campañaExiste){
+            return res.status(422).json({
+                error: "campaña-existir",
+                message: "La campaña seleccionada no corresponde a ninguna campaña existente",
+            });
+        }
+
+
         //Seleccionar las opcionesPregunta de la pregunta
        var perteneceOpcionesPreguntaUsuario = await OpcionesPreguntaService.perteneceOpcionesPreguntaUsuario(idUsuario, idPregunta, idOpcionPregunta); 
        if(!perteneceOpcionesPreguntaUsuario){
@@ -85,7 +107,16 @@ exports.insertarRespuesta = async function (req,res,next){
            });
        }
 
-        var idRespuestaInsertada = await RespuestaService.insertarRespuesta(texto, idEncuesta); //Insertar respuesta
+       //Seleccionar las opcionesPregunta de la pregunta
+       var perteneceCampañaEncuestaUsuario = await CampañaEncuestaService.perteneceCampañaEncuestaUsuario(idUsuario, idEncuesta, idCampaña); 
+       if(perteneceCampañaEncuestaUsuario.length == 0){
+           return res.status(422).json({
+               error: "encuesta-campaña-relacionar",
+               message: "La encuesta seleccionada no tiene niguna campaña seleccionada",
+           });
+       }
+
+        var idRespuestaInsertada = await RespuestaService.insertarRespuesta(texto, idEncuesta, idCampaña); //Insertar respuesta
 
         //Comprobar que la opcPregRespuesta existe
         var opcPregRespuestaExiste = await OpcPregRespuestaService.opcPregRespuestaExiste(idOpcionPregunta, idRespuestaInsertada, idPregunta); 

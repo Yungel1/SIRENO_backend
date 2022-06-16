@@ -1,11 +1,12 @@
 const db = require("../helpers/db.js");
 
 //Insertar respuesta en la base de datos
-exports.insertarRespuesta = async function (texto, idEncuesta) {
+exports.insertarRespuesta = async function (texto, idEncuesta, idCampaña) {
 
-    const row = await db.query('INSERT INTO respuesta(texto,idEncuesta) VALUES(?,?)',[
+    const row = await db.query('INSERT INTO respuesta(texto,idEncuesta, idCampaña) VALUES(?,?,?)',[
         texto,
-        idEncuesta
+        idEncuesta,
+        idCampaña
     ]);
 
     return row.insertId;
@@ -41,4 +42,5 @@ exports.getRespuestasMediaInformes = async function (idUsuario, idPregunta, idEn
     return row;
 
 }
+
 
