@@ -38,7 +38,7 @@ exports.procesarCSV = async function (req,res,next){
         await file.mv(path);
 
         const readStream = fs.createReadStream(path)
-        .pipe(csv())
+        .pipe(csv({skipLines: 1,headers: ['usuario','grado','docente','grupo','asignatura','campaña']}))
 
         let rows = [];
         let i = 0;
@@ -46,6 +46,16 @@ exports.procesarCSV = async function (req,res,next){
         for await (const row of readStream) {
 
             i++;
+
+            if(Object.keys(row).length!=6){
+                return res.status(422).json({
+                    error: "csv-linea-incorrecta",
+                    message: "La línea del csv no es correcta",
+                    row: row,
+                    linea: i
+                });
+            }
+
             let usuario = row.usuario;
             let idGrado = row.grado;
             let idDocente = row.docente;
@@ -194,3 +204,4 @@ exports.procesarCSV = async function (req,res,next){
         return res.sendStatus(500) && next(err);
     }
 }
+
