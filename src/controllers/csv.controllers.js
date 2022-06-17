@@ -9,6 +9,8 @@ var CampañaService = require('../services/campaña.services');
 var helperNumeric = require('../helpers/helperNumeric');
 const csv = require('csv-parser');
 const fs = require('fs');
+const { promisify } = require('util');
+const { resolve } = require('path');
 
 
 //Procesar csv
@@ -33,14 +35,7 @@ exports.procesarCSV = async function (req,res,next){
 
         let path = __dirname + "/../files/" + file.name;
 
-        await file.mv(path, (err) => {
-            if (err) {
-              return res.status(500).json({
-                error: "csv-guardar",
-                message: "No se ha podido guardar el archivo .csv",
-            });
-            }
-        });
+        await file.mv(path);
 
         const readStream = fs.createReadStream(path)
         .pipe(csv())
@@ -188,16 +183,14 @@ exports.procesarCSV = async function (req,res,next){
             }
             
         }
-        
-        return res.status(200).json("Se han insertado todas las entradas correctamente");
+
+        fs.unlink(path, function() {
+            return res.status(200).json("Se han insertado todas las entradas correctamente");   
+        });
 
 
     } catch(err){
         console.log(err);
         return res.sendStatus(500) && next(err);
     }
-}
-
-async function procesar(i,row){
-    
 }
