@@ -147,6 +147,37 @@ exports.getCampañaInfo = async function (req,res,next){
 }
 
 //Conseguir campaña concreta
+exports.getCampañaInfoInformes = async function (req,res,next){
+    try{
+
+        let id = req.query.id;
+
+        //Comprobar si el id es un número
+        if(!helperNumeric.isNumeric(id)){
+            return res.status(422).json({
+                error: "campaña-id-numero",
+                message: "El id de la campaña no es un número",
+            });
+        }
+
+        var row = await CampañaService.getCampañaInfo(id); //Obtener campaña
+
+        if(row == null){
+            return res.status(422).json({
+                error: "campaña-existir",
+                message: "La campaña no existe",
+            });
+        }
+
+        return res.status(200).json(row);
+
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+
+//Conseguir campaña concreta
 exports.getCampañaInfoDocente = async function (req,res,next){
     try{
 

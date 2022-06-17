@@ -18,5 +18,8 @@ router.get('/get', authentication, (req, res, next) => authorization(req,res,nex
 //Coger pregunta info
 router.get('/getInfo', authentication, (req, res, next) => authorization(req,res,next,[roles.Todos]), PreguntaController.getPreguntaInfo);
 
+//Coger pregunta info
+router.get('/getInfoInforme', authentication, (req, res, next) => authorization(req,res,next,[roles.Todos]), PreguntaController.getPreguntaInfoInformes);
+
 
 module.exports = router;

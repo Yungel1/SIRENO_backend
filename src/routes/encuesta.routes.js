@@ -18,4 +18,7 @@ router.get('/getAll', authentication, (req, res, next) => authorization(req,res,
 //Obtener encuesta
 router.get('/getInfo', authentication, (req, res, next) => authorization(req,res,next,[roles.Todos]), EncuestaController.getEncuestaInfo);
 
+//Obtener encuesta
+router.get('/getInfoInformes', authentication, (req, res, next) => authorization(req,res,next,[roles.Todos]), EncuestaController.getEncuestaInfoInformes);
+
 module.exports = router;
