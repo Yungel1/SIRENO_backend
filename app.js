@@ -4,6 +4,7 @@ dotenv.config();
 const app = express()
 const port = process.env.PORT
 var cors = require('cors');
+const fileUpload = require('express-fileupload');
 
 //Routers
 const registerRouter = require('./src/routes/register.routes');
@@ -28,6 +29,7 @@ const departamentoRouter = require('./src/routes/departamento.routes');
 const asignaturaRouter = require('./src/routes/asignatura.routes');
 const gradoAsignaturaRouter = require('./src/routes/gradoAsignatura.routes');
 const centroDepartamentoRouter = require('./src/routes/centroDepartamento.routes');
+const csvRouter = require("./src/routes/csv.routes")
 
 // parsear peticiones content-type - application/json
 app.use(express.json());
@@ -35,6 +37,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // cors
 app.use(cors());
+//fileupload
+app.use(fileUpload());
 
 //Ruta para gestionar el registro
 app.use('/register',registerRouter);
@@ -101,6 +105,9 @@ app.use('/gradoasignatura',gradoAsignaturaRouter);
 
 //Ruta para gestionar relación de centro y departamento
 app.use('/centrodepartamento',centroDepartamentoRouter);
+
+//Ruta para procesar csv
+app.use('/procesarcsv',csvRouter)
 
 app.listen(port, () => {
   console.log(`Sireno listening on port ${port}`)

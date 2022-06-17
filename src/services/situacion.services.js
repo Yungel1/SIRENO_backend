@@ -79,6 +79,27 @@ exports.situacionRepetida = async function (idGrado, idDocente, idGrupo, idAsign
 
 }
 
+//get id de la situación
+exports.getSituacionId = async function (idGrado, idDocente, idGrupo, idAsignatura, idCampaña) {
+
+    const row = await db.query(
+        "SELECT id FROM situacion WHERE idGrado=? and idDocente=? and idGrupo=? and idAsignatura=? and idCampaña=?",[
+        idGrado,
+        idDocente,
+        idGrupo,
+        idAsignatura,
+        idCampaña
+        ]);
+        
+        
+    if (row.length > 0) {
+        return row[0];
+    } else{
+        return null;
+    }
+
+}
+
 //Borrar situación
 exports.deleteSituacion = async function (id) {
 
@@ -116,5 +137,20 @@ exports.getCampañaInformes = async function (idUsuario) {
         );
         
     return row;
+
+}
+
+//Insertar situación en la base de datos
+exports.insertarSituacionGetId = async function (idGrado, idDocente, idGrupo, idAsignatura, idCampaña) {
+
+    const row = await db.query('INSERT INTO situacion(idGrado, idDocente, idGrupo, idAsignatura, idCampaña) VALUES(?,?,?,?,?)',[
+        idGrado,
+        idDocente,
+        idGrupo,
+        idAsignatura,
+        idCampaña
+    ]);
+
+    return row.insertId;
 
 }

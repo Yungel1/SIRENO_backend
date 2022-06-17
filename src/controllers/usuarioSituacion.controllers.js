@@ -33,6 +33,15 @@ exports.relacionarUsuarioSituacion = async function (req,res,next){
             });
         }
 
+        var usuarioSituacionExiste = await UsuarioSituacionService.usuarioSituacionExiste(req.body.usuario,req.body.idSituacion);
+        //Comprobar si la relación entre un usuario y una situación concretos existe
+        if(usuarioSituacionExiste){
+            return res.status(422).json({
+                error: "usuario-situacion-existe",
+                message: "La relacion usuario-situación ya existe",
+            });
+        }
+
         var relacionado = await UsuarioSituacionService.relacionarUsuarioSituacion(req.body.usuario,req.body.idSituacion); //Relacionar usuario y situación
 
         //Comprobar si se han relacionado el usuario y la situación
