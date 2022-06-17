@@ -100,6 +100,40 @@ exports.getPreguntaInfo = async function (req,res,next){
 }
 
 //Coger preguntas
+exports.getPreguntaInfoInformes = async function (req,res,next){
+    try{
+
+        var idPregunta = req.query.id;
+        var idUsuario = req.usuario;
+
+        var preguntaExiste = await PreguntaService.preguntaExiste(idPregunta);
+        //Comprobar si la pregunta existe
+        if(!preguntaExiste){
+            return res.status(422).json({
+                error: "pregunta-existir",
+                message: "La pregunta que se intenta coger no existe",
+            });
+        }
+
+        var preguntaInfo = await PreguntaService.getPreguntaInfo(idPregunta); //Coger pregunta info
+       
+        //Comprobar si se han cogido los preguntas
+        if(preguntaInfo){
+            return res.status(201).json(preguntaInfo);
+        } else{
+            return res.status(422).json({
+                error: "pregunta-coger",
+                message: "No se han podido coger las preguntas",
+            });
+        }
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+
+
+//Coger preguntas
 exports.getPreguntas = async function (req,res,next){
     try{
 

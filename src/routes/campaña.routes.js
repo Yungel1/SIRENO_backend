@@ -18,6 +18,9 @@ router.get('/getAllInfo', authentication, (req, res, next) => authorization(req,
 //Obtener campaña concreta (al que el usuario que ha iniciado sesión tenga acceso)
 router.get('/getInfo', authentication, (req, res, next) => authorization(req,res,next,[roles.Todos]), CampañaController.getCampañaInfo);
 
+//Obtener campaña concreta (al que el usuario que ha iniciado sesión tenga acceso)
+router.get('/getInfoInformes', authentication, (req, res, next) => authorization(req,res,next,[roles.Todos]), CampañaController.getCampañaInfoInformes);
+
 //Obtener campaña concreta (el usuario que ha iniciado sesión deberá ser docente). Verá las campañas que le corresponde como docente (no para responder)
 router.get('/getInfoDocente', authentication, (req, res, next) => authorization(req,res,next,[roles.Docente]), CampañaController.getCampañaInfoDocente);
 
