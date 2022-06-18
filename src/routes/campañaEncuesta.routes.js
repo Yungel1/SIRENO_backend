@@ -9,8 +9,14 @@ var CampañaEncuestaController = require('../controllers/campañaEncuesta.contro
 //Relacionar campaña y encuesta
 router.post('/', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), CampañaEncuestaController.relacionarCampañaEncuesta);
 
+//Relacionar campaña y encuesta
+router.put('/updateCampaignPoll', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), CampañaEncuestaController.actualizarCampañaEncuesta);
+
 //Coger las encuestas de la campaña seleccionada
 router.get('/getCampaignPolls', authentication, (req, res, next) => authorization(req,res,next,[roles.Todos]), CampañaEncuestaController.getEncuestasCampaña);
+
+//Coger las encuestas de la campaña seleccionada
+router.get('/getCampaignPoll', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), CampañaEncuestaController.getEncuestaCampaña);
 
 //Borrar relación entre una campaña y una encuesta
 router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), CampañaEncuestaController.deleteCampañaEncuesta);

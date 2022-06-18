@@ -17,6 +17,21 @@ exports.relacionarCampañaEncuesta = async function (idCampaña, idEncuesta) {
 
 }
 
+//Relacionar una encuesta con una campaña en la base de datos
+exports.relacionarCampañaIdEncuesta = async function (idCampaña, idEncuesta) {
+
+    const rows = await db.query('UPDATE campañaencuesta SET idEncuesta=? WHERE idCampaña=?',[
+        idEncuesta,
+        idCampaña
+    ]);
+
+   if (rows.affectedRows === 1) {
+        return true; //Se ha insertado correctamente
+    } else{
+        return false; //No se ha insertado
+    }
+}
+
 //Devuelve las encuestas de la campaña
 exports.getEncuestasCampaña = async function (idCampaña) {
 
