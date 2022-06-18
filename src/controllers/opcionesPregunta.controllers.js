@@ -153,7 +153,7 @@ exports.getOpcionesPreguntaInformes = async function (req,res,next){
 exports.eliminarOpcionesPregunta = async function (req,res,next){
     try{
 
-        var idOpcionesPregunta = req.query.idOpcionesPregunta;
+        var idOpcionesPregunta = req.query.id;
 
         var opcionesPreguntaExiste = await OpcionesPreguntaService.opcionesPreguntaExiste(idOpcionesPregunta);
         //Comprobar si la opcionespregunta existe

@@ -38,7 +38,7 @@ exports.insertarGrupo = async function (req,res,next){
 exports.eliminarGrupo = async function (req,res,next){
     try{
 
-        var idGrupo = req.query.idGrupo;
+        var idGrupo = req.query.id;
 
         var grupoExiste = await GrupoService.grupoExiste(idGrupo);
         //Comprobar si el id del grupo existe

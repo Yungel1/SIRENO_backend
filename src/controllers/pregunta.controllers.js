@@ -27,7 +27,7 @@ exports.insertarPregunta = async function (req,res,next){
 exports.eliminarPregunta = async function (req,res,next){
     try{
 
-        var idPregunta = req.query.idPregunta;
+        var idPregunta = req.query.id;
 
         var preguntaExiste = await PreguntaService.preguntaExiste(idPregunta);
         //Comprobar si la pregunta existe

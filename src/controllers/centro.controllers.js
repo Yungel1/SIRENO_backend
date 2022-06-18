@@ -38,7 +38,7 @@ exports.insertarCentro = async function (req,res,next){
 exports.eliminarCentro = async function (req,res,next){
     try{
 
-        var idCentro = req.query.idCentro;
+        var idCentro = req.query.id;
 
         var centroExiste = await CentroService.centroExiste(idCentro);
         //Comprobar si el id del centro existe

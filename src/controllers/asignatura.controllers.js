@@ -49,7 +49,7 @@ exports.insertarAsignatura = async function (req,res,next){
 exports.eliminarAsignatura = async function (req,res,next){
     try{
 
-        var idAsignatura = req.query.idAsignatura;
+        var idAsignatura = req.query.id;
 
         var asignaturaExiste = await AsignaturaService.asignaturaExiste(idAsignatura);
         //Comprobar si el id de la asignatura existe

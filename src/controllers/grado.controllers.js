@@ -49,7 +49,7 @@ exports.insertarGrado = async function (req,res,next){
 exports.eliminarGrado = async function (req,res,next){
     try{
 
-        var idGrado = req.query.idGrado;
+        var idGrado = req.query.id;
 
         var gradoExiste = await GradoService.gradoExiste(idGrado);
         //Comprobar si el id del grado existe

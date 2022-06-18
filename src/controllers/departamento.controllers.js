@@ -38,7 +38,7 @@ exports.insertarDepartamento = async function (req,res,next){
 exports.eliminarDepartamento = async function (req,res,next){
     try{
 
-        var idDepartamento = req.query.idDepartamento;
+        var idDepartamento = req.query.id;
 
         var departamentoExiste = await DepartamentoService.departamentoExiste(idDepartamento);
         //Comprobar si el id del departamento existe
