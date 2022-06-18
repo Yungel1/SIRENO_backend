@@ -218,7 +218,7 @@ exports.getTextoInformes = async function (req,res,next){
         let pertenece = false;
         //Comprobar si el usuario tiene acceso a esta pregunta y si existe
         if(idOpcionesPregunta==null){
-            pertenece = await PreguntaService.pertenecePreguntaUsuarioInformes(req.usuario,idPregunta);
+            pertenece = await PreguntaService.pertenecePreguntaUsuarioInforme(req.usuario,idPregunta);
             if(!pertenece){
                 return res.status(422).json({
                     error: "usuario-pregunta-texto-acceso",
