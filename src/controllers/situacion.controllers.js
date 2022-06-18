@@ -12,7 +12,7 @@ exports.insertarSituacion = async function (req,res,next){
     try{
 
         //Comprobar si ya existe una situación igual (a excepción del id)
-        var situacionRepetida = await SituacionService.situacionRepetida(req.body.idGrado, req.body.idDocente, req.body.idGrupo, req.body.idAsignatura,req.body.idCampaña);
+        var situacionRepetida = await SituacionService.situacionRepetida(req.body.idGrado, req.body.idDocente, req.body.idGrupo, req.body.idAsignatura);
         //Comprobar si la situación está repetida
         if(situacionRepetida){
             return res.status(422).json({
@@ -66,25 +66,7 @@ exports.insertarSituacion = async function (req,res,next){
             });
         }
 
-        var idCamapñaEsInt = HelperNumeric.isNumeric(req.body.idCampaña);
-        //Comprobar si el id de la campaña es un numero
-        if (!idCamapñaEsInt){
-            return res.status(422).json({
-                error: "campaña-int",
-                message: "El id de la campaña seleccionada no es un número",
-            });
-        }
-
-        var campañaExiste = await CampañaService.campañaExiste(req.body.idCampaña);
-         //Comprobar si el id de la campaña existe
-         if(! campañaExiste){
-            return res.status(422).json({
-                error: "campaña-existir",
-                message: "La campaña seleccionada no corresponde a ninguna campaña existente",
-            });
-        }
-
-        var insertado = await SituacionService.insertarSituacion(req.body.idGrado, req.body.idDocente, req.body.idGrupo, req.body.idAsignatura,req.body.idCampaña); //Insertar situación
+        var insertado = await SituacionService.insertarSituacion(req.body.idGrado, req.body.idDocente, req.body.idGrupo, req.body.idAsignatura,null); //Insertar situación
 
         //Comprobar si se ha insertado la situación
         if(insertado){
@@ -297,6 +279,61 @@ exports.getCampañaInformes = async function (req,res,next){
          else{
              return res.status(200).json(campañasInformes);
          }
+
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+
+//Seleccionar las campañas para los informes
+exports.insertarCampañaSituacion = async function (req,res,next){
+    try{
+
+        var idCampaña = req.body.idCampaña;
+        var idSituacion = req.body.idSituacion;
+
+
+        var idCamapñaEsInt = HelperNumeric.isNumeric(req.body.idCampaña);
+        //Comprobar si el id de la campaña es un numero
+        if (!idCamapñaEsInt){
+            return res.status(422).json({
+                error: "campaña-int",
+                message: "El id de la campaña seleccionada no es un número",
+            });
+        }
+
+        var campañaExiste = await CampañaService.campañaExiste(req.body.idCampaña);
+         //Comprobar si el id de la campaña existe
+         if(! campañaExiste){
+            return res.status(422).json({
+                error: "campaña-existir",
+                message: "La campaña seleccionada no corresponde a ninguna campaña existente",
+            });
+        }
+
+        //Comprobar si la situacion existe
+        var situacionExiste = await SituacionService.situacionExiste(idSituacion);
+        if(!situacionExiste){
+            return res.status(422).json({
+                error: "situacion-existir",
+                message: "La situación no existe",
+            });
+        }
+
+        var actualizado = await SituacionService.insertarCampañaSituacion(idSituacion,idCampaña); //Insertar campaña a situación
+
+        //Comprobar si se ha actualizado
+        if(actualizado){
+            return res.status(201).json({
+                message: "Se ha editado la situación",
+            });
+        } else{
+            return res.status(422).json({
+                error: "situacion-editar",
+                message: "No se ha editado la situación",
+            });
+        }
 
     } catch(err){
         console.log(err);

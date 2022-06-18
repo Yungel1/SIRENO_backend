@@ -4,7 +4,6 @@ var SituacionService = require('../services/situacion.services');
 var GradoService = require('../services/grado.services');
 var GrupoService = require('../services/grupo.services');
 var AsignaturaService = require('../services/asignatura.services');
-var CampañaService = require('../services/campaña.services');
 
 var helperNumeric = require('../helpers/helperNumeric');
 const csv = require('csv-parser');
@@ -38,7 +37,7 @@ exports.procesarCSV = async function (req,res,next){
         await file.mv(path);
 
         const readStream = fs.createReadStream(path)
-        .pipe(csv({skipLines: 1,headers: ['usuario','grado','docente','grupo','asignatura','campaña']}))
+        .pipe(csv({skipLines: 1,headers: ['usuario','grado','docente','grupo','asignatura']}))
 
         let rows = [];
         let i = 0;
@@ -47,7 +46,7 @@ exports.procesarCSV = async function (req,res,next){
 
             i++;
 
-            if(Object.keys(row).length!=6){
+            if(Object.keys(row).length!=5){
                 return res.status(422).json({
                     error: "csv-linea-incorrecta",
                     message: "La línea del csv no es correcta",
@@ -61,7 +60,6 @@ exports.procesarCSV = async function (req,res,next){
             let idDocente = row.docente;
             let idGrupo = row.grupo;
             let idAsignatura = row.asignatura;
-            let idCampaña = row.campaña;
 
             var usuarioExiste = await UsuarioService.usuarioExiste(idDocente);
             //Comprobar si el usuario existe
@@ -118,28 +116,6 @@ exports.procesarCSV = async function (req,res,next){
                 });
             }
 
-            var idCamapñaEsInt = helperNumeric.isNumeric(idCampaña);
-            //Comprobar si el id de la campaña es un numero
-            if (!idCamapñaEsInt){
-                return res.status(422).json({
-                    error: "campaña-int",
-                    message: "El id de la campaña seleccionada no es un número",
-                    row: row,
-                    linea: i
-                });
-            }
-
-            var campañaExiste = await CampañaService.campañaExiste(idCampaña);
-            //Comprobar si el id de la campaña existe
-            if(!campañaExiste){
-                return res.status(422).json({
-                    error: "campaña-existir",
-                    message: "La campaña seleccionada no corresponde a ninguna campaña existente",
-                    row: row,
-                    linea: i
-                });
-            }
-
             //Comprobar si el usuario existe
             var usuarioExiste = await UsuarioService.usuarioExiste(usuario);
             if(!usuarioExiste){
@@ -162,11 +138,11 @@ exports.procesarCSV = async function (req,res,next){
             row = rows[j];
 
             //Comprobar si ya existe una situación igual (a excepción del id)
-            var situacion = await SituacionService.getSituacionId(row.grado, row.docente, row.grupo, row.asignatura,row.campaña);
+            var situacion = await SituacionService.getSituacionId(row.grado, row.docente, row.grupo, row.asignatura);
             //Comprobar si la situación está repetida
             if(situacion==null){
 
-                idSituacion = await SituacionService.insertarSituacionGetId(row.grado, row.docente, row.grupo, row.asignatura,row.campaña); //Insertar situación
+                idSituacion = await SituacionService.insertarSituacionGetId(row.grado, row.docente, row.grupo, row.asignatura,null); //Insertar situación
                 //Comprobar si se ha insertado la situación
                 if(!idSituacion){
                     return res.status(422).json({

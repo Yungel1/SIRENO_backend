@@ -21,11 +21,11 @@ exports.insertarSituacion = async function (idGrado, idDocente, idGrupo, idAsign
 
 
 //Coger info de las situaciones desde la campaña
-exports.getInfoSituacionDesdeCampaña = async function (idCamapña) {
+exports.getInfoSituacionDesdeCampaña = async function (idCampaña) {
 
     const row = await db.query(
         "SELECT idGrado,idDocente,idGrupo,idAsignatura FROM situacion WHERE idCampaña=?",[
-            idCamapña
+            idCampaña
         ]);
         
     return row;
@@ -60,15 +60,14 @@ exports.getCampañaSituacion = async function (id) {
 }
 
 //Si la situación  está repetida true sino false
-exports.situacionRepetida = async function (idGrado, idDocente, idGrupo, idAsignatura, idCampaña) {
+exports.situacionRepetida = async function (idGrado, idDocente, idGrupo, idAsignatura) {
 
     const row = await db.query(
-        "SELECT id FROM situacion WHERE idGrado=? and idDocente=? and idGrupo=? and idAsignatura=? and idCampaña=?",[
+        "SELECT id FROM situacion WHERE idGrado=? and idDocente=? and idGrupo=? and idAsignatura=?",[
         idGrado,
         idDocente,
         idGrupo,
         idAsignatura,
-        idCampaña
         ]);
         
     if (row.length > 0) {
@@ -80,15 +79,14 @@ exports.situacionRepetida = async function (idGrado, idDocente, idGrupo, idAsign
 }
 
 //get id de la situación
-exports.getSituacionId = async function (idGrado, idDocente, idGrupo, idAsignatura, idCampaña) {
+exports.getSituacionId = async function (idGrado, idDocente, idGrupo, idAsignatura) {
 
     const row = await db.query(
-        "SELECT id FROM situacion WHERE idGrado=? and idDocente=? and idGrupo=? and idAsignatura=? and idCampaña=?",[
+        "SELECT id FROM situacion WHERE idGrado=? and idDocente=? and idGrupo=? and idAsignatura=?",[
         idGrado,
         idDocente,
         idGrupo,
         idAsignatura,
-        idCampaña
         ]);
         
         
@@ -152,5 +150,21 @@ exports.insertarSituacionGetId = async function (idGrado, idDocente, idGrupo, id
     ]);
 
     return row.insertId;
+
+}
+
+//Insertar campaña a situación
+exports.insertarCampañaSituacion = async function (idSituacion,idCampaña) {
+
+    const rows = await db.query('UPDATE situacion SET idCampaña=? WHERE idSituacion=?',[
+        idCampaña,
+        idSituacion,  
+    ]);
+
+    if (rows.affectedRows === 1) {
+        return true; //Se ha actualizado correctamente
+    } else{
+        return false; //No se ha actualizado
+    }
 
 }

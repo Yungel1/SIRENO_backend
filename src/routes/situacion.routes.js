@@ -24,4 +24,7 @@ router.get('/getAll', authentication, (req, res, next) => authorization(req,res,
 //Obtener las campañas para informes
 router.get('/getCampaingReports', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador, roles.Docente]), SituacionController.getCampañaInformes);
 
+//Insertar campaña a la situación
+router.get('/insertarcampanasituacion', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), SituacionController.insertarCampañaSituacion);
+
 module.exports = router;
