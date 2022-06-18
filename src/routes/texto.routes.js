@@ -18,4 +18,7 @@ router.get('/getAll', authentication, (req, res, next) => authorization(req,res,
 //Obtener texto concreto (al que el usuario que ha iniciado sesión tenga acceso)
 router.get('/get', authentication, (req, res, next) => authorization(req,res,next,[roles.Todos]), TextoController.getTexto);
 
+//Obtener texto concreto (al que el usuario que ha iniciado sesión tenga acceso)
+router.get('/getInforme', authentication, (req, res, next) => authorization(req,res,next,[roles.Todos]), TextoController.getTextoInformes);
+
 module.exports = router;
