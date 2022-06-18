@@ -189,3 +189,66 @@ exports.getTexto = async function (req,res,next){
         return res.sendStatus(500) && next(err);
     }
 }
+
+//Conseguir texto concreto
+exports.getTextoInformes = async function (req,res,next){
+    try{
+
+        let idIdioma = req.query.idIdioma;
+        let idPregunta = req.query.idPregunta;
+        let idOpcionesPregunta = req.query.idOpcionesPregunta;
+
+        //Comprobar si el id de la pregunta, el idioma y la opción de pregunta son números
+        if(!helperNumeric.isNumeric(idIdioma)||!helperNumeric.isNumeric(idPregunta)||(!helperNumeric.isNumeric(idOpcionesPregunta)&&idOpcionesPregunta!=null)){
+            return res.status(422).json({
+                error: "texto-numero",
+                message: "Uno de los parámetros ha de ser un número y no lo es",
+            });
+        }
+
+        //Comprobar si el idioma existe
+        var idiomaExiste = await IdiomaService.idiomaExiste(idIdioma);
+        if(!idiomaExiste){
+            return res.status(422).json({
+                error: "idioma-existir",
+                message: "El idioma no existe",
+            });
+        }
+
+        let pertenece = false;
+        //Comprobar si el usuario tiene acceso a esta pregunta y si existe
+        if(idOpcionesPregunta==null){
+            pertenece = await PreguntaService.pertenecePreguntaUsuarioInformes(req.usuario,idPregunta);
+            if(!pertenece){
+                return res.status(422).json({
+                    error: "usuario-pregunta-texto-acceso",
+                    message: "El usuario no tiene acceso a este texto porque no tiene acceso a la pregunta o no existe",
+                });
+            }
+        } else{
+            //Comprobar si el usuario tiene acceso a esta opción pregunta y si existe
+            pertenece = await OpcionesPreguntaService.perteneceOpcionesPreguntaUsuarioInformes(req.usuario,idPregunta,idOpcionesPregunta)
+            if(!pertenece){
+                return res.status(422).json({
+                    error: "usuario-opcionespregunta-texto-acceso",
+                    message: "El usuario no tiene acceso a este texto porque no tiene acceso a la opción de pregunta o no existe",
+                });
+            }
+        }
+
+        var row = await TextoService.getTexto(idIdioma,idPregunta,idOpcionesPregunta); //Obtener texto
+
+        if(row == null){
+            return res.status(422).json({
+                error: "texto-existir",
+                message: "El texto no existe",
+            });
+        }
+
+        return res.status(200).json(row);
+
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
