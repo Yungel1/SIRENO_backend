@@ -17,7 +17,7 @@ exports.insertarOpcionPregunta = async function (req,res,next){
     try{
 
         //Comprobar si el id de la pregunta es un número
-        if(!helperNumeric.isNumeric(req.body.idPregunta)){
+        if(!helperNumeric.isNumeric(req.body.idPregunta) || !helperNumeric.isNumeric(req.body.num_opc)){
             return res.status(422).json({
                 error: "pregunta-int",
                 message: "Uno de los parámetros ha de ser un número y no lo es",
@@ -33,7 +33,16 @@ exports.insertarOpcionPregunta = async function (req,res,next){
             });
         }
 
-        var insertado = await OpcionesPreguntaService.insertarOpcionPregunta(req.body.idPregunta); //Insertar opción de pregunta
+        //Comprobar si la pregunta esta relacionada con num_opc
+        var preguntaNumOpcExiste = await OpcionesPreguntaService.preguntaNumOpcExiste(req.body.idPregunta, req.body.num_opc);
+        if(preguntaNumOpcExiste){
+            return res.status(422).json({
+                error: "pregunta-num_opc-existir",
+                message: "La pregunta ya está relacionada con ese num_opc",
+            });
+        }
+
+        var insertado = await OpcionesPreguntaService.insertarOpcionPregunta(req.body.idPregunta,req.body.num_opc); //Insertar opción de pregunta
 
         //Comprobar si se ha insertado la opción de pregunta
         if(insertado){

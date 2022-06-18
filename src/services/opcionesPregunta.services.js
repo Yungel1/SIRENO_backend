@@ -1,10 +1,11 @@
 const db = require("../helpers/db.js");
 
 //Insertar opción de una pregunta en la base de datos
-exports.insertarOpcionPregunta = async function (idPregunta) {
+exports.insertarOpcionPregunta = async function (idPregunta, num_opc) {
 
-    const rows = await db.query('INSERT INTO opcionespregunta(idPregunta) VALUES(?)',[
-        idPregunta
+    const rows = await db.query('INSERT INTO opcionespregunta(idPregunta,num_opc) VALUES(?,?)',[
+        idPregunta,
+        num_opc
     ]);
 
     if (rows.affectedRows === 1) {
@@ -20,6 +21,23 @@ exports.opcionesPreguntaExiste = async function (id) {
     const row = await db.query(
         "SELECT id FROM opcionespregunta WHERE id=?",
         id
+        );
+        
+    if (row.length > 0) {
+        return true;
+    } else{
+        return false;
+    }
+
+}
+
+//Si existe la relación entre una pregunta y un num_opc concretos true sino false
+exports.preguntaNumOpcExiste = async function (idPregunta, num_opc) {
+
+    const row = await db.query(
+        "SELECT idPregunta, num_opc FROM opcionespregunta WHERE idPregunta=? and num_opc=?",
+        idPregunta,
+        num_opc
         );
         
     if (row.length > 0) {

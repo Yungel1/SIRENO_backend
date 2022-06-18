@@ -46,6 +46,23 @@ exports.encuestaPreguntaExiste = async function (idEncuesta,idPregunta) {
 
 }
 
+//Si existe la relación entre una encuesta y un num_preg concretos true sino false
+exports.encuestaNumPregExiste = async function (idEncuesta,num_preg) {
+
+    const row = await db.query(
+        "SELECT idEncuesta,num_preg FROM encuestapregunta WHERE idEncuesta=? and num_preg=?",[
+        idEncuesta,
+        num_preg
+        ]);
+        
+    if (row.length > 0) {
+        return true;
+    } else{
+        return false;
+    }
+
+}
+
 //Borrar relación entre una encuesta y una pregunta
 exports.deleteEncuestaPregunta = async function (idEncuesta,idPregunta) {
 

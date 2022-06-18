@@ -40,6 +40,15 @@ exports.relacionarEncuestaPregunta = async function (req,res,next){
             });
         }
 
+        //Comprobar si la encuesta esta relacionada con num_preg
+        var encuestaNumPregExiste = await EncuestaPreguntaService.encuestaNumPregExiste(req.body.idEncuesta, req.body.num_preg);
+        if(encuestaNumPregExiste){
+            return res.status(422).json({
+                error: "encuesta-num_preg-existir",
+                message: "La encuesta ya está relacionada con ese num_preg",
+            });
+        }
+
         var relacionado = await EncuestaPreguntaService.relacionarEncuestaPregunta(req.body.idEncuesta,req.body.idPregunta,req.body.num_preg); //Relacionar encuesta y pregunta
 
         //Comprobar si se han relacionado la encuesta y la pregunta
