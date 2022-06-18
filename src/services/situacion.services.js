@@ -154,11 +154,11 @@ exports.insertarSituacionGetId = async function (idGrado, idDocente, idGrupo, id
 }
 
 //Insertar campaña a situación
-exports.insertarCampañaSituacion = async function (idSituacion,idCampaña) {
+exports.insertarCampañaSituacion = async function (id,idCampaña) {
 
-    const rows = await db.query('UPDATE situacion SET idCampaña=? WHERE idSituacion=?',[
+    const rows = await db.query('UPDATE situacion SET idCampaña=? WHERE id=?',[
         idCampaña,
-        idSituacion,  
+        id,  
     ]);
 
     if (rows.affectedRows === 1) {

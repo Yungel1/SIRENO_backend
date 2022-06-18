@@ -291,10 +291,10 @@ exports.insertarCampañaSituacion = async function (req,res,next){
     try{
 
         var idCampaña = req.body.idCampaña;
-        var idSituacion = req.body.idSituacion;
+        var id = req.body.id;
 
 
-        var idCamapñaEsInt = HelperNumeric.isNumeric(req.body.idCampaña);
+        var idCamapñaEsInt = HelperNumeric.isNumeric(idCampaña);
         //Comprobar si el id de la campaña es un numero
         if (!idCamapñaEsInt){
             return res.status(422).json({
@@ -303,7 +303,7 @@ exports.insertarCampañaSituacion = async function (req,res,next){
             });
         }
 
-        var campañaExiste = await CampañaService.campañaExiste(req.body.idCampaña);
+        var campañaExiste = await CampañaService.campañaExiste(idCampaña);
          //Comprobar si el id de la campaña existe
          if(! campañaExiste){
             return res.status(422).json({
@@ -313,7 +313,7 @@ exports.insertarCampañaSituacion = async function (req,res,next){
         }
 
         //Comprobar si la situacion existe
-        var situacionExiste = await SituacionService.situacionExiste(idSituacion);
+        var situacionExiste = await SituacionService.situacionExiste(id);
         if(!situacionExiste){
             return res.status(422).json({
                 error: "situacion-existir",
@@ -321,7 +321,7 @@ exports.insertarCampañaSituacion = async function (req,res,next){
             });
         }
 
-        var actualizado = await SituacionService.insertarCampañaSituacion(idSituacion,idCampaña); //Insertar campaña a situación
+        var actualizado = await SituacionService.insertarCampañaSituacion(id,idCampaña); //Insertar campaña a situación
 
         //Comprobar si se ha actualizado
         if(actualizado){
