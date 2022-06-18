@@ -4,7 +4,7 @@ var GrupoService = require('../services/grupo.services');
 exports.insertarGrupo = async function (req,res,next){
     try{
 
-        var idGrupo = req.body.idGrupo;
+        var idGrupo = req.body.id;
 
         var grupoExiste = await GrupoService.grupoExiste(idGrupo);
         //Comprobar si el id del grupo existe

@@ -4,7 +4,7 @@ var CentroService = require('../services/centro.services');
 exports.insertarCentro = async function (req,res,next){
     try{
 
-        var idCentro = req.body.idCentro;
+        var idCentro = req.body.id;
 
         var centroExiste = await CentroService.centroExiste(idCentro);
             //Comprobar si el id del centro existe

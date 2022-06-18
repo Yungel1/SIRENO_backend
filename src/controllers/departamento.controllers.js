@@ -4,7 +4,7 @@ var DepartamentoService = require('../services/departamento.services');
 exports.insertarDepartamento = async function (req,res,next){
     try{
 
-        var idDepartamento = req.body.idDepartamento;
+        var idDepartamento = req.body.id;
 
         var departamentoExiste = await DepartamentoService.departamentoExiste(idDepartamento);
             //Comprobar si el id del departamento existe

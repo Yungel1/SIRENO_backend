@@ -5,7 +5,7 @@ var DepartamentoService = require('../services/departamento.services');
 exports.insertarAsignatura = async function (req,res,next){
     try{
 
-        var idAsignatura = req.body.idAsignatura;
+        var idAsignatura = req.body.id;
         var idDepartamento = req.body.idDepartamento;
 
         var asignaturaExiste = await AsignaturaService.asignaturaExiste(idAsignatura);

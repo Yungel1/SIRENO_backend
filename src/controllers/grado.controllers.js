@@ -5,7 +5,7 @@ var CentroService = require('../services/centro.services');
 exports.insertarGrado = async function (req,res,next){
     try{
 
-        var idGrado = req.body.idGrado;
+        var idGrado = req.body.id;
         var idCentro = req.body.idCentro;
 
         var gradoExiste = await GradoService.gradoExiste(idGrado);
