@@ -74,7 +74,7 @@ exports.numPregExisteEncuesta= async function (req,res,next){
     try{
         
         //Comprobar si el id de la pregunta y la encuesta son números
-        if(!helperNumeric.isNumeric(req.body.idEncuesta)||!helperNumeric.isNumeric(req.body.num_preg)){
+        if(!helperNumeric.isNumeric(req.query.idEncuesta)||!helperNumeric.isNumeric(req.query.num_preg)){
             return res.status(422).json({
                 error: "encuesta-pregunta-numero",
                 message: "Uno de los parámetros ha de ser un número y no lo es",
@@ -82,7 +82,7 @@ exports.numPregExisteEncuesta= async function (req,res,next){
         }
 
         //Comprobar si la encuesta existe
-        var encuestaExiste = await EncuestaService.encuestaExiste(req.body.idEncuesta);
+        var encuestaExiste = await EncuestaService.encuestaExiste(req.query.idEncuesta);
         if(!encuestaExiste){
             return res.status(422).json({
                 error: "encuesta-existir",
@@ -91,7 +91,7 @@ exports.numPregExisteEncuesta= async function (req,res,next){
         }
 
         //Comprobar si la encuesta esta relacionada con num_preg
-        var encuestaNumPregExiste = await EncuestaPreguntaService.encuestaNumPregExiste(req.body.idEncuesta, req.body.num_preg);
+        var encuestaNumPregExiste = await EncuestaPreguntaService.encuestaNumPregExiste(req.query.idEncuesta, req.query.num_preg);
 
         //Comprobar si se han relacionado la encuesta y el num_preg
         if(!encuestaNumPregExiste){
