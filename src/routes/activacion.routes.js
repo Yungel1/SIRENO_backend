@@ -28,7 +28,7 @@ router.get('/wasActivated', authentication, (req, res, next) => authorization(re
 router.get('/getActivado', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador, roles.Docente]), ActivacionController.getActivado);
 
 //Insertar o actualizar activación
-router.post('/activacion/insertaractualizar', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), ActivacionController.insertarActualizarActivacion);
+router.post('/insertaractualizar', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), ActivacionController.insertarActualizarActivacion);
 
 
 module.exports = router;
