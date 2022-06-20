@@ -15,6 +15,17 @@ exports.insertarOpcionPregunta = async function (idPregunta, num_opc) {
     }
 }
 
+//Insertar opción de una pregunta en la base de datos
+exports.insertarOpcPregGetId = async function (idPregunta, num_opc) {
+
+    const rows = await db.query('INSERT INTO opcionespregunta(idPregunta,num_opc) VALUES(?,?)',[
+        idPregunta,
+        num_opc
+    ]);
+
+    return rows.insertId;
+}
+
 //Si existe la opción de pregunta true sino false
 exports.opcionesPreguntaExiste = async function (id) {
 

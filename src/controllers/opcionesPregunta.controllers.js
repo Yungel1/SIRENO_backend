@@ -61,6 +61,67 @@ exports.insertarOpcionPregunta = async function (req,res,next){
     }
 }
 
+//Insertar pregunta
+exports.insertarOpcPregGetId = async function (req,res,next){
+    try{
+
+        var idOpcPreg = await OpcionesPreguntaService.insertarOpcPregGetId(req.body.idPregunta,req.body.num_opc); //Insertar opción
+
+        if(!idOpcPreg){
+            return res.status(422).json({
+                error: "opcpreg-insertar",
+                message: "La opción no ha sido insertada",
+            });
+        }
+
+        return res.status(201).json(idPregunta);
+
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+
+exports.getNumOpcPreg = async function (req,res,next){
+    try{
+
+        //Comprobar si el id de la pregunta es un número
+        if(!helperNumeric.isNumeric(req.body.idPregunta) || !helperNumeric.isNumeric(req.body.num_opc)){
+            return res.status(422).json({
+                error: "pregunta-int",
+                message: "Uno de los parámetros ha de ser un número y no lo es",
+            });
+        }
+
+        //Comprobar si la pregunta existe
+        var preguntaExiste = await PreguntaService.preguntaExiste(req.body.idPregunta);
+        if(!preguntaExiste){
+            return res.status(422).json({
+                error: "pregunta-existir",
+                message: "La pregunta no existe",
+            });
+        }
+
+        //Comprobar si la pregunta esta relacionada con num_opc
+        var preguntaNumOpcExiste = await OpcionesPreguntaService.preguntaNumOpcExiste(req.body.idPregunta, req.body.num_opc);
+
+        //Comprobar si se ha insertado la opción de pregunta
+        if(!preguntaNumOpcExiste){
+            return res.status(201).json({
+                message: "El numero de la opción no existe en esa pregunta, por lo tanto se puede insertar",
+            });
+        } else{
+            return res.status(422).json({
+                error: "opcpregunta-insertar",
+                message: "El numero de la opción ya existe en esa pregunta, por lo tanto no se puede insertar",
+            });
+        }
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+
 //Seleccionar las opcionesPregunta del la pregunta seleccionada por usuario logeado
 exports.getOpcionesPregunta = async function (req,res,next){
     try{

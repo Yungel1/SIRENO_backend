@@ -9,11 +9,18 @@ var OpcionesPreguntaController = require('../controllers/opcionesPregunta.contro
 //Insertar opción de pregunta
 router.post('/', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), OpcionesPreguntaController.insertarOpcionPregunta);
 
+//Insertar opción de pregunta, conseguir id
+router.post('/insertargetid', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), OpcionesPreguntaController.insertarOpcPregGetId);
+
+
 //Coger las opcionesPregunta de la pregunta seleccionada
 router.get('/getQuestionOptions', authentication, (req, res, next) => authorization(req,res,next,[roles.Todos]), OpcionesPreguntaController.getOpcionesPregunta);
 
 //Coger las opcionesPregunta de la pregunta seleccionada
 router.get('/getOptions', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), OpcionesPreguntaController.getOpciones);
+
+//Coger los ordern de los numeros de la pregunta seleccionada
+router.get('/getNumOpc', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), OpcionesPreguntaController.getNumOpcPreg);
 
 //Eliminar opcionesPregunta
 router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), OpcionesPreguntaController.eliminarOpcionesPregunta);
