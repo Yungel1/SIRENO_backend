@@ -129,6 +129,123 @@ exports.insertarActivacion = async function (req,res,next){
     }
 }
 
+//Insertar activacion
+exports.insertarActualizarActivacion = async function (req,res,next){
+    try{
+
+        var idDocente = req.body.idDocente;
+        var idGrupo = req.body.idGrupo;
+        var idGrado = req.body.idGrado;
+        var idAsignatura = req.body.idAsignatura;
+        var idCampañaAntiguo = req.body.idCampañaAntiguo;
+        var idCampañaNuevo = req.body.idCampañaNuevo;
+
+
+        var activacionExiste = await ActivacionService.activacionExiste(idDocente, idGrupo, idGrado, idAsignatura, idCampañaAntiguo);
+        //Comprobar si la activacion existe
+        if(!activacionExiste){
+
+            var usuarioExiste = await UsuarioService.usuarioExiste(idDocente);
+            //Comprobar si el usuario existe
+            if(! usuarioExiste){
+                return res.status(422).json({
+                    error: "usuario-existir",
+                    message: "El docente seleccionado no existe",
+                });
+            }
+        
+            var docenteExiste = await UsuarioService.docenteExiste(idDocente)
+            //Comprobar si el id es de un docente
+            if(! docenteExiste){
+                return res.status(422).json({
+                    error: "docente-existir",
+                    message: "El docente seleccionado no corresponde a ningún docente existente",
+                });
+            }
+
+            var grupoExiste = await GrupoService.grupoExiste(idGrupo);
+            //Comprobar si el id del grupo existe
+            if(! grupoExiste){
+                return res.status(422).json({
+                    error: "grupo-existir",
+                    message: "El grupo seleccionado no corresponde a ningún grupo existente",
+                });
+            }
+
+            var gradoExiste = await GradoService.gradoExiste(idGrado);
+            //Comprobar si el id del grado existe
+            if(! gradoExiste){
+                return res.status(422).json({
+                    error: "grado-existir",
+                    message: "El grado seleccionado no corresponde a ningún grado existente",
+                });
+            }
+
+            var asignaturaExiste = await AsignaturaService.asignaturaExiste(idAsignatura);
+            //Comprobar si el id de la asignatura existe
+            if(! asignaturaExiste){
+                return res.status(422).json({
+                    error: "asignatura-existir",
+                    message: "La asignatura seleccionada no corresponde a ninguna asignatura existente",
+                });
+            }
+
+            var idCamapñaEsInt = HelperNumeric.isNumeric(idCampañaNuevo);
+            //Comprobar si el id de la campaña es un numero
+            if (!idCamapñaEsInt){
+                return res.status(422).json({
+                    error: "campaña-id-int",
+                    message: "La campaña seleccionada no es un número",
+                });
+            }
+
+            var campañaExiste = await CampañaService.campañaExiste(idCampañaNuevo);
+            //Comprobar si el id de la campaña existe
+            if(! campañaExiste){
+                return res.status(422).json({
+                    error: "campaña-existir",
+                    message: "La campaña seleccionada no corresponde a ninguna campaña existente",
+                });
+            }
+
+            var insertado = await ActivacionService.insertarActivacion(idDocente, idGrupo, idGrado, idAsignatura, idCampañaNuevo, "1900-01-01", "1900-01-02"); //Insertar activación
+
+            //Comprobar si se ha insertado la activacion
+            if(insertado){
+                return res.status(201).json({
+                    message: "La activación ha sido insertada correctamente",
+                });
+            } else{
+                return res.status(422).json({
+                    error: "activacion-insertar",
+                    message: "La activación no ha sido insertada",
+                });
+            }
+        }
+        else{
+
+            var actualizado = await ActivacionService.actualizarActivacionCampaña(idDocente, idGrupo, idGrado, idAsignatura, idCampañaAntiguo, idCampañaNuevo); //Actualizar activación
+
+            //Comprobar si se ha insertado la activacion
+            if(actualizado){
+                return res.status(201).json({
+                    message: "La activación ha sido actualizada correctamente",
+                });
+            } else{
+                return res.status(422).json({
+                    error: "activacion-insertar",
+                    message: "La activación no ha sido actualizada",
+                });
+            }
+
+        }
+
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+
 
 //Actualizar activacion
 exports.actualizarActivacion = async function (req,res,next){

@@ -65,7 +65,7 @@ exports.actualizarActivacion = async function (idDocente, idGrupo, idGrado, idAs
 //Actualizar activacion en la base de datos
 exports.actualizarActivacionCampaña = async function (idDocente, idGrupo, idGrado, idAsignatura, idCampañaAntiguo, idCampañaNuevo) {
 
-    const rows = await db.query('UPDATE activacion SET idCampañaNuevo=? WHERE idDocente=? and idGrupo=? and idGrado=? and idAsignatura=? and idCampañaAntiguo=?',[
+    const rows = await db.query('UPDATE activacion SET idCampaña=? WHERE idDocente=? and idGrupo=? and idGrado=? and idAsignatura=? and idCampaña=?',[
         idCampañaNuevo,
         idDocente,
         idGrupo,
