@@ -3,7 +3,7 @@ const db = require("../helpers/db.js");
 //Insertar activacion en la base de datos
 exports.insertarActivacion = async function (idDocente, idGrupo, idGrado, idAsignatura, idCampaña, fechaActIni, fechaActFin) {
 
-    const rows = await db.query('INSERT INTO activacion(idDocente, idGrupo, idGrado, idAsignatura, idCampaña, activado, fueActivado, fechaActIni, fechaActFin) VALUES(?,?,?,?,?,false,false,?,?)',[
+    const rows = await db.query('INSERT INTO activacion(idDocente, idGrupo, idGrado, idAsignatura, idCampaña, activado, fueActivado, fechaActIni, fechaActFin) VALUES(?,?,?,?,?,true,true,?,?)',[
         idDocente,
         idGrupo,
         idGrado,
@@ -52,6 +52,26 @@ exports.actualizarActivacion = async function (idDocente, idGrupo, idGrado, idAs
         idGrado,
         idAsignatura,
         idCampaña        
+    ]);
+
+    if (rows.affectedRows === 1) {
+        return true; //Se ha actualizado correctamente
+    } else{
+        return false; //No se ha actualizado
+    }
+
+}
+
+//Actualizar activacion en la base de datos
+exports.actualizarActivacionCampaña = async function (idDocente, idGrupo, idGrado, idAsignatura, idCampañaAntiguo, idCampañaNuevo) {
+
+    const rows = await db.query('UPDATE activacion SET idCampañaNuevo=? WHERE idDocente=? and idGrupo=? and idGrado=? and idAsignatura=? and idCampañaAntiguo=?',[
+        idCampañaNuevo,
+        idDocente,
+        idGrupo,
+        idGrado,
+        idAsignatura,
+        idCampañaAntiguo,  
     ]);
 
     if (rows.affectedRows === 1) {
