@@ -23,6 +23,27 @@ exports.insertarPregunta = async function (req,res,next){
     }
 }
 
+//Insertar pregunta
+exports.insertarPreguntaGetId = async function (req,res,next){
+    try{
+
+        var idPregunta = await PreguntaService.insertarPreguntaGetId(req.body.tipoPreg); //Insertar pregunta
+
+        if(!idPregunta){
+            return res.status(422).json({
+                error: "pregunta-insertar",
+                message: "La pregunta no ha sido insertada",
+            });
+        }
+
+        return res.status(201).json(idPregunta);
+
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+
 //Eliminar activación
 exports.eliminarPregunta = async function (req,res,next){
     try{

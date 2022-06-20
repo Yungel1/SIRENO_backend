@@ -15,6 +15,17 @@ exports.insertarPregunta = async function (tipoPreg) {
 
 }
 
+//Insertar pregunta en la base de datos
+exports.insertarPreguntaGetId = async function (tipoPreg) {
+
+    const row = await db.query('INSERT INTO pregunta(tipoPreg) VALUES(?)',[
+        tipoPreg
+    ]);
+
+    return row.insertId;
+
+}
+
 //Si existe la pregunta true sino false
 exports.preguntaExiste = async function (id) {
 
