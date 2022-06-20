@@ -252,3 +252,45 @@ exports.getTextoInformes = async function (req,res,next){
         return res.sendStatus(500) && next(err);
     }
 }
+
+//Conseguir texto concreto
+exports.getTextoAdmin = async function (req,res,next){
+    try{
+
+        let idIdioma = req.query.idIdioma;
+        let idPregunta = req.query.idPregunta;
+        let idOpcionesPregunta = req.query.idOpcionesPregunta;
+
+        //Comprobar si el id de la pregunta, el idioma y la opción de pregunta son números
+        if(!helperNumeric.isNumeric(idIdioma)||!helperNumeric.isNumeric(idPregunta)||(!helperNumeric.isNumeric(idOpcionesPregunta)&&idOpcionesPregunta!=null)){
+            return res.status(422).json({
+                error: "texto-numero",
+                message: "Uno de los parámetros ha de ser un número y no lo es",
+            });
+        }
+
+        //Comprobar si el idioma existe
+        var idiomaExiste = await IdiomaService.idiomaExiste(idIdioma);
+        if(!idiomaExiste){
+            return res.status(422).json({
+                error: "idioma-existir",
+                message: "El idioma no existe",
+            });
+        }
+
+        var row = await TextoService.getTexto(idIdioma,idPregunta,idOpcionesPregunta); //Obtener texto
+
+        if(row == null){
+            return res.status(422).json({
+                error: "texto-existir",
+                message: "El texto no existe",
+            });
+        }
+
+        return res.status(200).json(row);
+
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}

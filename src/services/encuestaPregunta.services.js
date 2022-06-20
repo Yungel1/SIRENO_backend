@@ -22,7 +22,7 @@ exports.relacionarEncuestaPregunta = async function (idEncuesta, idPregunta, num
 exports.getPreguntasEncuesta = async function (idEncuesta) {
 
     const row = await db.query(
-        "SELECT idPregunta FROM encuestapregunta WHERE idEncuesta=?",
+        "SELECT idPregunta,num_preg FROM encuestapregunta WHERE idEncuesta=?",
         idEncuesta
         );
         

@@ -15,6 +15,9 @@ router.delete('/delete', authentication, (req, res, next) => authorization(req,r
 //Obtener todos los textos
 router.get('/getAll', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), TextoController.getAllTexto);
 
+//Obtener todos los textos
+router.get('/getTextAdmin', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), TextoController.getTextoAdmin);
+
 //Obtener texto concreto (al que el usuario que ha iniciado sesión tenga acceso)
 router.get('/get', authentication, (req, res, next) => authorization(req,res,next,[roles.Todos]), TextoController.getTexto);
 
