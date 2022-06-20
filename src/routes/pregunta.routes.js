@@ -9,6 +9,9 @@ var PreguntaController = require('../controllers/pregunta.controllers')
 //Insertar pregunta
 router.post('/', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), PreguntaController.insertarPregunta);
 
+//Insertar pregunta, conseguir id
+router.post('/insertargetid', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), PreguntaController.insertarPreguntaGetId);
+
 //Eliminar pregunta
 router.delete('/delete', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), PreguntaController.eliminarPregunta);
 
