@@ -24,4 +24,7 @@ router.delete('/delete', authentication, (req, res, next) => authorization(req,r
 //Comprobar si el docente a activado la campaña y enviar recordatorio al admin
 router.get('/wasActivated', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), ActivacionController.enviarRecordatorio);
 
+//Comprobar si el docente a activado la campaña y enviar recordatorio al admin
+router.get('/getActivado', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador, roles.Docente]), ActivacionController.getActivado);
+
 module.exports = router;

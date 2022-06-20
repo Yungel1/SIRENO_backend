@@ -291,6 +291,52 @@ exports.activarActivacionDocente = async function (req,res,next){
     }
 }
 
+//Activar activacion admin
+exports.getActivado = async function (req,res,next){
+    try{
+
+        var idDocente = req.query.idDocente;
+        var idGrupo = req.query.idGrupo;
+        var idGrado = req.query.idGrado;
+        var idAsignatura = req.query.idAsignatura;
+        var idCampaña = req.query.idCampaña;
+
+        var activacionExiste = await ActivacionService.activacionExiste(idDocente, idGrupo, idGrado, idAsignatura, idCampaña);
+        //Comprobar si la activacion existe
+        if(!activacionExiste){
+            return res.status(422).json({
+                error: "activacion-existir",
+                message: "La activación que se intenta activar no existe",
+            });
+        }
+
+        var activadoEsCeroOUno = ([0,1].includes(Number(activado)));
+        //Comprobar si son integer (0 o 1) false y true
+        if(!activadoEsCeroOUno){
+            return res.status(422).json({
+                error: "activacion-cero-uno",
+                message: "No ha insertado un valor entre 0 y 1 en los campos correspondientes",
+            });
+        }
+
+        var activado = await ActivacionService.getActivado(idDocente, idGrupo, idGrado, idAsignatura, idCampaña); //Activar la activación
+
+        //Comprobar si se ha actualizado la activacion
+        if(actualizado){
+            return res.status(201).json({activado});
+        } else{
+            return res.status(422).json({
+                error: "get-activado",
+                message: "No se puede coger el activado",
+            });
+        }
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+
+
 //Eliminar activación
 exports.eliminarActivacion = async function (req,res,next){
     try{
