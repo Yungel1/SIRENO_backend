@@ -175,15 +175,9 @@ exports.getOpciones = async function (req,res,next){
 
         //Seleccionar las opcionesPregunta de la pregunta
         var getOpcionesPreguntaInformes = await OpcionesPreguntaService.getOpcionesPregunta(idPregunta); 
-        if(getOpcionesPreguntaInformes.length === 0){
-            return res.status(422).json({
-                error: "pregunta-opcpregunta-informe",
-                message: "La pregunta seleccionada no tiene niguna opcionPregunta",
-            });
-        }
-        else{
-            return res.status(200).json(getOpcionesPreguntaInformes);
-        }
+        
+        return res.status(200).json(getOpcionesPreguntaInformes);
+        
 
 
     } catch(err){
