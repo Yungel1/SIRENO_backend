@@ -46,10 +46,10 @@ exports.opcionesPreguntaExiste = async function (id) {
 exports.preguntaNumOpcExiste = async function (idPregunta, num_opc) {
 
     const row = await db.query(
-        "SELECT idPregunta, num_opc FROM opcionespregunta WHERE idPregunta=? and num_opc=?",
+        "SELECT idPregunta, num_opc FROM opcionespregunta WHERE idPregunta=? and num_opc=?", [
         idPregunta,
         num_opc
-        );
+        ]);
         
     if (row.length > 0) {
         return true;
