@@ -81,6 +81,21 @@ exports.activacionExiste  = async function (idDocente, idGrupo, idGrado, idAsign
     }
 }
 
+//Si la activación existe en la base de datos: true, sino false
+exports.getActivado  = async function (idDocente, idGrupo, idGrado, idAsignatura, idCampaña) {
+
+    const row = await db.query(
+        "SELECT activado FROM activacion WHERE idDocente=? and idGrupo=? and idGrado=? and idAsignatura=? and idCampaña=?",[
+        idDocente,
+        idGrupo,
+        idGrado,
+        idAsignatura,
+        idCampaña   
+        ]);
+    
+   return row;
+}
+
 //Activar activacion en la base de datos
 exports.activarActivacion = async function (idDocente, idGrupo, idGrado, idAsignatura, idCampaña, activado) {
 
