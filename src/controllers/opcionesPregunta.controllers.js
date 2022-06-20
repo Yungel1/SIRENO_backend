@@ -86,7 +86,7 @@ exports.getNumOpcPreg = async function (req,res,next){
     try{
 
         //Comprobar si el id de la pregunta es un número
-        if(!helperNumeric.isNumeric(req.body.idPregunta) || !helperNumeric.isNumeric(req.body.num_opc)){
+        if(!helperNumeric.isNumeric(req.query.idPregunta) || !helperNumeric.isNumeric(req.query.num_opc)){
             return res.status(422).json({
                 error: "pregunta-int",
                 message: "Uno de los parámetros ha de ser un número y no lo es",
@@ -94,7 +94,7 @@ exports.getNumOpcPreg = async function (req,res,next){
         }
 
         //Comprobar si la pregunta existe
-        var preguntaExiste = await PreguntaService.preguntaExiste(req.body.idPregunta);
+        var preguntaExiste = await PreguntaService.preguntaExiste(req.query.idPregunta);
         if(!preguntaExiste){
             return res.status(422).json({
                 error: "pregunta-existir",
@@ -103,7 +103,7 @@ exports.getNumOpcPreg = async function (req,res,next){
         }
 
         //Comprobar si la pregunta esta relacionada con num_opc
-        var preguntaNumOpcExiste = await OpcionesPreguntaService.preguntaNumOpcExiste(req.body.idPregunta, req.body.num_opc);
+        var preguntaNumOpcExiste = await OpcionesPreguntaService.preguntaNumOpcExiste(req.query.idPregunta, req.query.num_opc);
 
         //Comprobar si se ha insertado la opción de pregunta
         if(!preguntaNumOpcExiste){
