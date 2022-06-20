@@ -9,7 +9,7 @@ exports.insertarTexto = async function (req,res,next){
     try{
        
         //Comprobar si el id de la pregunta, el idioma y la opción de pregunta son números
-        if(!helperNumeric.isNumeric(req.body.idIdioma)||!helperNumeric.isNumeric(req.body.idPregunta)||!helperNumeric.isNumeric(req.body.idOpcionesPregunta)){
+        if(!helperNumeric.isNumeric(req.body.idIdioma)||!helperNumeric.isNumeric(req.body.idPregunta)||(!helperNumeric.isNumeric(req.body.idOpcionesPregunta)&&req.body.idOpcionesPregunta!=null)){
             return res.status(422).json({
                 error: "texto-numero",
                 message: "Uno de los parámetros ha de ser un número y no lo es",
@@ -44,12 +44,14 @@ exports.insertarTexto = async function (req,res,next){
         }
 
         //Comprobar si la opción de pregunta existe
-        var opcionPreguntaExiste = await OpcionesPreguntaService.opcionesPreguntaExiste(req.body.idOpcionesPregunta);
-        if(!opcionPreguntaExiste){
-            return res.status(422).json({
-                error: "opcionpregunta-existir",
-                message: "La opción de pregunta no existe",
-            });
+        if(req.body.idOpcionesPregunta!=null){
+            var opcionPreguntaExiste = await OpcionesPreguntaService.opcionesPreguntaExiste(req.body.idOpcionesPregunta);
+            if(!opcionPreguntaExiste){
+                return res.status(422).json({
+                    error: "opcionpregunta-existir",
+                    message: "La opción de pregunta no existe",
+                });
+            }
         }
 
         var insertado = await TextoService.insertarTexto(req.body.texto,req.body.idIdioma,req.body.idPregunta,req.body.idOpcionesPregunta); //Insertar texto
