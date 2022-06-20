@@ -295,11 +295,11 @@ exports.activarActivacionDocente = async function (req,res,next){
 exports.getActivado = async function (req,res,next){
     try{
 
-        var idDocente = req.body.idDocente;
-        var idGrupo = req.body.idGrupo;
-        var idGrado = req.body.idGrado;
-        var idAsignatura = req.body.idAsignatura;
-        var idCampaña = req.body.idCampaña;
+        var idDocente = req.query.idDocente;
+        var idGrupo = req.query.idGrupo;
+        var idGrado = req.query.idGrado;
+        var idAsignatura = req.query.idAsignatura;
+        var idCampaña = req.query.idCampaña;
 
         var activacionExiste = await ActivacionService.activacionExiste(idDocente, idGrupo, idGrado, idAsignatura, idCampaña);
         //Comprobar si la activacion existe
