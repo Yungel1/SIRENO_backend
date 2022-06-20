@@ -74,7 +74,7 @@ exports.insertarOpcPregGetId = async function (req,res,next){
             });
         }
 
-        return res.status(201).json(idPregunta);
+        return res.status(201).json(idOpcPreg);
 
     } catch(err){
         console.log(err);
