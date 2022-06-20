@@ -13,6 +13,9 @@ router.post('/', authentication, (req, res, next) => authorization(req,res,next,
 router.get('/getPollQuestions', authentication, (req, res, next) => authorization(req,res,next,[roles.Todos]), EncuestaPreguntaController.getPreguntasEncuesta);
 
 //Coger las preguntas de la encuesta seleccionada
+router.get('/getNumPreg', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), EncuestaPreguntaController.numPregExisteEncuesta);
+
+//Coger las preguntas de la encuesta seleccionada
 router.get('/getQuestions', authentication, (req, res, next) => authorization(req,res,next,[roles.Administrador]), EncuestaPreguntaController.getPreguntas);
 
 //Borrar relación entre una encuesta y una pregunta

@@ -69,6 +69,48 @@ exports.relacionarEncuestaPregunta = async function (req,res,next){
     }
 }
 
+//Relacionar encuesta y pregunta
+exports.numPregExisteEncuesta= async function (req,res,next){
+    try{
+        
+        //Comprobar si el id de la pregunta y la encuesta son números
+        if(!helperNumeric.isNumeric(req.body.idEncuesta)||!helperNumeric.isNumeric(req.body.num_preg)){
+            return res.status(422).json({
+                error: "encuesta-pregunta-numero",
+                message: "Uno de los parámetros ha de ser un número y no lo es",
+            });
+        }
+
+        //Comprobar si la encuesta existe
+        var encuestaExiste = await EncuestaService.encuestaExiste(req.body.idEncuesta);
+        if(!encuestaExiste){
+            return res.status(422).json({
+                error: "encuesta-existir",
+                message: "La encuesta no existe",
+            });
+        }
+
+        //Comprobar si la encuesta esta relacionada con num_preg
+        var encuestaNumPregExiste = await EncuestaPreguntaService.encuestaNumPregExiste(req.body.idEncuesta, req.body.num_preg);
+
+        //Comprobar si se han relacionado la encuesta y el num_preg
+        if(!encuestaNumPregExiste){
+            return res.status(201).json({
+                message: "La encuesta no tiene ese numero de pregunta, por lo tanto, se puede insertar la pregunta",
+            });
+        } else{
+            return res.status(422).json({
+                error: "encuesta-pregunta-relacionar",
+                message: "La encuesta ya tiene ese numero de pregunta, por lo tanto, no se puede insertar la pregunta",
+            });
+        }
+        
+    } catch(err){
+        console.log(err);
+        return res.sendStatus(500) && next(err);
+    }
+}
+
 //Seleccionar las preguntas del la encuesta seleccionada por usuario logeado
 exports.getPreguntasEncuesta = async function (req,res,next){
     try{
