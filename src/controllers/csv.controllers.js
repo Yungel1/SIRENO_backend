@@ -49,7 +49,7 @@ exports.procesarCSV = async function (req,res,next){
             if(Object.keys(row).length!=5){
                 return res.status(422).json({
                     error: "csv-linea-incorrecta",
-                    message: "La línea del csv no es correcta",
+                    message: "Una línea del csv no es correcta",
                     row: row,
                     linea: i
                 });
