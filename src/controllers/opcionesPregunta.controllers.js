@@ -149,9 +149,15 @@ exports.getOpcionesPregunta = async function (req,res,next){
 
         //Seleccionar las opcionesPregunta de la pregunta
         var getOpcionesPregunta = await OpcionesPreguntaService.getOpcPreguntasUsuario(idUsuario, idPregunta); 
-        
-        return res.status(200).json(getOpcionesPregunta);
-        
+        if(getOpcionesPregunta.length === 0){
+            return res.status(422).json({
+                error: "pregunta-opcpregunta-relacionar",
+                message: "La pregunta seleccionada no tiene niguna opcionPregunta",
+            });
+        }
+        else{
+            return res.status(200).json(getOpcionesPregunta);
+        }
 
 
     } catch(err){
@@ -187,9 +193,16 @@ exports.getOpcionesPreguntaInformes = async function (req,res,next){
 
         //Seleccionar las opcionesPregunta de la pregunta
         var getOpcionesPreguntaInformes = await OpcionesPreguntaService.getOpcionesPreguntaInformes(idUsuario, idPregunta); 
-       
-        return res.status(200).json(getOpcionesPreguntaInformes);
-        
+        if(getOpcionesPreguntaInformes.length === 0){
+            return res.status(422).json({
+                error: "pregunta-opcpregunta-informe",
+                message: "La pregunta seleccionada no tiene niguna opcionPregunta",
+            });
+        }
+        else{
+            return res.status(200).json(getOpcionesPreguntaInformes);
+        }
+
 
     } catch(err){
         console.log(err);
