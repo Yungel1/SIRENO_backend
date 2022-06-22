@@ -22,6 +22,15 @@ exports.relacionarEncuestaPregunta = async function (req,res,next){
             });
         }
 
+        var encuestaPreguntaExiste = await EncuestaPreguntaService.encuestaPreguntaExiste(req.body.idEncuesta,req.body.idPregunta);
+        //Comprobar si la relación entre la encuesta y la pregunta existe
+        if(encuestaPreguntaExiste){
+            return res.status(422).json({
+                error: "encuesta-pregunta-existir",
+                message: "La encuesta ya tiene esa pregunta",
+            });
+        }
+
         //Comprobar si la pregunta existe
         var preguntaExiste = await PreguntaService.preguntaExiste(req.body.idPregunta);
         if(!preguntaExiste){
