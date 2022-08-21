@@ -188,15 +188,9 @@ exports.getPreguntas = async function (req,res,next){
 
         //Seleccionar las preguntas de la encuesta
         var getPreguntasEncuesta = await EncuestaPreguntaService.getPreguntasEncuesta( idEncuesta); 
-        if(getPreguntasEncuesta.length === 0){
-            return res.status(422).json({
-                error: "encuesta-pregunta-tener",
-                message: "La encuesta seleccionada no tiene niguna pregunta",
-            });
-        }
-        else{
-            return res.status(200).json(getPreguntasEncuesta);
-        }
+
+        return res.status(200).json(getPreguntasEncuesta);
+
 
 
 
